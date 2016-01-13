@@ -1,20 +1,19 @@
 const expect = require('chai').expect;
+const extend = require('extend');
 
 const CredentialsValidator = require('../lib/CredentialsValidator');
 const demoCredentials = require('../lib/demo/credentials');
 
 describe('CredentialsValidator', () => {
-  describe('With demo credentials', () => {
-    it('should work when a valid credentials has been passed', () => {
+  describe('Credentials object', () => {
+    it('should work when valid credentials has been passed', () => {
       const func = () => {
         const validator = new CredentialsValidator(demoCredentials);
         validator.validate();
       };
       expect(func).not.to.throw(Error);
     });
-  });
 
-  describe('With invalid credentials', () => {
     it('should throw error on missing credentials', () => {
       const func = () => {
         const validator = new CredentialsValidator();
@@ -30,9 +29,18 @@ describe('CredentialsValidator', () => {
       };
       expect(func).to.throw(Error);
     });
+
+    it('should throw error on empty credentials object', () => {
+      const func = () => {
+        const credentials = {};
+        const validator = new CredentialsValidator(credentials);
+        validator.validate();
+      };
+      expect(func).to.throw(Error);
+    });
   });
 
-  describe('With invalid URL', () => {
+  describe('URL', () => {
     it('should throw error on missing URL', () => {
       const func = () => {
         const credentials = {
@@ -47,8 +55,62 @@ describe('CredentialsValidator', () => {
 
     it('should throw error on wrong type of URL', () => {
       const func = () => {
-        const credentials = demoCredentials;
-        demoCredentials.url = 123;
+        const credentials = extend(true, {}, demoCredentials, { url: 123 });
+        const validator = new CredentialsValidator(credentials);
+        validator.validate();
+      };
+      expect(func).to.throw(Error);
+    });
+
+    it('should throw error on wrong format of URL', () => {
+      const func = () => {
+        const credentials = extend(true, {}, demoCredentials, {
+          url: 'htp:)/"§?9812ß39.com/(212)"',
+        });
+        const validator = new CredentialsValidator(credentials);
+        validator.validate();
+      };
+      expect(func).to.throw(Error);
+    });
+
+    it('should work with "http" URL', () => {
+      const func = () => {
+        const credentials = extend(true, {}, demoCredentials, {
+          url: 'http://extrashop.net/subfolder',
+        });
+        const validator = new CredentialsValidator(credentials);
+        validator.validate();
+      };
+      expect(func).not.to.throw(Error);
+    });
+
+    it('should work with "https" URL', () => {
+      const func = () => {
+        const credentials = extend(true, {}, demoCredentials, {
+          url: 'https://extrashop.net/subfolder',
+        });
+        const validator = new CredentialsValidator(credentials);
+        validator.validate();
+      };
+      expect(func).not.to.throw(Error);
+    });
+
+    it('throw error on "ftp" URL', () => {
+      const func = () => {
+        const credentials = extend(true, {}, demoCredentials, {
+          url: 'ftp://extrashop.net/subfolder',
+        });
+        const validator = new CredentialsValidator(credentials);
+        validator.validate();
+      };
+      expect(func).to.throw(Error);
+    });
+
+    it('throw error on empty URL', () => {
+      const func = () => {
+        const credentials = extend(true, {}, demoCredentials, {
+          url: '',
+        });
         const validator = new CredentialsValidator(credentials);
         validator.validate();
       };
@@ -56,7 +118,7 @@ describe('CredentialsValidator', () => {
     });
   });
 
-  describe('With invalid user', () => {
+  describe('User', () => {
     it('should throw error on missing user', () => {
       const func = () => {
         const credentials = {
@@ -71,8 +133,20 @@ describe('CredentialsValidator', () => {
 
     it('should throw error on wrong type of user', () => {
       const func = () => {
-        const credentials = demoCredentials;
-        demoCredentials.user = 123;
+        const credentials = extend(true, {}, demoCredentials, {
+          user: 123,
+        });
+        const validator = new CredentialsValidator(credentials);
+        validator.validate();
+      };
+      expect(func).to.throw(Error);
+    });
+
+    it('should throw error on empty user', () => {
+      const func = () => {
+        const credentials = extend(true, {}, demoCredentials, {
+          user: '',
+        });
         const validator = new CredentialsValidator(credentials);
         validator.validate();
       };
@@ -80,7 +154,7 @@ describe('CredentialsValidator', () => {
     });
   });
 
-  describe('With invalid password', () => {
+  describe('Password', () => {
     it('should throw error on missing password', () => {
       const func = () => {
         const credentials = {
@@ -95,8 +169,20 @@ describe('CredentialsValidator', () => {
 
     it('should throw error on wrong type of password', () => {
       const func = () => {
-        const credentials = demoCredentials;
-        demoCredentials.password = 123;
+        const credentials = extend(true, {}, demoCredentials, {
+          pass: 123,
+        });
+        const validator = new CredentialsValidator(credentials);
+        validator.validate();
+      };
+      expect(func).to.throw(Error);
+    });
+
+    it('should throw error on empty password', () => {
+      const func = () => {
+        const credentials = extend(true, {}, demoCredentials, {
+          pass: '',
+        });
         const validator = new CredentialsValidator(credentials);
         validator.validate();
       };
