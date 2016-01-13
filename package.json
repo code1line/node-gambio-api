@@ -29,6 +29,7 @@
   },
   "homepage": "https://github.com/ronaldloyko/node-gambio-api#readme",
   "dependencies": {
+    "extend": "^3.0.0",
     "request": "^2.67.0"
   },
   "devDependencies": {
