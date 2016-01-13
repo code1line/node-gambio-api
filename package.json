@@ -1,0 +1,41 @@
+{
+  "name": "node-gambio-api",
+  "version": "0.1.0",
+  "description": "A low-level Node.js API client for Gambio",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/eslint index.js lib && ./node_modules/.bin/mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ronaldloyko/node-gambio-api.git"
+  },
+  "keywords": [
+    "gambio",
+    "javascript",
+    "api",
+    "rest",
+    "shop",
+    "json",
+    "js"
+  ],
+  "author": "Ronald Loyko <ronald.loyko@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ronaldloyko/node-gambio-api/issues"
+  },
+  "homepage": "https://github.com/ronaldloyko/node-gambio-api#readme",
+  "dependencies": {
+    "request": "^2.67.0"
+  },
+  "devDependencies": {
+    "chai": "^3.4.1",
+    "eslint": "^1.10.3",
+    "eslint-config-airbnb": "^3.1.0",
+    "eslint-plugin-react": "^3.14.0",
+    "mocha": "^2.3.4"
+  }
+}
