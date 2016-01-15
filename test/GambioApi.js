@@ -68,4 +68,25 @@ describe('GambioApi', () => {
       expect(func).to.throw(InvalidArgumentError);
     });
   });
+
+  describe('#getApiUrl', () => {
+    it('should return a string', () => {
+      const API = new GambioApi(demoCredentials);
+      const value = API.getApiUrl();
+      expect(value).to.be.a('string');
+    });
+
+    it('should return expected URL', () => {
+      const url = 'http://myshop.com';
+      const version = 'v1';
+      const credentials = extend(true, {}, demoCredentials, { url, version });
+
+      const expectedUrl = `${url}/api.php/${version}`;
+
+      const API = new GambioApi(credentials);
+      const value = API.getApiUrl();
+
+      expect(value).to.equal(expectedUrl);
+    });
+  });
 });
