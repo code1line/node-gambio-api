@@ -1,7 +1,7 @@
 const expect = require('chai').expect;
 
 const GambioApi = require('../.');
-const demoCredentials = require('../lib/demo/credentials');
+const demoCredentials = require('../demo/credentials');
 
 describe('Instantiation', () => {
   it('should throw error on instantiating without credentials', () => {
