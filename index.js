@@ -30,6 +30,8 @@ const check = require('check-types');
 const extend = require('extend');
 const NoArgumentError = require('./lib/error/NoArgumentError');
 const InvalidArgumentError = require('./lib/error/InvalidArgumentError');
+const messages = require('./lib/messageContainer');
+const urlFormatRegex = require('./lib/regexContainer').urlFormat;
 
 // Class definition.
 class GambioApi {
@@ -101,37 +103,34 @@ class GambioApi {
    * @private
    */
   _validate(credentials) {
-    // Regular expression to check URL format against.
-    const urlRegex = /https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,}/;
-
     // Check credentials parameter.
     if (check.not.assigned(credentials)) {
-      throw new NoArgumentError('Missing credentials object');
+      throw new NoArgumentError(messages.CREDENTIALS_MISSING);
     } else if (check.not.object(credentials)) {
-      throw new InvalidArgumentError('Credentials is not an object');
+      throw new InvalidArgumentError(messages.CREDENTIALS_NOT_AN_OBJECT);
     }
 
     // Check URL.
     if (check.not.assigned(credentials.url)) {
-      throw new NoArgumentError('Missing url');
+      throw new NoArgumentError(messages.URL_MISSING);
     } else if (check.not.string(credentials.url)) {
-      throw new InvalidArgumentError('URL is not a string');
-    } else if (check.not.match(credentials.url, urlRegex)) {
-      throw new InvalidArgumentError('Invalid URL');
+      throw new InvalidArgumentError(messages.URL_NOT_A_STRING);
+    } else if (check.not.match(credentials.url, urlFormatRegex)) {
+      throw new InvalidArgumentError(messages.URL_INVALID);
     }
 
     // Check user.
     if (check.not.assigned(credentials.user)) {
-      throw new NoArgumentError('Missing user');
+      throw new NoArgumentError(messages.USER_MISSING);
     } else if (check.not.string(credentials.user)) {
-      throw new InvalidArgumentError('User is not a string');
+      throw new InvalidArgumentError(messages.USER_NOT_A_STRING);
     }
 
     // Check password.
     if (check.not.assigned(credentials.pass)) {
-      throw new NoArgumentError('Missing password');
+      throw new NoArgumentError(messages.PASSWORD_MISSING);
     } else if (check.not.string(credentials.pass)) {
-      throw new InvalidArgumentError('Password is not a string');
+      throw new InvalidArgumentError(messages.PASSWORD_NOT_A_STRING);
     }
 
     // Check API version.
@@ -139,7 +138,7 @@ class GambioApi {
       check.assigned(credentials.version) &&
       check.not.string(credentials.version)
     ) {
-      throw new InvalidArgumentError('Version is not a string');
+      throw new InvalidArgumentError(messages.VERSION_NOT_A_STRING);
     }
   }
 
