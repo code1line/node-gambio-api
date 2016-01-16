@@ -5,50 +5,87 @@ const InvalidArgumentError = require('../lib/error/InvalidArgumentError');
 const NoArgumentError = require('../lib/error/NoArgumentError');
 const demoCredentials = require('../demo/credentials');
 
-// Test credentials.
-const testUrl = `${demoCredentials.url}/api.php/v2`;
-const testUser = demoCredentials.user;
-const testPassword = demoCredentials.pass;
-
 describe('Api', () => {
   describe('#constructor', () => {
-    it('should work when valid parameters has been passed', () => {
-      const func = () => new Api(testUrl, testUser, testPassword);
+    it('should work when valid parameter has been passed', () => {
+      const func = () => new Api(demoCredentials);
       expect(func).not.to.throw(Error);
     });
 
-    it('should throw NoArgumentError on missing arguments', () => {
+    it('should throw NoArgumentError on missing argument', () => {
       const func = () => new Api();
       expect(func).to.throw(NoArgumentError);
     });
 
+    it('should throw InvalidArgumentError on invalid argument', () => {
+      const func = () => new Api(2);
+      expect(func).to.throw(InvalidArgumentError);
+    });
+
     it('should throw NoArgumentError on missing password', () => {
-      const func = () => new Api(testUrl, testUser);
+      const credentials = {
+        url: demoCredentials.url,
+        user: demoCredentials.user,
+      };
+      const func = () => new Api(credentials);
       expect(func).to.throw(NoArgumentError);
     });
 
     it('should throw InvalidArgumentError on wrong type of password', () => {
-      const func = () => new Api(testUrl, testUser, 123123);
+      const credentials = {
+        url: demoCredentials.url,
+        user: demoCredentials.user,
+        pass: 2,
+      };
+      const func = () => new Api(credentials);
       expect(func).to.throw(InvalidArgumentError);
     });
 
     it('should throw NoArgumentError on missing user', () => {
-      const func = () => new Api(testUrl);
+      const credentials = {
+        url: demoCredentials.url,
+        pass: demoCredentials.pass,
+      };
+      const func = () => new Api(credentials);
       expect(func).to.throw(NoArgumentError);
     });
 
     it('should throw InvalidArgumentError on wrong type of user', () => {
-      const func = () => new Api(testUrl, 123123);
+      const credentials = {
+        url: demoCredentials.url,
+        pass: demoCredentials.pass,
+        user: 3,
+      };
+      const func = () => new Api(credentials);
       expect(func).to.throw(InvalidArgumentError);
     });
 
     it('should throw NoArgumentError on missing URL', () => {
-      const func = () => new Api();
+      const credentials = {
+        pass: demoCredentials.pass,
+        user: demoCredentials.user,
+      };
+      const func = () => new Api(credentials);
       expect(func).to.throw(NoArgumentError);
     });
 
     it('should throw InvalidArgumentError on wrong type of URL', () => {
-      const func = () => new Api(123123);
+      const credentials = {
+        url: 3,
+        pass: demoCredentials.pass,
+        user: demoCredentials.user,
+      };
+      const func = () => new Api(credentials);
+      expect(func).to.throw(InvalidArgumentError);
+    });
+
+    it('should throw InvalidArgumentError on bad formatted URL', () => {
+      const credentials = {
+        url: '239848z329842398',
+        pass: demoCredentials.pass,
+        user: demoCredentials.user,
+      };
+      const func = () => new Api(credentials);
       expect(func).to.throw(InvalidArgumentError);
     });
   });
