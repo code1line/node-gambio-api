@@ -27,6 +27,9 @@
   "bugs": {
     "url": "https://github.com/ronaldloyko/node-gambio-api/issues"
   },
+  "engines": {
+    "node": ">=4.0"
+  },
   "homepage": "https://github.com/ronaldloyko/node-gambio-api#readme",
   "dependencies": {
     "bluebird": "^3.1.1",
