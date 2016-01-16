@@ -1,22 +1,32 @@
 /**
- * node-gambio-api
+ * node-gambio-api.
  *
- * A low-level Node.js API client for Gambio.
+ * A low-level Node.js REST-API client for Gambio.
  *
- * This module provides methods to retrieve data
- * from a Gambio shop over the REST-API.
+ * This module provides a low-level API to retrieve data
+ * from a Gambio shop via the REST-API.
  *
  * @example
- * 	const credentials = {
- * 		url: 'https://myshop.de',
- * 		user: 'admin@myshop.de',
- * 		pass: '12345',
- * 	};
+ * 	const validUrl = 'http://my-shop.de';
+ * 	const anotherValidUrl = 'https://mypage.de/shop';
  *
- * 	const API = new GambioApi(credentials);
+ * 	const validUser = 'admin@shop.de';
+ * 	const validPass = '12345';
  *
- * 	// Return URL of REST-API.
- * 	API.getApiUrl();
+ * 	// Compose server parameters.
+ *  const credentials = {
+ *  	url: validUrl,
+ *  	user: validUser,
+ *  	pass: validPass,
+ *  };
+ *
+ * 	// Create API instance.
+ *  const API = new GambioApi(credentials);
+ *
+ * 	// Get zone with ID 23.
+ *  API.zones.getById(23)
+ *  	.then(console.log)
+ *   	.catch(console.error);
  *
  * @version 0.1.0
  * @author Ronald Loyko
@@ -25,13 +35,11 @@
 
 'use strict';
 
-// Dependencies.
-const check = require('check-types');
+// Node module dependencies.
 const extend = require('extend');
-const NoArgumentError = require('./lib/error/NoArgumentError');
-const InvalidArgumentError = require('./lib/error/InvalidArgumentError');
-const messages = require('./lib/messageContainer');
-const urlFormatRegex = require('./lib/regexContainer').urlFormat;
+
+// Libary dependencies.
+const Validator = require('./lib/Validator');
 const CountryApi = require('./lib/api/CountryApi');
 const ZoneApi = require('./lib/api/ZoneApi');
 
@@ -39,127 +47,113 @@ const ZoneApi = require('./lib/api/ZoneApi');
 class GambioApi {
 
   /**
-   * Creates a Gambio API instance with the provided credentials.
+   * Creates a Gambio API instance with provided parameters.
    *
-   * @param  {object} credentials = {} Server credentials.
-   * @param  {string} credentials.url URL to Gambio shop.
-   * @param  {string} credentials.user Login user.
-   * @param  {string} credentials.pass Login password.
-   * @param  {string} [credentials.version = 'v2'] API version.
-   *
-   * @example
-   * 	const validUrl = 'http://my-shop.de';
-   * 	const anotherValidUrl = 'https://mypage.de/shop';
-   *
-   * 	const validUser = 'admin@shop.de';
-   * 	const validPass = '12345';
-   *
-   *  const credentials = {
-   *  	url: validUrl,
-   *  	user: validUser,
-   *  	pass: validPass,
-   *  };
-   *
-   *  const API = new GambioApi(credentials);
+   * @param  {object} parameters                  API parameters.
+   * @param  {string} parameters.url              URL to Gambio shop root.
+   * @param  {string} parameters.user             Login user.
+   * @param  {string} parameters.pass             Login password.
+   * @param  {string} [parameters.version = 'v2'] API version.
    */
-  constructor(credentials) {
-    // Validate credentials.
-    this._validate(credentials);
+  constructor(parameters) {
+    // Validate API parameters.
+    this._validate(parameters);
 
-    // Extend and set credentials as property.
-    this.credentials = this._extend(credentials);
+    // Extend default parameters with provided ones
+    // and set parameters as property.
+    this.parameters = extend(true, {}, this._getDefaultParameters(), parameters);
 
-    // Set composed API url as property.
-    this.apiUrl = this.credentials.url + this._getRelativeApiUrl(this.credentials.version);
+    // Get REST-API URL of the shop and set it as property.
+    this.apiUrl = this._getApiUrl({
+      url: this.parameters.url,
+      version: this.parameters.version,
+    });
+
+    // Set API credentials which will be used as constructor parameters for APIs.
+    const apiCredentials = {
+      url: this.apiUrl,
+      user: this.parameters.user,
+      pass: this.parameters.pass,
+    };
 
     // Set APIs.
-    this.countries = new CountryApi(this.apiUrl, this.credentials.user, this.credentials.pass);
-    this.zones = new ZoneApi(this.apiUrl, this.credentials.user, this.credentials.pass);
+    this.countries = new CountryApi(apiCredentials);
+    this.zones = new ZoneApi(apiCredentials);
   }
 
   /**
-   * Returns the API url.
-   * @return {string} URL of Gambio's REST-API.
-   */
-  getApiUrl() {
-    return this.apiUrl;
-  }
-
-  /**
-   * Extends default with provided ones and return extended credentials object.
-   * @param  {object} credentials Credentials parameter.
-   * @return {object}             Extended credentials object.
+   * Returns default API parameters.
+   * @return {object} Default API parameters.
    * @private
    */
-  _extend(credentials) {
-    // Default credentials.
-    const defaultCredentials = {
+  _getDefaultParameters() {
+    // Default parameters.
+    const defaultParameters = {
       version: 'v2',
     };
 
-    // Return extended credentials object.
-    return extend(true, {}, defaultCredentials, credentials);
+    // Return parameters.
+    return defaultParameters;
   }
 
   /**
-   * Validates the provided credentials.
-   * @param {object} credentials Credentials parameter.
+   * Returns the URL to the REST-API.
+   *
+   * @param {object} parameters         Object of parameters.
+   * @param {string} parameters.url     URL to Gambio shop.
+   * @param {string} parameters.version API version.
+   *
    * @throws NoArgumentError On missing arguments.
    * @throws InvalidArgumentError On invalid arguments.
+   *
+   * @return {string} URL of the REST-API.
    * @private
    */
-  _validate(credentials) {
-    // Check credentials parameter.
-    if (check.not.assigned(credentials)) {
-      throw new NoArgumentError(messages.CREDENTIALS_MISSING);
-    } else if (check.not.object(credentials)) {
-      throw new InvalidArgumentError(messages.CREDENTIALS_NOT_AN_OBJECT);
-    }
+  _getApiUrl(parameters) {
+    // Validate object parameter.
+    Validator.checkObjectParameter(parameters);
 
-    // Check URL.
-    if (check.not.assigned(credentials.url)) {
-      throw new NoArgumentError(messages.URL_MISSING);
-    } else if (check.not.string(credentials.url)) {
-      throw new InvalidArgumentError(messages.URL_NOT_A_STRING);
-    } else if (check.not.match(credentials.url, urlFormatRegex)) {
-      throw new InvalidArgumentError(messages.URL_INVALID);
-    }
+    // Validate URL.
+    Validator.checkUrl(parameters.url);
 
-    // Check user.
-    if (check.not.assigned(credentials.user)) {
-      throw new NoArgumentError(messages.USER_MISSING);
-    } else if (check.not.string(credentials.user)) {
-      throw new InvalidArgumentError(messages.USER_NOT_A_STRING);
-    }
+    // Check version.
+    Validator.checkVersion(parameters.version);
 
-    // Check password.
-    if (check.not.assigned(credentials.pass)) {
-      throw new NoArgumentError(messages.PASSWORD_MISSING);
-    } else if (check.not.string(credentials.pass)) {
-      throw new InvalidArgumentError(messages.PASSWORD_NOT_A_STRING);
-    }
+    // Relative path to API file with specific version.
+    const apiUrl = `/api.php/${parameters.version}`;
 
-    // Check API version.
-    if (
-      check.assigned(credentials.version) &&
-      check.not.string(credentials.version)
-    ) {
-      throw new InvalidArgumentError(messages.VERSION_NOT_A_STRING);
-    }
+    // Compose shop main URL with REST-API URL.
+    const composedUrl = parameters.url + apiUrl;
+
+    // Return composed URL.
+    return composedUrl;
   }
 
   /**
-   * Returns the relative URL to the Gambio REST-API.
-   * @param {string} version API version.
-   * @return {string} Path to API file.
+   * Validates the provided parameters in constructor.
+   *
+   * @param {object} parameters Constructor parameter object.
+   *
+   * @throws NoArgumentError On missing arguments.
+   * @throws InvalidArgumentError On invalid arguments.
+   *
    * @private
    */
-  _getRelativeApiUrl(version) {
-    // Relative path to API file.
-    const apiUrl = `/api.php/${version}`;
+  _validate(parameters) {
+    // Check object parameter.
+    Validator.checkObjectParameter(parameters);
 
-    // Return file path.
-    return apiUrl;
+    // Check URL.
+    Validator.checkUrl(parameters.url);
+
+    // Check user.
+    Validator.checkUser(parameters.user);
+
+    // Check password.
+    Validator.checkPassword(parameters.pass);
+
+    // Check API version, if provided.
+    if (parameters.version) Validator.checkVersion(parameters.version);
   }
 }
 
