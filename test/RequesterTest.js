@@ -103,9 +103,10 @@ describe('Requester', () => {
         });
     });
 
-    it('should return parsed object from JSON on successful request', (done) => {
+    it('should return parsed object on successful request with custom headers', (done) => {
       const request = new Requester(testUrl, testUser, testPassword);
-      const get = request.get();
+      const headers = { 'Content-Type': 'application/json' };
+      const get = request.get(headers);
 
       get.then((response) => {
         expect(response).to.be.a('object');
