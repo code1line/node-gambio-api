@@ -3,45 +3,53 @@ const expect = require('chai').expect;
 const Api = require('../lib/api/Api');
 const InvalidArgumentError = require('../lib/error/InvalidArgumentError');
 const NoArgumentError = require('../lib/error/NoArgumentError');
+const demoCredentials = require('../demo/credentials');
 
-// Suffix reference.
-const suffix = '/';
+// Test credentials.
+const testUrl = `${demoCredentials.url}/api.php/v2`;
+const testUser = demoCredentials.user;
+const testPassword = demoCredentials.pass;
 
 describe('Api', () => {
   describe('#constructor', () => {
-    it('should throw NoArgumentError on instantiating without URL parameter', () => {
+    it('should work when valid parameters has been passed', () => {
+      const func = () => new Api(testUrl, testUser, testPassword);
+      expect(func).not.to.throw(Error);
+    });
+
+    it('should throw NoArgumentError on missing arguments', () => {
       const func = () => new Api();
       expect(func).to.throw(NoArgumentError);
     });
 
-    it('should throw InvalidArgumentError on instantiating with invalid URL', () => {
-      const func = () => new Api('');
+    it('should throw NoArgumentError on missing password', () => {
+      const func = () => new Api(testUrl, testUser);
+      expect(func).to.throw(NoArgumentError);
+    });
+
+    it('should throw InvalidArgumentError on wrong type of password', () => {
+      const func = () => new Api(testUrl, testUser, 123123);
       expect(func).to.throw(InvalidArgumentError);
     });
 
-    it('should throw InvalidArgumentError on instantiating with invalid type', () => {
-      const func = () => new Api(222);
+    it('should throw NoArgumentError on missing user', () => {
+      const func = () => new Api(testUrl);
+      expect(func).to.throw(NoArgumentError);
+    });
+
+    it('should throw InvalidArgumentError on wrong type of user', () => {
+      const func = () => new Api(testUrl, 123123);
       expect(func).to.throw(InvalidArgumentError);
     });
 
-    it('should work on instantiating with valid credentials', () => {
-      const func = () => new Api('http://google.com');
-      expect(func).not.to.throw(Error);
-    });
-  });
-
-  describe('#getApiUrl', () => {
-    it('should return a string', () => {
-      const api = new Api('http://google.com');
-      const apiUrl = api.getApiUrl();
-      expect(apiUrl).to.be.a('string');
+    it('should throw NoArgumentError on missing URL', () => {
+      const func = () => new Api();
+      expect(func).to.throw(NoArgumentError);
     });
 
-    it('should return the provided URL with endpoint suffix', () => {
-      const rootUrl = 'http://google.com';
-      const api = new Api(rootUrl);
-      const apiUrl = api.getApiUrl();
-      expect(apiUrl).to.equal(rootUrl + suffix);
+    it('should throw InvalidArgumentError on wrong type of URL', () => {
+      const func = () => new Api(123123);
+      expect(func).to.throw(InvalidArgumentError);
     });
   });
 });
