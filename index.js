@@ -33,6 +33,7 @@ const InvalidArgumentError = require('./lib/error/InvalidArgumentError');
 const messages = require('./lib/messageContainer');
 const urlFormatRegex = require('./lib/regexContainer').urlFormat;
 const CountryApi = require('./lib/api/CountryApi');
+const ZoneApi = require('./lib/api/ZoneApi');
 
 // Class definition.
 class GambioApi {
@@ -73,6 +74,7 @@ class GambioApi {
 
     // Set APIs.
     this.countries = new CountryApi(this.apiUrl, this.credentials.user, this.credentials.pass);
+    this.zones = new ZoneApi(this.apiUrl, this.credentials.user, this.credentials.pass);
   }
 
   /**

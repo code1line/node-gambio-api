@@ -89,4 +89,38 @@ describe('GambioApi', () => {
       expect(value).to.equal(expectedUrl);
     });
   });
+
+  describe('#countries', () => {
+    describe('#getById', () => {
+      it('should be a function', () => {
+        const API = new GambioApi(demoCredentials);
+        expect(API.countries.getById).to.be.a('function');
+      });
+      it('should return a result', (done) => {
+        const API = new GambioApi(demoCredentials);
+        API.countries.getById(80)
+          .then((result) => {
+            expect(result).to.be.a('object');
+            done();
+          });
+      });
+    });
+  });
+
+  describe('#zones', () => {
+    describe('#getById', () => {
+      it('should be a function', () => {
+        const API = new GambioApi(demoCredentials);
+        expect(API.zones.getById).to.be.a('function');
+      });
+      it('should return a result', (done) => {
+        const API = new GambioApi(demoCredentials);
+        API.zones.getById(80)
+          .then((result) => {
+            expect(result).to.be.a('object');
+            done();
+          });
+      });
+    });
+  });
 });
