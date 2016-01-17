@@ -76,12 +76,12 @@ describe('AddressApi', () => {
 
     it('should return a promise', () => {
       const instance = new AddressApi(credentials);
-      const request = instance.getById(1);
+      const request = instance.getById(10);
       expect(request).to.be.an.instanceOf(Promise);
     });
 
     it('should return a result on valid ID', (done) => {
-      const id = 2;
+      const id = 10;
       const instance = new AddressApi(credentials);
       instance
         .getById(id)
