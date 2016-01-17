@@ -88,6 +88,22 @@ describe('GambioApi', () => {
           });
       });
     });
+
+    describe('#getZonesByCountryId', () => {
+      it('should be a function', () => {
+        const API = new GambioApi(demoCredentials);
+        expect(API.countries.getZonesByCountryId).to.be.a('function');
+      });
+
+      it('should return a result', (done) => {
+        const API = new GambioApi(demoCredentials);
+        API.countries.getZonesByCountryId(80)
+          .then((result) => {
+            expect(result).to.be.a('array');
+            done();
+          });
+      });
+    });
   });
 
   describe('#zones', () => {

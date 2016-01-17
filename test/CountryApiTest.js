@@ -89,4 +89,59 @@ describe('CountryApi', () => {
         });
     });
   });
+
+  describe('#getZonesByCountryId', () => {
+    it('should throw NoArgumentError if no ID has been passed', () => {
+      const func = () => {
+        const instance = new CountryApi(credentials);
+        instance.getZonesByCountryId();
+      };
+      expect(func).to.throw(NoArgumentError);
+    });
+
+    it('should throw InvalidArgumentError if argument is not an integer', () => {
+      const func = () => {
+        const instance = new CountryApi(credentials);
+        instance.getZonesByCountryId(2.5);
+      };
+      expect(func).to.throw(InvalidArgumentError);
+    });
+
+    it('should throw InvalidArgumentError if argument is not a number', () => {
+      const func = () => {
+        const instance = new CountryApi(credentials);
+        instance.getZonesByCountryId('asdsadasd');
+      };
+      expect(func).to.throw(InvalidArgumentError);
+    });
+
+    it('should return a promise', () => {
+      const instance = new CountryApi(credentials);
+      const request = instance.getZonesByCountryId(81);
+      expect(request).to.be.an.instanceOf(Promise);
+    });
+
+    it('should return a result on valid ID', (done) => {
+      const id = 81;
+      const instance = new CountryApi(credentials);
+      instance
+        .getZonesByCountryId(id)
+        .then((response) => {
+          expect(response).to.be.a('array');
+          done();
+        });
+    });
+
+    it('should return resolved promise with empty array on not found resources', (done) => {
+      const id = 819999;
+      const instance = new CountryApi(credentials);
+      instance
+        .getZonesByCountryId(id)
+        .then((response) => {
+          expect(response).to.be.a('array');
+          expect(response).to.have.length(0);
+          done();
+        });
+    });
+  });
 });
