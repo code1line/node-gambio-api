@@ -206,4 +206,66 @@ describe('Requester', () => {
       });
     });
   });
+
+  describe('#remove', () => {
+    it('should return a promise', () => {
+      const crx = extend(true, {}, credentials,
+        { url: `${demoCredentials.url}/api.php/v2/addresses/99999999` }
+      );
+      const request = new Requester(crx);
+      const del = request.delete();
+      expect(del).to.be.an.instanceOf(Promise);
+    });
+
+    it('should return rejected promise with ClientError 401 on invalid credentials', (done) => {
+      const crx = extend(true, {}, credentials, { user: 'blubb', pass: 'blubb' });
+      const request = new Requester(crx);
+      const del = request.delete();
+
+      del.catch((error) => {
+        expect(error).to.be.instanceOf(ClientError);
+        expect(error.code).to.equal(401);
+        done();
+      });
+    });
+
+    it('should return rejected promise with RequestError while performing request', (done) => {
+      const crx = extend(true, {}, credentials, { url: 'http://127.0.0.2' });
+      const request = new Requester(crx);
+      const del = request.delete();
+
+      del
+        .catch((error) => {
+          expect(error).to.be.instanceOf(RequestError);
+          done();
+        });
+    });
+
+    it('should return rejected promise with ClientError 404 on not found resource', (done) => {
+      const crx = extend(true, {}, credentials,
+        { url: `${demoCredentials.url}/api.php/v2/99999999` }
+      );
+      const request = new Requester(crx);
+      const del = request.delete();
+
+      del
+        .catch((error) => {
+          expect(error).to.be.instanceOf(ClientError);
+          expect(error.code).to.equal(404);
+          done();
+        });
+    });
+
+    it('should return resolved promise on successful request', (done) => {
+      const crx = extend(true, {}, credentials,
+        { url: `${demoCredentials.url}/api.php/v2/addresses/99999999` }
+      );
+      const request = new Requester(crx);
+      request.delete()
+        .then((response) => {
+          expect(response).to.be.a('object');
+          done();
+        });
+    });
+  });
 });
