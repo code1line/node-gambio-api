@@ -1,8 +1,10 @@
 const expect = require('chai').expect;
 
 const Api = require('../lib/api/Api');
+
 const InvalidArgumentError = require('../lib/error/InvalidArgumentError');
 const NoArgumentError = require('../lib/error/NoArgumentError');
+
 const demoCredentials = require('../demo/credentials');
 
 describe('Api', () => {

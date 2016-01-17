@@ -1,11 +1,15 @@
 const expect = require('chai').expect;
+
 const extend = require('extend');
 const Promise = require('bluebird');
+
 const Api = require('../lib/api/Api');
 const CountryApi = require('../lib/api/CountryApi');
+
 const InvalidArgumentError = require('../lib/error/InvalidArgumentError');
 const NoArgumentError = require('../lib/error/NoArgumentError');
-const RequestError = require('../lib/error/RequestError');
+const ServerError = require('../lib/error/ServerError');
+
 const demoCredentials = require('../demo/credentials');
 
 // Test credentials.
@@ -73,13 +77,14 @@ describe('CountryApi', () => {
         });
     });
 
-    it('should return rejected promise with RequestError', (done) => {
+    it('should return rejected promise with ServerError', (done) => {
       const id = 819999;
       const instance = new CountryApi(credentials);
       instance
         .getById(id)
         .catch((error) => {
-          expect(error).to.be.instanceOf(RequestError);
+          expect(error).to.be.instanceOf(ServerError);
+          expect(error.code).to.equal(500);
           done();
         });
     });

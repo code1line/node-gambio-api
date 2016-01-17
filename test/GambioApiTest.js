@@ -1,10 +1,13 @@
 const expect = require('chai').expect;
+
 const extend = require('extend');
 
 const GambioApi = require('../.');
-const demoCredentials = require('../demo/credentials');
+
 const InvalidArgumentError = require('../lib/error/InvalidArgumentError');
 const NoArgumentError = require('../lib/error/NoArgumentError');
+
+const demoCredentials = require('../demo/credentials');
 
 describe('GambioApi', () => {
   describe('#constructor', () => {
