@@ -44,6 +44,7 @@ const CountryApi = require('./lib/api/CountryApi');
 const ZoneApi = require('./lib/api/ZoneApi');
 const AddressApi = require('./lib/api/AddressApi');
 const CustomerApi = require('./lib/api/CustomerApi');
+const EmailApi = require('./lib/api/EmailApi');
 
 // Class definition.
 class GambioApi {
@@ -83,6 +84,7 @@ class GambioApi {
     this.zones = new ZoneApi(apiCredentials);
     this.addresses = new AddressApi(apiCredentials);
     this.customers = new CustomerApi(apiCredentials);
+    this.emails = new EmailApi(apiCredentials);
   }
 
   /**

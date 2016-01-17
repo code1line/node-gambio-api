@@ -354,4 +354,253 @@ describe('GambioApi', () => {
       });
     });
   });
+
+  describe('#emails', () => {
+    describe('#get', () => {
+      it('should be a function', () => {
+        const API = new GambioApi(demoCredentials);
+        expect(API.emails.get).to.be.a('function');
+      });
+
+      it('should return a result', (done) => {
+        const API = new GambioApi(demoCredentials);
+        API.emails.get()
+          .then((result) => {
+            expect(result).to.be.a('array');
+            done();
+          });
+      });
+
+      it('should return a result with sorting', (done) => {
+        const API = new GambioApi(demoCredentials);
+        API.emails.get({ id: 'desc' })
+          .then((result) => {
+            expect(result).to.be.a('array');
+            expect(result[0].id).to.be.above(result[1].id);
+            done();
+          });
+      });
+    });
+
+    describe('#getPending', () => {
+      it('should be a function', () => {
+        const API = new GambioApi(demoCredentials);
+        expect(API.emails.getPending).to.be.a('function');
+      });
+
+      it('should return a result', (done) => {
+        const API = new GambioApi(demoCredentials);
+        API.emails.getPending()
+          .then((result) => {
+            expect(result).to.be.a('array');
+            done();
+          });
+      });
+    });
+
+    describe('#getSent', () => {
+      it('should be a function', () => {
+        const API = new GambioApi(demoCredentials);
+        expect(API.emails.getSent).to.be.a('function');
+      });
+
+      it('should return a result', (done) => {
+        const API = new GambioApi(demoCredentials);
+        API.emails.getSent()
+          .then((result) => {
+            expect(result).to.be.a('array');
+            done();
+          });
+      });
+    });
+
+    describe('#search', () => {
+      it('should be a function', () => {
+        const API = new GambioApi(demoCredentials);
+        expect(API.emails.search).to.be.a('function');
+      });
+
+      it('should return a result', (done) => {
+        const API = new GambioApi(demoCredentials);
+        API.emails.search('test')
+          .then((result) => {
+            expect(result).to.be.a('array');
+            done();
+          });
+      });
+    });
+
+    describe('#getById', () => {
+      it('should be a function', () => {
+        const API = new GambioApi(demoCredentials);
+        expect(API.emails.getById).to.be.a('function');
+      });
+
+      it('should return a result', (done) => {
+        const API = new GambioApi(demoCredentials);
+        API.emails.getById(15)
+          .then((result) => {
+            expect(result).to.be.a('object');
+            done();
+          });
+      });
+    });
+
+    describe('#deleteById', () => {
+      it('should be a function', () => {
+        const API = new GambioApi(demoCredentials);
+        expect(API.emails.deleteById).to.be.a('function');
+      });
+
+      it('should return a result', (done) => {
+        const data = {
+          subject: 'Test Subject',
+          sender: {
+            emailAddress: 'sender@email.de',
+            contactName: 'John Doe',
+          },
+          recipient: {
+            emailAddress: 'recipient@email.de',
+            contactName: 'Jane Doe',
+          },
+          replyTo: {
+            emailAddress: 'reply_to@email.de',
+            contactName: 'John Doe (Reply To)',
+          },
+          contentHtml: '<strong>HTML Content</content>',
+          contentPlain: 'Plain Content',
+          bcc: [
+            {
+              emailAddress: 'bcc@email.de',
+              contactName: 'Chris Doe',
+            },
+          ],
+          cc: [
+            {
+              emailAddress: 'cc@email.de',
+              contactName: 'Chloe Doe',
+            },
+          ],
+        };
+
+        const API = new GambioApi(demoCredentials);
+
+        API.emails
+          .send(null, data)
+            .then((result) => {
+              API.emails.deleteById(result.id)
+                .then((result2) => {
+                  expect(result2).to.be.a('object');
+                  done();
+                });
+            });
+      });
+    });
+
+    describe('#queue', () => {
+      it('should be a function', () => {
+        const API = new GambioApi(demoCredentials);
+        expect(API.emails.queue).to.be.a('function');
+      });
+
+      it('should return a result', (done) => {
+        const data = {
+          subject: 'Test Subject',
+          sender: {
+            emailAddress: 'sender@email.de',
+            contactName: 'John Doe',
+          },
+          recipient: {
+            emailAddress: 'recipient@email.de',
+            contactName: 'Jane Doe',
+          },
+          replyTo: {
+            emailAddress: 'reply_to@email.de',
+            contactName: 'John Doe (Reply To)',
+          },
+          contentHtml: '<strong>HTML Content</content>',
+          contentPlain: 'Plain Content',
+          bcc: [
+            {
+              emailAddress: 'bcc@email.de',
+              contactName: 'Chris Doe',
+            },
+          ],
+          cc: [
+            {
+              emailAddress: 'cc@email.de',
+              contactName: 'Chloe Doe',
+            },
+          ],
+        };
+
+        const API = new GambioApi(demoCredentials);
+
+        API.emails.queue(data)
+          .then((result) => {
+            expect(result).to.be.a('object');
+            expect(data.subject).to.equal(data.subject);
+            done();
+          });
+      });
+    });
+
+    describe('#send', () => {
+      it('should be a function', () => {
+        const API = new GambioApi(demoCredentials);
+        expect(API.emails.send).to.be.a('function');
+      });
+
+      it('should return a result on sending with data', (done) => {
+        const data = {
+          subject: 'Test Subject',
+          sender: {
+            emailAddress: 'sender@email.de',
+            contactName: 'John Doe',
+          },
+          recipient: {
+            emailAddress: 'recipient@email.de',
+            contactName: 'Jane Doe',
+          },
+          replyTo: {
+            emailAddress: 'reply_to@email.de',
+            contactName: 'John Doe (Reply To)',
+          },
+          contentHtml: '<strong>HTML Content</content>',
+          contentPlain: 'Plain Content',
+          bcc: [
+            {
+              emailAddress: 'bcc@email.de',
+              contactName: 'Chris Doe',
+            },
+          ],
+          cc: [
+            {
+              emailAddress: 'cc@email.de',
+              contactName: 'Chloe Doe',
+            },
+          ],
+        };
+
+        const API = new GambioApi(demoCredentials);
+
+        API.emails.send(null, data)
+          .then((result) => {
+            expect(result).to.be.a('object');
+            expect(data.subject).to.equal(data.subject);
+            done();
+          });
+      });
+
+      it('should return a result on sending with ID', (done) => {
+        const API = new GambioApi(demoCredentials);
+
+        API.emails.send(16)
+          .then((result) => {
+            expect(result).to.be.a('object');
+            done();
+          });
+      });
+    });
+  });
 });
