@@ -42,6 +42,7 @@ const extend = require('extend');
 const Validator = require('./lib/Validator');
 const CountryApi = require('./lib/api/CountryApi');
 const ZoneApi = require('./lib/api/ZoneApi');
+const AddressApi = require('./lib/api/AddressApi');
 
 // Class definition.
 class GambioApi {
@@ -79,6 +80,7 @@ class GambioApi {
     // Set APIs.
     this.countries = new CountryApi(apiCredentials);
     this.zones = new ZoneApi(apiCredentials);
+    this.addresses = new AddressApi(apiCredentials);
   }
 
   /**

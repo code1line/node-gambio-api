@@ -78,6 +78,7 @@ describe('GambioApi', () => {
         const API = new GambioApi(demoCredentials);
         expect(API.countries.getById).to.be.a('function');
       });
+
       it('should return a result', (done) => {
         const API = new GambioApi(demoCredentials);
         API.countries.getById(80)
@@ -95,9 +96,76 @@ describe('GambioApi', () => {
         const API = new GambioApi(demoCredentials);
         expect(API.zones.getById).to.be.a('function');
       });
+
       it('should return a result', (done) => {
         const API = new GambioApi(demoCredentials);
         API.zones.getById(80)
+          .then((result) => {
+            expect(result).to.be.a('object');
+            done();
+          });
+      });
+    });
+  });
+
+  describe('#addresses', () => {
+    describe('#getById', () => {
+      it('should be a function', () => {
+        const API = new GambioApi(demoCredentials);
+        expect(API.addresses.getById).to.be.a('function');
+      });
+
+      it('should return a result', (done) => {
+        const API = new GambioApi(demoCredentials);
+        API.addresses.getById(10)
+          .then((result) => {
+            expect(result).to.be.a('object');
+            done();
+          });
+      });
+    });
+
+    describe('#create', () => {
+      it('should be a function', () => {
+        const API = new GambioApi(demoCredentials);
+        expect(API.addresses.create).to.be.a('function');
+      });
+
+      it('should return a result', (done) => {
+        const API = new GambioApi(demoCredentials);
+        API.addresses.create({})
+          .then((result) => {
+            expect(result).to.be.a('object');
+            done();
+          });
+      });
+    });
+
+    describe('#deleteById', () => {
+      it('should be a function', () => {
+        const API = new GambioApi(demoCredentials);
+        expect(API.addresses.deleteById).to.be.a('function');
+      });
+
+      it('should return a result', (done) => {
+        const API = new GambioApi(demoCredentials);
+        API.addresses.deleteById(9999)
+          .then((result) => {
+            expect(result).to.be.a('object');
+            done();
+          });
+      });
+    });
+
+    describe('#updateById', () => {
+      it('should be a function', () => {
+        const API = new GambioApi(demoCredentials);
+        expect(API.addresses.updateById).to.be.a('function');
+      });
+
+      it('should return a result', (done) => {
+        const API = new GambioApi(demoCredentials);
+        API.addresses.updateById(9998, { company: 'test' })
           .then((result) => {
             expect(result).to.be.a('object');
             done();
