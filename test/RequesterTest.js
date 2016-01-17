@@ -72,6 +72,15 @@ describe('Requester', () => {
   });
 
   describe('#get', () => {
+    it('should throw InvalidArgumentError if invalid data argument is provided', () => {
+      const crx = extend(true, {}, credentials,
+        { url: `${demoCredentials.url}/api.php/v2/addresses` }
+      );
+      const request = new Requester(crx);
+      const func = () => request.get(123);
+      expect(func).to.throw(InvalidArgumentError);
+    });
+
     it('should return a promise', () => {
       const request = new Requester(credentials);
       const get = request.get();
@@ -130,6 +139,15 @@ describe('Requester', () => {
   });
 
   describe('#post', () => {
+    it('should throw InvalidArgumentError if invalid data argument is provided', () => {
+      const crx = extend(true, {}, credentials,
+        { url: `${demoCredentials.url}/api.php/v2/addresses` }
+      );
+      const request = new Requester(crx);
+      const func = () => request.post(123);
+      expect(func).to.throw(InvalidArgumentError);
+    });
+
     it('should return a promise', () => {
       const crx = extend(true, {}, credentials,
         { url: `${demoCredentials.url}/api.php/v2/addresses` }
@@ -207,7 +225,7 @@ describe('Requester', () => {
     });
   });
 
-  describe('#remove', () => {
+  describe('#delete', () => {
     it('should return a promise', () => {
       const crx = extend(true, {}, credentials,
         { url: `${demoCredentials.url}/api.php/v2/addresses/99999999` }
@@ -266,6 +284,93 @@ describe('Requester', () => {
           expect(response).to.be.a('object');
           done();
         });
+    });
+  });
+
+  describe('#put', () => {
+    it('should throw InvalidArgumentError if invalid data argument is provided', () => {
+      const crx = extend(true, {}, credentials,
+        { url: `${demoCredentials.url}/api.php/v2/addresses` }
+      );
+      const request = new Requester(crx);
+      const func = () => request.put(123);
+      expect(func).to.throw(InvalidArgumentError);
+    });
+
+    it('should return a promise', () => {
+      const crx = extend(true, {}, credentials,
+        { url: `${demoCredentials.url}/api.php/v2/addresses/2` }
+      );
+      const request = new Requester(crx);
+      const put = request.put();
+      expect(put).to.be.an.instanceOf(Promise);
+    });
+
+    it('should return rejected promise with ClientError 401 on invalid credentials', (done) => {
+      const crx = extend(true, {}, credentials, { user: 'blubb', pass: 'blubb' });
+      const request = new Requester(crx);
+      const put = request.put();
+
+      put.catch((error) => {
+        expect(error).to.be.instanceOf(ClientError);
+        expect(error.code).to.equal(401);
+        done();
+      });
+    });
+
+    it('should return rejected promise with RequestError while performing request', (done) => {
+      const crx = extend(true, {}, credentials, { url: 'http://127.0.0.2/tztz' });
+      const request = new Requester(crx);
+      const put = request.put();
+
+      put
+        .catch((error) => {
+          expect(error).to.be.instanceOf(RequestError);
+          done();
+        });
+    });
+
+    it('should return rejected promise with ClientError 404 on not found status code', (done) => {
+      const crx = extend(true, {}, credentials,
+        { url: `${demoCredentials.url}/api.php/v2/abcde` }
+      );
+      const request = new Requester(crx);
+      const put = request.put();
+
+      put
+        .catch((error) => {
+          expect(error).to.be.instanceOf(ClientError);
+          expect(error.code).to.equal(404);
+          done();
+        });
+    });
+
+    it('should return resolved promise on successful request with custom data', (done) => {
+      const crx = extend(true, {}, credentials,
+        { url: `${demoCredentials.url}/api.php/v2/addresses/2` }
+      );
+      const request = new Requester(crx);
+      const data = {
+        customerId: 1,
+        gender: 'm',
+        company: 'Test Company',
+        firstname: 'John',
+        lastname: 'Doe',
+        street: 'Test Street 1',
+        suburb: 'Test Suburb',
+        postcode: '23983',
+        city: 'Test City',
+        countryId: 81,
+        zoneId: 84,
+        class: null,
+        b2bStatus: false,
+      };
+      const put = request.put(data);
+
+      put.then((response) => {
+        expect(response).to.be.a('object');
+        done();
+      });
     });
   });
 });
