@@ -1,8 +1,10 @@
 const expect = require('chai').expect;
 
 const Validator = require('../lib/Validator');
+
 const InvalidArgumentError = require('../lib/error/InvalidArgumentError');
 const NoArgumentError = require('../lib/error/NoArgumentError');
+
 const demoCredentials = require('../demo/credentials');
 const messages = require('../lib/messageContainer');
 
@@ -13,19 +15,19 @@ describe('Validator', () => {
     });
   });
 
-  describe('#checkObjectParameter', () => {
+  describe('#checkObject', () => {
     it('should throw no error on valid object', () => {
-      const func = () => Validator.checkObjectParameter(demoCredentials);
+      const func = () => Validator.checkObject(demoCredentials);
       expect(func).not.to.throw(Error);
     });
 
     it('should throw NoArgumentError on missing object', () => {
-      const func = () => Validator.checkObjectParameter();
+      const func = () => Validator.checkObject();
       expect(func).to.throw(NoArgumentError);
     });
 
     it('should throw InvalidArgumentError on wrong argument type', () => {
-      const func = () => Validator.checkObjectParameter(22);
+      const func = () => Validator.checkObject(22);
       expect(func).to.throw(InvalidArgumentError);
     });
 
@@ -34,7 +36,7 @@ describe('Validator', () => {
       const expectedMessage = `${entityName} ${messages.IS_NOT_OBJECT}`;
 
       try {
-        Validator.checkObjectParameter(3.2, entityName);
+        Validator.checkObject(3.2, entityName);
       } catch (error) {
         expect(error.message).to.equal(expectedMessage);
       }
@@ -149,6 +151,62 @@ describe('Validator', () => {
     it('should throw InvalidArgumentError on bad formatted version', () => {
       const func = () => Validator.checkVersion('2.353');
       expect(func).to.throw(InvalidArgumentError);
+    });
+  });
+
+  describe('#checkNumber', () => {
+    it('should throw no error on valid number', () => {
+      const func = () => Validator.checkNumber(2);
+      expect(func).not.to.throw(Error);
+    });
+
+    it('should throw NoArgumentError on missing number', () => {
+      const func = () => Validator.checkNumber();
+      expect(func).to.throw(NoArgumentError);
+    });
+
+    it('should throw InvalidArgumentError on wrong argument type', () => {
+      const func = () => Validator.checkNumber('22');
+      expect(func).to.throw(InvalidArgumentError);
+    });
+
+    it('should throw InvalidArgumentError with entity name provided', () => {
+      const entityName = 'Celsius';
+      const expectedMessage = `${entityName} ${messages.IS_NOT_NUMBER}`;
+
+      try {
+        Validator.checkNumber(3.2, entityName);
+      } catch (error) {
+        expect(error.message).to.equal(expectedMessage);
+      }
+    });
+  });
+
+  describe('#checkString', () => {
+    it('should throw no error on valid string', () => {
+      const func = () => Validator.checkString('2');
+      expect(func).not.to.throw(Error);
+    });
+
+    it('should throw NoArgumentError on missing string', () => {
+      const func = () => Validator.checkString();
+      expect(func).to.throw(NoArgumentError);
+    });
+
+    it('should throw InvalidArgumentError on wrong argument type', () => {
+      const func = () => Validator.checkString(22);
+      expect(func).to.throw(InvalidArgumentError);
+    });
+
+    it('should throw InvalidArgumentError with entity name provided', () => {
+      const entityName = 'Celsius';
+      const expectedMessage = `${entityName} ${messages.IS_NOT_STRING}`;
+
+      try {
+        Validator.checkString(3.2, entityName);
+      } catch (error) {
+        expect(error.message).to.equal(expectedMessage);
+      }
     });
   });
 });
