@@ -111,7 +111,7 @@ class GambioApi {
    */
   _getApiUrl(parameters) {
     // Validate object parameter.
-    Validator.checkObjectParameter(parameters);
+    Validator.checkObject(parameters);
 
     // Validate URL.
     Validator.checkUrl(parameters.url);
@@ -141,7 +141,7 @@ class GambioApi {
    */
   _validate(parameters) {
     // Check object parameter.
-    Validator.checkObjectParameter(parameters);
+    Validator.checkObject(parameters);
 
     // Check URL.
     Validator.checkUrl(parameters.url);
