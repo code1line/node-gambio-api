@@ -81,7 +81,7 @@ describe('AddressApi', () => {
     });
 
     it('should return a result on valid ID', (done) => {
-      const id = 1;
+      const id = 2;
       const instance = new AddressApi(credentials);
       instance
         .getById(id)
@@ -131,6 +131,100 @@ describe('AddressApi', () => {
       const instance = new AddressApi(credentials);
       instance
         .create(data)
+        .then((response) => {
+          expect(response).to.be.a('object');
+          expect(response.id).to.be.a('number');
+          done();
+        });
+    });
+  });
+
+  describe('#deleteById', () => {
+    it('should throw NoArgumentError if no ID has been passed', () => {
+      const func = () => {
+        const instance = new AddressApi(credentials);
+        instance.deleteById();
+      };
+      expect(func).to.throw(NoArgumentError);
+    });
+
+    it('should throw InvalidArgumentError if argument is not an integer', () => {
+      const func = () => {
+        const instance = new AddressApi(credentials);
+        instance.deleteById(2.5);
+      };
+      expect(func).to.throw(InvalidArgumentError);
+    });
+
+    it('should throw InvalidArgumentError if argument is not a number', () => {
+      const func = () => {
+        const instance = new AddressApi(credentials);
+        instance.deleteById('asdsadasd');
+      };
+      expect(func).to.throw(InvalidArgumentError);
+    });
+
+    it('should return a promise', () => {
+      const instance = new AddressApi(credentials);
+      const request = instance.deleteById(1);
+      expect(request).to.be.an.instanceOf(Promise);
+    });
+
+    it('should return a result on valid ID', (done) => {
+      const id = 1;
+      const instance = new AddressApi(credentials);
+      instance
+        .deleteById(id)
+        .then((response) => {
+          expect(response).to.be.a('object');
+          done();
+        });
+    });
+  });
+
+  describe('#updateById', () => {
+    it('should throw NoArgumentError if no ID has been passed', () => {
+      const func = () => {
+        const instance = new AddressApi(credentials);
+        instance.updateById();
+      };
+      expect(func).to.throw(NoArgumentError);
+    });
+
+    it('should throw InvalidArgumentError if ID is not number', () => {
+      const func = () => {
+        const instance = new AddressApi(credentials);
+        instance.updateById('asdsadasd');
+      };
+      expect(func).to.throw(InvalidArgumentError);
+    });
+
+    it('should throw NoArgumentError if no data has been passed', () => {
+      const func = () => {
+        const instance = new AddressApi(credentials);
+        instance.updateById(1);
+      };
+      expect(func).to.throw(NoArgumentError);
+    });
+
+    it('should throw InvalidArgumentError if data is not an object', () => {
+      const func = () => {
+        const instance = new AddressApi(credentials);
+        instance.updateById(2, 'sdsd');
+      };
+      expect(func).to.throw(InvalidArgumentError);
+    });
+
+    it('should return a promise', () => {
+      const instance = new AddressApi(credentials);
+      const request = instance.updateById(89, data);
+      expect(request).to.be.an.instanceOf(Promise);
+    });
+
+    it('should update an address on providing valid data', (done) => {
+      const instance = new AddressApi(credentials);
+      instance
+        .updateById(9, data)
         .then((response) => {
           expect(response).to.be.a('object');
           expect(response.id).to.be.a('number');
