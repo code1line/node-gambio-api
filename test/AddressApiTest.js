@@ -20,20 +20,36 @@ const credentials = extend(
   { url: `${demoCredentials.url}/api.php/v2` }
 );
 
+const data = {
+  customerId: 1,
+  gender: 'm',
+  company: 'Test Company',
+  firstname: 'John',
+  lastname: 'Doe',
+  street: 'Test Street 1',
+  suburb: 'Test Suburb',
+  postcode: '23983',
+  city: 'Test City',
+  countryId: 81,
+  zoneId: 84,
+  class: null,
+  b2bStatus: false,
+};
+
 describe('AddressApi', () => {
   describe('#constructor', () => {
     it('should be an instance of Api', () => {
       const instance = new AddressApi(credentials);
       expect(instance).to.be.instanceOf(Api);
     });
-  });
 
-  describe('#getById', () => {
     it('should correctly if all arguments has been passed', () => {
       const func = () => new AddressApi(credentials);
       expect(func).not.to.throw(Error);
     });
+  });
 
+  describe('#getById', () => {
     it('should throw NoArgumentError if no ID has been passed', () => {
       const func = () => {
         const instance = new AddressApi(credentials);
@@ -76,13 +92,48 @@ describe('AddressApi', () => {
         });
     });
 
-    it('should return rejected promise with ClientError', (done) => {
+    it('should return rejected promise with ClientError on not found entry', (done) => {
       const id = 819999;
       const instance = new AddressApi(credentials);
       instance
         .getById(id)
         .catch((error) => {
           expect(error).to.be.instanceOf(ClientError);
+          done();
+        });
+    });
+  });
+
+  describe('#create', () => {
+    it('should throw NoArgumentError if no object has been passed', () => {
+      const func = () => {
+        const instance = new AddressApi(credentials);
+        instance.create();
+      };
+      expect(func).to.throw(NoArgumentError);
+    });
+
+    it('should throw InvalidArgumentError if argument is not an object', () => {
+      const func = () => {
+        const instance = new AddressApi(credentials);
+        instance.create('asdsadasd');
+      };
+      expect(func).to.throw(InvalidArgumentError);
+    });
+
+    it('should return a promise', () => {
+      const instance = new AddressApi(credentials);
+      const request = instance.create(data);
+      expect(request).to.be.an.instanceOf(Promise);
+    });
+
+    it('should create a new address on valid data', (done) => {
+      const instance = new AddressApi(credentials);
+      instance
+        .create(data)
+        .then((response) => {
+          expect(response).to.be.a('object');
+          expect(response.id).to.be.a('number');
           done();
         });
     });
