@@ -43,6 +43,7 @@ const Validator = require('./lib/Validator');
 const CountryApi = require('./lib/api/CountryApi');
 const ZoneApi = require('./lib/api/ZoneApi');
 const AddressApi = require('./lib/api/AddressApi');
+const CustomerApi = require('./lib/api/CustomerApi');
 
 // Class definition.
 class GambioApi {
@@ -81,6 +82,7 @@ class GambioApi {
     this.countries = new CountryApi(apiCredentials);
     this.zones = new ZoneApi(apiCredentials);
     this.addresses = new AddressApi(apiCredentials);
+    this.customers = new CustomerApi(apiCredentials);
   }
 
   /**

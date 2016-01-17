@@ -189,4 +189,169 @@ describe('GambioApi', () => {
       });
     });
   });
+
+  describe('#customers', () => {
+    describe('#get', () => {
+      it('should be a function', () => {
+        const API = new GambioApi(demoCredentials);
+        expect(API.customers.get).to.be.a('function');
+      });
+
+      it('should return a result', (done) => {
+        const API = new GambioApi(demoCredentials);
+        API.customers.get()
+          .then((result) => {
+            expect(result).to.be.a('array');
+            done();
+          });
+      });
+
+      it('should return a result with sorting', (done) => {
+        const API = new GambioApi(demoCredentials);
+        API.customers.get({ id: 'desc' })
+          .then((result) => {
+            expect(result).to.be.a('array');
+            expect(result[0].id).to.be.above(result[1].id);
+            done();
+          });
+      });
+    });
+
+    describe('#search', () => {
+      it('should be a function', () => {
+        const API = new GambioApi(demoCredentials);
+        expect(API.customers.search).to.be.a('function');
+      });
+
+      it('should return a result', (done) => {
+        const API = new GambioApi(demoCredentials);
+        API.customers.search('test')
+          .then((result) => {
+            expect(result).to.be.a('array');
+            done();
+          });
+      });
+    });
+
+    describe('#getGuests', () => {
+      it('should be a function', () => {
+        const API = new GambioApi(demoCredentials);
+        expect(API.customers.getGuests).to.be.a('function');
+      });
+
+      it('should return a result', (done) => {
+        const API = new GambioApi(demoCredentials);
+        API.customers.getGuests()
+          .then((result) => {
+            expect(result).to.be.a('array');
+            done();
+          });
+      });
+    });
+
+    describe('#getAddressesByCustomerId', () => {
+      it('should be a function', () => {
+        const API = new GambioApi(demoCredentials);
+        expect(API.customers.getAddressesByCustomerId).to.be.a('function');
+      });
+
+      it('should return a result', (done) => {
+        const API = new GambioApi(demoCredentials);
+        API.customers.getAddressesByCustomerId(28)
+          .then((result) => {
+            expect(result).to.be.a('array');
+            done();
+          });
+      });
+    });
+
+    describe('#getById', () => {
+      it('should be a function', () => {
+        const API = new GambioApi(demoCredentials);
+        expect(API.customers.getById).to.be.a('function');
+      });
+
+      it('should return a result', (done) => {
+        const API = new GambioApi(demoCredentials);
+        API.customers.getById(28)
+          .then((result) => {
+            expect(result).to.be.a('object');
+            done();
+          });
+      });
+    });
+
+    describe('#create', () => {
+      it('should be a function', () => {
+        const API = new GambioApi(demoCredentials);
+        expect(API.customers.create).to.be.a('function');
+      });
+
+      it('should return a result', (done) => {
+        const API = new GambioApi(demoCredentials);
+
+        // Test data.
+        const data = {
+          gender: 'm',
+          firstname: 'John',
+          lastname: 'Doe',
+          dateOfBirth: '1985-02-13',
+          vatNumber: '0923429837942',
+          telephone: '2343948798345',
+          fax: '2093049283',
+          email: `customer${Math.random() * (100000 - 100) + 100}@email.de`,
+          password: '0123456789',
+          type: 'registree',
+          address: {
+            company: 'Test Company',
+            street: 'Test Street',
+            suburb: 'Test Suburb',
+            postcode: '23983',
+            city: 'Test City',
+            countryId: 81,
+            zoneId: 84,
+            b2bStatus: true,
+          },
+        };
+
+        API.customers.create(data)
+          .then((result) => {
+            expect(result).to.be.a('object');
+            done();
+          });
+      });
+    });
+
+    describe('#deleteById', () => {
+      it('should be a function', () => {
+        const API = new GambioApi(demoCredentials);
+        expect(API.customers.deleteById).to.be.a('function');
+      });
+
+      it('should return a result', (done) => {
+        const API = new GambioApi(demoCredentials);
+        API.customers.deleteById(32)
+          .then((result) => {
+            expect(result).to.be.a('object');
+            done();
+          });
+      });
+    });
+
+    describe('#updateById', () => {
+      it('should be a function', () => {
+        const API = new GambioApi(demoCredentials);
+        expect(API.customers.updateById).to.be.a('function');
+      });
+
+      it('should return a result', (done) => {
+        const API = new GambioApi(demoCredentials);
+        API.customers.updateById(28, { firstname: 'test' })
+          .then((result) => {
+            expect(result).to.be.a('object');
+            done();
+          });
+      });
+    });
+  });
 });
