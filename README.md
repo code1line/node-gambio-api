@@ -8,12 +8,35 @@ Simple API for Node, that performs requests to the integrated REST-API of Gambio
 - [Options](#options)
 - [API](#api)
   - [Countries](#countries-get)
-  - Zones
-  - Addresses
-  - Customers
-  - E-Mails
-- Contributing
-- License
+    - [Get](#countries---get)
+    - [Get Zones From A Country](#countries---get-zones-from-a-country)
+  - [Zones](#zones---get)
+    - [Get](#zones---get)
+  - [Addresses](#addresses---get)
+    - [Get](#addresses---get)
+    - [Create](#addresses---create)
+    - [Delete](#addresses---delete)
+    - [Update](#addresses---update)
+  - [Customers](#customers---get-all)
+    - [Get All](#customers---get-all)
+    - [Get All Guests](#customers---get-all-guests)
+    - [Get](#customers---get)
+    - [Get Addresses From Customer](#customers---get-addresses-from-customer)
+    - [Search](#customers---search)
+    - [Create](#customers---create)
+    - [Delete](#customers---delete)
+    - [Update](#customers---update)
+  - [E-Mails](#e-mails---get-all)
+    - [Get All](#e-mails---get-all)
+    - [Get All Pending](e-mails---get-all-pending)
+    - [Get All Sent](e-mails---get-all-sent)
+    - [Get](e-mails---get)
+    - [Search](e-mails---search)
+    - [Delete](e-mails---delete)
+    - [Queue](e-mails---queue)
+    - [Send](e-mails---send)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Installation
 `npm install gambio-api`

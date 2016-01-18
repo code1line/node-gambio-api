@@ -15,12 +15,11 @@
   },
   "keywords": [
     "gambio",
-    "javascript",
-    "api",
     "rest",
+    "api",
+    "client",
     "shop",
     "json",
-    "js"
   ],
   "author": "Ronald Loyko <ronald.loyko@gmail.com>",
   "license": "MIT",
