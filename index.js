@@ -1,5 +1,5 @@
 /**
- * node-gambio-api.
+ * gambio-api.
  *
  * Simple API for Node, that performs requests to the integrated REST-API of Gambio web shops.
  *
@@ -86,6 +86,7 @@ class GambioApi {
 
   /**
    * Returns default API parameters.
+   *
    * @return {object} Default API parameters.
    * @private
    */
