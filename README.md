@@ -1,26 +1,27 @@
-# node-gambio-api [![Build Status](https://travis-ci.org/ronaldloyko/node-gambio-api.svg?branch=master)](https://travis-ci.org/ronaldloyko/node-gambio-api)
+# GambioApi [![Build Status](https://travis-ci.org/ronaldloyko/node-gambio-api.svg?branch=master)](https://travis-ci.org/ronaldloyko/node-gambio-api)
 
-This library provides a simple low-level API class for Node.js that talks to the REST-API of a Gambio web shop.
+Simple API for Node, that talks to the integrated REST-API in Gambio web shops.
 
-**Note: Minimum Node version required: 4.0**
+## Content
+- Installation
+
 
 ## Installation
 `npm install gambio-api`
+
+** This library only works with newer node versions - minimum version required: 4.0 **
 
 ## Usage
 ```js
 // Require module.
 const GambioApi = require('gambio-api');
 
-// Instantiation options.
-const options = {
+// Instantiation.
+const API = new GambioApi({
   url: 'http://myshop.com',
   user: 'admin@myshop.de',
   pass: '12345',
-}
-
-// Instantiation.
-const API = new GambioApi(options);
+});
 
 // Get all customers.
 const request = API.customers.get();
@@ -32,25 +33,26 @@ request
 
 ```
 
-## Instantiation
-These options are available for instantiating:
+## Options
+These instantiation options are available:
 
-- `url` (required) - *String* - Path to Gambio shop, without trailing slash.
-- `user` (required) - *String* - Login user.
-- `pass` (required) - *String* - Login password.
-- `version` (optional) - *String* - API version - Default: 'v2'.
+- `url` *String* - Path to Gambio shop, without trailing slash (String).
+- `user` *String* - Login user.
+- `pass` *String* - Login password.
+- `version` *String* - optional - API version (default: `v2`).
 
 ## API
 
-### Countries
+### Countries - Get Country
 
-#### Get Country
+**Description**
+- Returns a country, selected by the country ID.
 
-Returns a country entity, selected by the ID.
+**Method**:
+- `API.countries.getById(id)`
 
-Method: `API.countries.getById(id)`
-
-Parameter: `id` - Country ID {number}
+**Parameters**
+- `id` *Integer* - Country ID
 
 **Example**:
 ```js
@@ -60,12 +62,17 @@ API.countries.getById(28)
   .then(console.log)
   .catch((console.error);
 ```
-#### Get Zones From A Country
-Returns the related zones from a country, selected by the Country ID.
 
-Method: `API.countries.getZonesByCountryId()`
+### Countries - Get Zones From A Country
 
-Parameter: `id` - Country ID {number}
+**Description**
+- Returns the related zones from a country, selected by the country ID.
+
+**Method**
+- `API.countries.getZonesByCountryId()`
+
+**Parameters**
+- `id` *Integer* - Country ID
 
 **Example**:
 ```js
@@ -76,20 +83,182 @@ API.countries.getZonesByCountryId(28)
   .catch((console.error);
 ```
 
-Zones
+---
 
-- Get Zone - getById()
+### Zones - Get Zone
 
-Addresses
+**Description**
+- Returns a zone, selected by the zone ID.
 
-- Get Address - getById()
-- Create Address - create()
-- Delete Address - deleteById()
-- Update Address - updateById()
+**Method**
+- `API.zones.getById()`
+
+**Parameters**
+- `id` *Integer* - Zone ID
+
+**Example**:
+```js
+const API = new GambioApi({ ... })
+
+API.zones.getById(2)
+  .then(console.log)
+  .catch((console.error);
+```
+
+---
+
+### Addresses - Get Address
+
+**Description**
+- Returns an address, selected by the address ID.
+
+**Method**
+- `API.addresses.getById()`
+
+**Parameters**
+- `id` *Integer* - Address ID
+
+**Example**:
+```js
+const API = new GambioApi({ ... })
+
+API.addresses.getById(7)
+  .then(console.log)
+  .catch((console.error);
+```
+
+### Addresses - Create Address
+
+**Description**
+- Creates a new address.
+
+**Method**
+- `API.addresses.create()`
+
+**Parameters**
+- `data` *Object* - Address data.
+
+
+**Example**:
+```js
+const API = new GambioApi({ ... })
+
+const data = {
+  customerId: 1,
+  gender: 'm',
+  company: 'Test Company',
+  firstname: 'John',
+  lastname: 'Doe',
+  street: 'Test Street 1',
+  suburb: 'Test Suburb',
+  postcode: '23983',
+  city: 'Test City',
+  countryId: 81,
+  zoneId: 84,
+  class: null,
+  b2bStatus: false,
+};
+
+API.addresses.create(data)
+  .then(console.log)
+  .catch((console.error);
+```
+
+### Addresses - Delete Address
+
+**Description**
+- Deletes an address.
+
+**Method**
+- `API.addresses.deleteById()`
+
+**Parameters**
+- `id` *Integer* - Address ID.
+
+
+**Example**:
+```js
+const API = new GambioApi({ ... })
+
+API.addresses.deleteById(9)
+  .then(console.log)
+  .catch((console.error);
+```
+
+### Addresses - Update Address
+
+**Description**
+- Updates an address.
+
+**Method**
+- `API.addresses.updateById()`
+
+**Parameters**
+- `id` *Integer* - Address ID.
+- `data` *Object* - Address data.
+
+**Example**:
+```js
+const API = new GambioApi({ ... })
+
+const data = {
+  customerId: 1,
+  gender: 'f',
+  company: 'Test Company',
+  firstname: 'John',
+  lastname: 'Doe',
+  street: 'Test Street 1',
+  suburb: 'Test Suburb',
+  postcode: '23983',
+  city: 'Test City',
+  countryId: 81,
+  zoneId: 84,
+  class: null,
+  b2bStatus: false,
+};
+
+API.addresses.updateById(9, data)
+  .then(console.log)
+  .catch((console.error);
+```
+
+---
+
+### Customers - Get All Customers
+
+**Description**
+- Returns all customers.
+- Optionally you can request a sorted result by passing the `sorting` argument.
+- If provided, `sorting` should be a hash with the field name as key and `asc` or `desc` as value.  
+
+**Method**
+- `API.addresses.get()`
+
+**Parameters**
+- `sorting` *Object* Sorting criteria (optional).
+
+**Example**:
+```js
+const API = new GambioApi({ ... })
+
+// Get all customers.
+API.addresses.get()
+  .then(console.log)
+  .catch((console.error);
+
+// With sorting criteria (sort by ID in descending order).
+API.addresses.get({ id : 'desc' })
+  .then(console.log)
+  .catch((console.error);
+
+// With multiple sorting criteria (sort by ID in descending order and first name in ascending order).
+API.addresses.get({ id : 'desc', firstname: 'asc'})
+  .then(console.log)
+  .catch((console.error);
+```
 
 Customers
 - Get
-  - Get All Customers - get()
   - Get All Guest Customers - getGuests()
   - Get Customer - getById()
   - Get Addresses From Customer getAddressByCustomerId()
