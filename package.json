@@ -19,7 +19,7 @@
     "api",
     "client",
     "shop",
-    "json",
+    "json"
   ],
   "author": "Ronald Loyko <ronald.loyko@gmail.com>",
   "license": "MIT",
