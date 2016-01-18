@@ -71,6 +71,8 @@ request
 
 ```
 
+**You can run a working example by running the files in the `demo` folder!** 
+
 [back to top](#table-of-contents)
 
 ## Options
