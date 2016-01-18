@@ -1,10 +1,7 @@
 /**
  * node-gambio-api.
  *
- * A low-level Node.js REST-API client for Gambio.
- *
- * This module provides a low-level API to retrieve data
- * from a Gambio shop via the REST-API.
+ * Simple API for Node, that performs requests to the integrated REST-API of Gambio web shops.
  *
  * @example
  * 	const validUrl = 'http://my-shop.de';
