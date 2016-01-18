@@ -1,5 +1,7 @@
 # GambioApi [![Build Status](https://travis-ci.org/ronaldloyko/node-gambio-api.svg?branch=master)](https://travis-ci.org/ronaldloyko/node-gambio-api)
 
+[![NPM](https://nodei.co/npm/gambio-api.png)](https://nodei.co/npm/gambio-api)
+
 Simple API for Node, that performs requests to the integrated REST-API of Gambio web shops.
 
 ## Table of contents
