@@ -64,11 +64,11 @@ const request = API.customers.get();
 // Request returns a promise.
 request
   .then((result) => {
-    // Will log the result.
+    console.log('Showing all customers:');
     console.log(result);
   })
-  .catch((error) => {
-    // Will log error stack trace to console.
+  .catch(function (error) {
+    console.log('Oh no! An error occured!');
     console.error(error);
   });
 
@@ -77,35 +77,73 @@ request
 [back to top](#table-of-contents)
 
 ## Making requests
-Every request returns a promise which gets resolved, if a successful response is returned from server or rejected if an error has been thrown. If JSON is returned from server, the resolved promise contains the parsed JSON response as parameter.
+
+Every request returns a promise which gets resolved on successful response returned from server or it gets rejected if an error has been thrown.
+
+If JSON is returned from server, the resolved promise contains the parsed JSON response as plain JS object.
 
 ```js
 const API = new GambioApi({ ... });
 
 API.customers.getById(7)
 
-  // 'then' is always called on successful response.
-  .then((response) => {
-    // 'response' contains the parsed JSON respose.
-    console.log(response.id);
-  })
+  /**
+   * 'then' is always called on successful response returned from server.
+   *
+   * Console output:
+   * {
+   *   id: 38,
+   *   number: '38',
+   *   gender: 'm',
+   *   firstname: 'John',
+   *   lastname: 'Doe',
+   *   dateOfBirth: '1985-02-13',
+   *   vatNumber: '0923429837942',
+   *   vatNumberStatus: 8,
+   *   telephone: '2343948798345',
+   *   fax: '2093049283',
+   *   email: 'gambio.test.emai.from.node.api@test.com',
+   *   statusId: 2,
+   *   isGuest: false,
+   *   addressId: 41,
+   *   _links: {
+   *     address: 'https://www.gambio-shop.de/shop1/api.php/v2/addresses/41'
+   *   }
+   * }
+   */
+  .then(console.log)
 
-  // 'catch' is called if any error has been thrown.
-  .catch((error) => {
-    // 'error' equals the thrown error.
-    console.error(error);
-  });
+  /**
+   * 'catch' is called if any error has been thrown.
+   *
+   * In this example, the resource could not be found.
+   *
+   * Console output:
+   * { [ClientError: Customer record could not be found.]
+   *   name: 'ClientError',
+   *   code: 404,
+   *   data: {
+   *     response: {
+   *         statusCode: 404,
+   *         body: '...',
+   *       headers: {},
+   *     request: {}
+   *     }
+   *   }
+   * }
+   */
+  .catch(console.log);
 
 ```
 
+**To see a working example you can run the [demo script](/demo/CreateGetUpdateDeleteCustomer.js) inside the `demo` folder!**
+
 Please note, that this module uses custom error classes.
 
-Meaning, that `error` could be an instance of:
+Meaning, that the thrown error could be an instance of:
 - `RequestError` if there was an error while sending request to server
 - `ClientError` if the server returned a 4xx status code, mostly an error caused by the requesting client
 - `ServerError` if the server returned a 5xx status code, mostly a server-side error
-
-**You can run a working example by running the files in the `demo` folder!**
 
 [back to top](#table-of-contents)
 
@@ -778,7 +816,7 @@ API.emails.send(null, data)
 
 Feel free to send your pull requests!
 
-Read [CONTRIBUTING](/CONTRIBUTING.md).
+Read [Contributing docs](/CONTRIBUTING.md) for more information about contributing to this project.
 
 [back to top](#table-of-contents)
 
