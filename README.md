@@ -88,28 +88,7 @@ const API = new GambioApi({ ... });
 API.customers.getById(7)
 
   /**
-   * 'then' is always called on successful response returned from server.
-   *
-   * Console output:
-   * {
-   *   id: 38,
-   *   number: '38',
-   *   gender: 'm',
-   *   firstname: 'John',
-   *   lastname: 'Doe',
-   *   dateOfBirth: '1985-02-13',
-   *   vatNumber: '0923429837942',
-   *   vatNumberStatus: 8,
-   *   telephone: '2343948798345',
-   *   fax: '2093049283',
-   *   email: 'gambio.test.emai.from.node.api@test.com',
-   *   statusId: 2,
-   *   isGuest: false,
-   *   addressId: 41,
-   *   _links: {
-   *     address: 'https://www.gambio-shop.de/shop1/api.php/v2/addresses/41'
-   *   }
-   * }
+   * 'then' is called when the promise is always called on successful response returned from server.
    */
   .then(console.log)
 
@@ -182,7 +161,7 @@ API.countries.getById(28)
 **Returns in resolved promise**:
 ```js
 {
-  id: 81,
+  id: 28,
   name: "Germany",
   iso2: "DE",
   iso3: "DEU",
@@ -274,7 +253,7 @@ API.zones.getById(2)
 **Returns in resolved promise**:
 ```js
 {
-    id: 84,
+    id: 2,
     name: "Bremen",
     iso: "BRE"
 }
@@ -306,6 +285,27 @@ API.addresses.getById(7)
 
 **Returns in resolved promise**:
 ```js
+{
+  id: 7,
+  customerId: 1,
+  gender: "",
+  company: "Testfirma",
+  firstname: "Tester",
+  lastname: "Tester",
+  street: "Teststr. 1",
+  suburb: "",
+  postcode: "12345",
+  city: "Testort",
+  countryId: 81,
+  zoneId: 84,
+  class: null,
+  b2bStatus: false,
+  _links: {
+      customer: "https://www.gambio-shop.de/shop1/api.php/v2/customers/1",
+      country: "https://www.gambio-shop.de/shop1/api.php/v2/countries/81",
+      zone: "https://www.gambio-shop.de/shop1/api.php/v2/zones/84"
+  }
+}
 
 ```
 
@@ -348,6 +348,27 @@ API.addresses.create(data)
 
 **Returns in resolved promise**:
 ```js
+{
+  id: 44,
+  customerId: 1,
+  gender: 'm',
+  company: 'Test Company',
+  firstname: 'John',
+  lastname: 'Doe',
+  street: 'Test Street 1',
+  suburb: 'Test Suburb',
+  postcode: '23983',
+  city: 'Test City',
+  countryId: 81,
+  zoneId: 84,
+  class: null,
+  b2bStatus: false,
+  _links: {
+    customer: 'https://www.gambio-shop.de/shop1/api.php/v2/customers/1',
+    country: 'https://www.gambio-shop.de/shop1/api.php/v2/countries/81',
+    zone: 'https://www.gambio-shop.de/shop1/api.php/v2/zones/84'
+  }
+}
 
 ```
 
@@ -367,13 +388,19 @@ API.addresses.create(data)
 ```js
 const API = new GambioApi({ ... });
 
-API.addresses.deleteById(9)
+API.addresses.deleteById(2)
   .then(console.log)
   .catch(console.error);
 ```
 
 **Returns in resolved promise**:
 ```js
+{
+  code: 200,
+  status: 'success',
+  action: 'delete',
+  addressId: 2
+}
 
 ```
 
@@ -394,6 +421,18 @@ API.addresses.deleteById(9)
 const API = new GambioApi({ ... });
 
 const data = {
+  gender: 'f'
+};
+
+API.addresses.updateById(9, data)
+  .then(console.log)
+  .catch(console.error);
+```
+
+**Returns in resolved promise**:
+```js
+{
+  id: 1,
   customerId: 1,
   gender: 'f',
   company: 'Test Company',
@@ -407,15 +446,12 @@ const data = {
   zoneId: 84,
   class: null,
   b2bStatus: false,
-};
-
-API.addresses.updateById(9, data)
-  .then(console.log)
-  .catch(console.error);
-```
-
-**Returns in resolved promise**:
-```js
+  _links: {
+    customer: 'https://www.gambio-shop.de/shop1/api.php/v2/customers/1',
+    country: 'https://www.gambio-shop.de/shop1/api.php/v2/countries/81',
+    zone: 'https://www.gambio-shop.de/shop1/api.php/v2/zones/84'
+  }
+}
 
 ```
 
@@ -458,6 +494,42 @@ API.customers.get({ id : 'desc', firstname: 'asc'})
 
 **Returns in resolved promise**:
 ```js
+// API.customers.get();
+[{
+  id: 1,
+  number: '',
+  gender: 'm',
+  firstname: 'Tester',
+  lastname: 'Tester',
+  dateOfBirth: '0000-00-00',
+  vatNumber: '',
+  vatNumberStatus: 0,
+  telephone: '0123456789',
+  fax: '',
+  email: 'admin@shop.de',
+  statusId: 0,
+  isGuest: false,
+  addressId: 1,
+  _links: {
+    address: 'https://www.gambio-shop.de/shop1/api.php/v2/addresses/1'
+  }
+}, {
+  id: 2,
+  number: '2',
+  gender: 'm',
+  firstname: 'Testbestellung',
+  lastname: 'Testbestellung',
+  dateOfBirth: '0000-00-00',
+  vatNumber: '',
+  vatNumberStatus: 0,
+  telephone: '',
+  fax: '',
+  email: 'Testbestellung@gambio.de',
+  statusId: 2,
+  isGuest: false,
+  addressId: null,
+  _links: []
+}]
 
 ```
 
@@ -481,6 +553,43 @@ API.customers.getGuests()
 
 **Returns in resolved promise**:
 ```js
+[{
+  id: 11,
+  number: '11',
+  gender: 'f',
+  firstname: 'Hannah',
+  lastname: 'Montana',
+  dateOfBirth: '0000-00-00',
+  vatNumber: '',
+  vatNumberStatus: 0,
+  telephone: '',
+  fax: '',
+  email: 'hannah@gmail.com',
+  statusId: 0,
+  isGuest: true,
+  addressId: 11,
+  _links: {
+    address: 'https://www.gambio-shop.de/shop1/api.php/v2/addresses/11'
+  }
+}, {
+  id: 12,
+  number: '12',
+  gender: 'm',
+  firstname: 'ssssssssssssssss',
+  lastname: 'ssssssssssssssss',
+  dateOfBirth: '0000-00-00',
+  vatNumber: '',
+  vatNumberStatus: 0,
+  telephone: '',
+  fax: '',
+  email: 'chrispaul@email.de',
+  statusId: 1,
+  isGuest: true,
+  addressId: 14,
+  _links: {
+    address: 'https://www.gambio-shop.de/shop1/api.php/v2/addresses/14'
+  }
+}]
 
 ```
 
@@ -500,13 +609,32 @@ API.customers.getGuests()
 ```js
 const API = new GambioApi({ ... });
 
-API.customers.getById(4)
+API.customers.getById(1)
   .then(console.log)
   .catch(console.error);
 ```
 
 **Returns in resolved promise**:
 ```js
+{
+  id: 1,
+  number: '',
+  gender: 'm',
+  firstname: 'Tester',
+  lastname: 'Tester',
+  dateOfBirth: '0000-00-00',
+  vatNumber: '',
+  vatNumberStatus: 0,
+  telephone: '0123456789',
+  fax: '',
+  email: 'admin@shop.de',
+  statusId: 0,
+  isGuest: false,
+  addressId: 1,
+  _links: {
+    address: 'https://www.gambio-shop.de/shop1/api.php/v2/addresses/1'
+  }
+}
 
 ```
 
@@ -533,6 +661,27 @@ API.customers.getAddressesByCustomerId(6)
 
 **Returns in resolved promise**:
 ```js
+[{
+  id: 1,
+  customerId: 1,
+  gender: '',
+  company: 'Testfirma',
+  firstname: 'Tester',
+  lastname: 'Tester',
+  street: 'Teststr. 1',
+  suburb: '',
+  postcode: '12345',
+  city: 'Testort',
+  countryId: 81,
+  zoneId: 84,
+  class: null,
+  b2bStatus: false,
+  _links: {
+    customer: 'https://www.gambio-shop.de/shop1/api.php/v2/customers/1',
+    country: 'https://www.gambio-shop.de/shop1/api.php/v2/countries/81',
+    zone: 'https://www.gambio-shop.de/shop1/api.php/v2/zones/84'
+  }
+}]
 
 ```
 
@@ -552,13 +701,32 @@ API.customers.getAddressesByCustomerId(6)
 ```js
 const API = new GambioApi({ ... });
 
-API.customers.search('John')
+API.customers.search('Otto')
   .then(console.log)
   .catch(console.error);
 ```
 
 **Returns in resolved promise**:
 ```js
+[{
+  id: 35,
+  number: '35',
+  gender: 'm',
+  firstname: 'Otto',
+  lastname: 'Oltmann',
+  dateOfBirth: '0000-00-00',
+  vatNumber: '',
+  vatNumberStatus: 0,
+  telephone: '',
+  fax: '',
+  email: 'oltmann@test.de',
+  statusId: 2,
+  isGuest: false,
+  addressId: 38,
+  _links: {
+    address: 'https://www.gambio-shop.de/shop1/api.php/v2/addresses/38'
+  }
+}]
 
 ```
 
@@ -608,6 +776,25 @@ API.customers.create(data)
 
 **Returns in resolved promise**:
 ```js
+{
+  id: 38,
+  number: '38',
+  gender: 'm',
+  firstname: 'John',
+  lastname: 'Doe',
+  dateOfBirth: '1985-02-13',
+  vatNumber: '0923429837942',
+  vatNumberStatus: 8,
+  telephone: '2343948798345',
+  fax: '2093049283',
+  email: 'hello@email.com',
+  statusId: 2,
+  isGuest: false,
+  addressId: 41,
+  _links: {
+    address: 'https://www.gambio-shop.de/shop1/api.php/v2/addresses/41'
+  }
+}
 
 ```
 
@@ -627,13 +814,19 @@ API.customers.create(data)
 ```js
 const API = new GambioApi({ ... });
 
-API.customers.deleteById(6)
+API.customers.deleteById(38)
   .then(console.log)
   .catch(console.error);
 ```
 
 **Returns in resolved promise**:
 ```js
+{
+  code: 200,
+  status: 'success',
+  action: 'delete',
+  customerId: 38
+}
 
 ```
 
@@ -655,35 +848,35 @@ API.customers.deleteById(6)
 const API = new GambioApi({ ... });
 
 const data = {
-  gender: 'm',
-  firstname: 'John',
-  lastname: 'Doe',
-  dateOfBirth: '1985-02-13',
-  vatNumber: '0923429837942',
-  telephone: '2343948798345',
-  fax: '2093049283',
-  email: hello@email.com,
-  password: '0123456789',
-  type: 'registree',
-  address: {
-    company: 'Test Company',
-    street: 'Test Street',
-    suburb: 'Test Suburb',
-    postcode: '23983',
-    city: 'Test City',
-    countryId: 81,
-    zoneId: 84,
-    b2bStatus: true,
-  },
+  gender: 'f'
 };
 
-API.customers.updateById(98, data)
+API.customers.updateById(1, data)
   .then(console.log)
   .catch(console.error);
 ```
 
 **Returns in resolved promise**:
 ```js
+{
+  id: 1,
+  number: '',
+  gender: 'm',
+  firstname: 'Tester',
+  lastname: 'Tester',
+  dateOfBirth: '0000-00-00',
+  vatNumber: '',
+  vatNumberStatus: 0,
+  telephone: '0123456789',
+  fax: '',
+  email: 'admin@shop.de',
+  statusId: 0,
+  isGuest: false,
+  addressId: 1,
+  _links: {
+    address: 'https://www.gambio-shop.de/shop1/api.php/v2/addresses/1'
+  }
+}
 
 ```
 
@@ -726,7 +919,31 @@ API.emails.get({ id : 'desc', firstname: 'asc'})
 
 **Returns in resolved promise**:
 ```js
-
+// API.emails.get()
+[{
+  id: 14,
+  subject: 'Ihre Bestellung 400310, am Donnerstag, 02. Juli 2015',
+  sender: {
+    emailAddress: 'admin@shop.de',
+    contactName: 'Tester Tester'
+  },
+  recipient: {
+    emailAddress: 'testshop1@gambio.de',
+    contactName: 'Testshop'
+  },
+  replyTo: {
+    emailAddress: 'admin@shop.de',
+    contactName: 'Tester Tester'
+  },
+  contentHtml: '...',
+  contentPlain: '...',
+  isPending: false,
+  creationDate: '2015-07-02 13:56:07',
+  sentDate: '2015-07-02 13:56:08',
+  bcc: [],
+  cc: [],
+  attachments: []
+}]
 ```
 
 ### E-Mails - Get All Pending
@@ -748,7 +965,29 @@ API.emails.getPending()
 
 **Returns in resolved promise**:
 ```js
-
+[{
+  id: 18,
+  subject: 'Test-Mail',
+  sender: {
+    emailAddress: 'admin@shop.de',
+    contactName: 'Tester Tester'
+  },
+  recipient: {
+    emailAddress: 'testshop1@gambio.de',
+    contactName: 'Testshop'
+  },
+  replyTo: {
+    emailAddress: 'admin@shop.de',
+    contactName: 'Tester Tester'
+  },
+  contentHtml: '...',
+  contentPlain: '...',
+  isPending: true,
+  creationDate: '2015-07-02 14:00:07',
+  bcc: [],
+  cc: [],
+  attachments: []
+}]
 ```
 
 ### E-Mails - Get All Sent
@@ -770,7 +1009,30 @@ API.emails.getSent()
 
 **Returns in resolved promise**:
 ```js
-
+[{
+  id: 28,
+  subject: 'Test-Mail',
+  sender: {
+    emailAddress: 'admin@shop.de',
+    contactName: 'Tester Tester'
+  },
+  recipient: {
+    emailAddress: 'testshop1@gambio.de',
+    contactName: 'Testshop'
+  },
+  replyTo: {
+    emailAddress: 'admin@shop.de',
+    contactName: 'Tester Tester'
+  },
+  contentHtml: '...',
+  contentPlain: '...',
+  isPending: false,
+  creationDate: '2015-07-02 14:00:07',
+  sentDate: '2015-07-02 14:10:38',
+  bcc: [],
+  cc: [],
+  attachments: []
+}]
 ```
 
 ### E-Mails - Get
@@ -795,6 +1057,30 @@ API.emails.getById(4)
 
 **Returns in resolved promise**:
 ```js
+{
+  id: 4,
+  subject: 'Test-Mail',
+  sender: {
+    emailAddress: 'admin@shop.de',
+    contactName: 'Tester Tester'
+  },
+  recipient: {
+    emailAddress: 'testshop1@gambio.de',
+    contactName: 'Testshop'
+  },
+  replyTo: {
+    emailAddress: 'admin@shop.de',
+    contactName: 'Tester Tester'
+  },
+  contentHtml: '...',
+  contentPlain: '...',
+  isPending: false,
+  creationDate: '2015-07-02 14:00:07',
+  sentDate: '2015-07-02 14:10:38',
+  bcc: [],
+  cc: [],
+  attachments: []
+}
 
 ```
 
@@ -813,13 +1099,37 @@ API.emails.getById(4)
 ```js
 const API = new GambioApi({ ... });
 
-API.emails.search('hello@test.com')
+API.emails.search('admin@shop.de')
   .then(console.log)
   .catch(console.error);
 ```
 
 **Returns in resolved promise**:
 ```js
+[{
+  id: 4,
+  subject: 'Test-Mail',
+  sender: {
+    emailAddress: 'admin@shop.de',
+    contactName: 'Tester Tester'
+  },
+  recipient: {
+    emailAddress: 'testshop1@gambio.de',
+    contactName: 'Testshop'
+  },
+  replyTo: {
+    emailAddress: 'admin@shop.de',
+    contactName: 'Tester Tester'
+  },
+  contentHtml: '...',
+  contentPlain: '...',
+  isPending: false,
+  creationDate: '2015-07-02 14:00:07',
+  sentDate: '2015-07-02 14:10:38',
+  bcc: [],
+  cc: [],
+  attachments: []
+}]
 
 ```
 
@@ -838,13 +1148,19 @@ API.emails.search('hello@test.com')
 ```js
 const API = new GambioApi({ ... });
 
-API.emails.deleteById(82)
+API.emails.deleteById(15)
   .then(console.log)
   .catch(console.error);
 ```
 
 **Returns in resolved promise**:
 ```js
+{
+  code: 200,
+  status: 'success',
+  action: 'delete',
+  emailId: 15
+}
 
 ```
 
@@ -900,6 +1216,27 @@ API.emails.queue(data)
 
 **Returns in resolved promise**:
 ```js
+{
+  id: 16,
+  subject: 'Eine kurze Test-Mail',
+  sender: {
+    emailAddress: 'sender@email.de',
+    contactName: 'John Doe'
+  },
+  recipient: {
+    emailAddress: 'recipient@email.de',
+    contactName: 'Jane Doe'
+  },
+  replyTo: null,
+  contentHtml: null,
+  contentPlain: 'Its me, John!',
+  isPending: true,
+  creationDate: '2016-01-19 20:10:08',
+  sentDate: null,
+  bcc: [],
+  cc: [],
+  attachments: []
+}
 
 ```
 
@@ -964,6 +1301,28 @@ API.emails.send(null, data)
 
 **Returns in resolved promise**:
 ```js
+// API.emails.send(16);
+{
+  id: 16,
+  subject: 'Eine kurze Test-Mail',
+  sender: {
+    emailAddress: 'sender@email.de',
+    contactName: 'John Doe'
+  },
+  recipient: {
+    emailAddress: 'recipient@email.de',
+    contactName: 'Jane Doe'
+  },
+  replyTo: null,
+  contentHtml: null,
+  contentPlain: 'Its me, John!',
+  isPending: false,
+  creationDate: '2016-01-19 20:10:08',
+  sentDate: '2016-01-19 20:11:11',
+  bcc: [],
+  cc: [],
+  attachments: []
+}
 
 ```
 
