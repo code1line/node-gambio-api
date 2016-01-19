@@ -76,39 +76,71 @@ request
 
 ## Making requests
 
+**To see a working example you can run the [example script](https://github.com/ronaldloyko/node-gambio-api/blob/master/demo/CreateGetUpdateDeleteCustomer.js) inside the `demo` folder!**
+
 Every request returns a promise which
 - gets resolved on successful response returned from server
-- gets rejected if an error has been thrown/returned from server.
-
-If the response content type is JSON, the resolved promise gets called with the parsed JSON response.
+- gets rejected if an error has been thrown/returned from server
 
 ```js
 const API = new GambioApi({ ... });
 
-API.customers.getById(7)
+API.customers.get()
 
-  // 'then' is always called on
-  // successful response returned from server.
-  .then(console.log)
+  // 'then' is called, if a response is returned from server.
+  .then()
 
   //'catch' is called if any error has been thrown.
-  .catch(console.log);
+  .catch();
 
 ```
 
-**To see a working example you can run the [demo script](/demo/CreateGetUpdateDeleteCustomer.js) inside the `demo` folder!**
+#### Response
 
-Please note, that this module uses custom error classes.
+Every successful response gets parsed from JSON to a JavaScript object/array.
 
-Meaning, that the thrown error could be an instance of:
-- `RequestError` if there was an error while sending request to server
-- `ClientError` if the server returned a 4xx status code, mostly an error caused by the requesting client
-- `ServerError` if the server returned a 5xx status code, mostly a server-side error
-
-Returned promise from request gets rejected with following error if no record has been found:
 ```js
-// Trying to get customer which does not exist in database.
-// Example request: API.customers.getById(999999999);
+// Create instance.
+const API = new GambioApi({ ... });
+
+// Perform request.
+API.customers.getById(1).then(console.log);
+
+// Console output:
+{
+  id: 1,
+  number: '',
+  gender: 'm',
+  firstname: 'Tester',
+  lastname: 'Tester',
+  dateOfBirth: '0000-00-00',
+  vatNumber: '',
+  vatNumberStatus: 0,
+  telephone: '0123456789',
+  fax: '',
+  email: 'admin@shop.de',
+  statusId: 0,
+  isGuest: false,
+  addressId: 1
+}
+
+```
+
+#### Error
+
+Note, that this module uses custom error classes which means, that the thrown error in a rejected promise could be an instance of:
+- `RequestError` if there was an error while sending request to server.
+- `ClientError` if the server returned a 4xx status code, mostly an error caused by the requesting client.
+- `ServerError` if the server returned a 5xx status code, mostly an internal server-side error.
+
+```js
+// Create instance.
+const API = new GambioApi({ ... });
+
+// Perform request (assuming that customer with ID 9999999 does not exist ).
+API.customers.getById(9999999).catch(console.log);
+
+// Console output:
 { [ClientError: Customer record could not be found.]
   name: 'ClientError',
   code: 404,
@@ -122,6 +154,10 @@ Returned promise from request gets rejected with following error if no record ha
   }
 }
 ```
+
+The thrown error object contains additional properties like
+- `code` Status code sent from server
+- `data` raw request and response data
 
 [back to top](#table-of-contents)
 
@@ -603,7 +639,6 @@ API.customers.getById(1)
   isGuest: false,
   addressId: 1
 }
-
 ```
 
 ### Customers - Get Addresses From Customer
