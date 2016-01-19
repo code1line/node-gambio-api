@@ -18,7 +18,7 @@ const GambioApi = require('./..');
 // Create a new Gambio API instance with demo credentials.
 const API = new GambioApi(credentials);
 
-// Some whitespace for console.
+// Some whitespace shortcut for console.
 const whiteSpace = '\n\n';
 
 // CREATE
