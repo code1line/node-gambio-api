@@ -161,13 +161,13 @@ These instantiation options are available:
 
 ### Countries - Get
 
-**Description**
+**Description**:
 - Returns a country, selected by the country ID.
 
 **Method**:
 - `API.countries.getById(id)`
 
-**Parameters**
+**Parameters**:
 - `id` *Integer* - Country ID
 
 **Example**:
@@ -179,15 +179,27 @@ API.countries.getById(28)
   .catch(console.error);
 ```
 
+**Returns in resolved promise**:
+```js
+{
+  id: 81,
+  name: "Germany",
+  iso2: "DE",
+  iso3: "DEU",
+  addressFormatId: 5,
+  status: true
+}
+```
+
 ### Countries - Get Zones From A Country
 
-**Description**
+**Description**:
 - Returns the related zones from a country, selected by the country ID.
 
-**Method**
-- `API.countries.getZonesByCountryId()`
+**Method**:
+- `API.countries.getZonesByCountryId(id)`
 
-**Parameters**
+**Parameters**:
 - `id` *Integer* - Country ID
 
 **Example**:
@@ -199,19 +211,55 @@ API.countries.getZonesByCountryId(28)
   .catch(console.error);
 ```
 
+**Returns in resolved promise**:
+```js
+[
+    {
+        id: 80,
+        name: "Baden-W\u00fcrttemberg",
+        iso: "BAW"
+    },
+    {
+        id: 81,
+        name: "Bayern",
+        iso: "BAY"
+    },
+    {
+        id: 82,
+        name: "Berlin",
+        iso: "BER"
+    },
+    {
+        id: 84,
+        name: "Bremen",
+        iso: "BRE"
+    },
+    {
+        id: 83,
+        name: "Brandenburg",
+        iso: "BRG"
+    },
+    {
+        id: 85,
+        name: "Hamburg",
+        iso: "HAM"
+    }
+]
+```
+
 [back to top](#table-of-contents)
 
 ---
 
 ### Zones - Get
 
-**Description**
+**Description**:
 - Returns a zone, selected by the zone ID.
 
-**Method**
-- `API.zones.getById()`
+**Method**:
+- `API.zones.getById(id)`
 
-**Parameters**
+**Parameters**:
 - `id` *Integer* - Zone ID
 
 **Example**:
@@ -223,19 +271,28 @@ API.zones.getById(2)
   .catch(console.error);
 ```
 
+**Returns in resolved promise**:
+```js
+{
+    id: 84,
+    name: "Bremen",
+    iso: "BRE"
+}
+```
+
 [back to top](#table-of-contents)
 
 ---
 
 ### Addresses - Get
 
-**Description**
+**Description**:
 - Returns an address, selected by the address ID.
 
-**Method**
-- `API.addresses.getById()`
+**Method**:
+- `API.addresses.getById(id)`
 
-**Parameters**
+**Parameters**:
 - `id` *Integer* - Address ID
 
 **Example**:
@@ -247,15 +304,20 @@ API.addresses.getById(7)
   .catch(console.error);
 ```
 
+**Returns in resolved promise**:
+```js
+
+```
+
 ### Addresses - Create
 
-**Description**
+**Description**:
 - Creates a new address.
 
-**Method**
-- `API.addresses.create()`
+**Method**:
+- `API.addresses.create(data)`
 
-**Parameters**
+**Parameters**:
 - `data` *Object* - Address data.
 
 
@@ -284,15 +346,20 @@ API.addresses.create(data)
   .catch(console.error);
 ```
 
+**Returns in resolved promise**:
+```js
+
+```
+
 ### Addresses - Delete
 
-**Description**
+**Description**:
 - Deletes an address.
 
-**Method**
-- `API.addresses.deleteById()`
+**Method**:
+- `API.addresses.deleteById(id)`
 
-**Parameters**
+**Parameters**:
 - `id` *Integer* - Address ID.
 
 
@@ -305,15 +372,20 @@ API.addresses.deleteById(9)
   .catch(console.error);
 ```
 
+**Returns in resolved promise**:
+```js
+
+```
+
 ### Addresses - Update
 
-**Description**
+**Description**:
 - Updates an address.
 
-**Method**
-- `API.addresses.updateById()`
+**Method**:
+- `API.addresses.updateById(id, data)`
 
-**Parameters**
+**Parameters**:
 - `id` *Integer* - Address ID.
 - `data` *Object* - Address data.
 
@@ -342,21 +414,26 @@ API.addresses.updateById(9, data)
   .catch(console.error);
 ```
 
+**Returns in resolved promise**:
+```js
+
+```
+
 [back to top](#table-of-contents)
 
 ---
 
 ### Customers - Get All
 
-**Description**
+**Description**:
 - Returns all customers.
 - Optionally you can request a sorted result by passing a `sorting` argument.
 - If provided, `sorting` should be a hash with the field name as key and `asc` or `desc` as value.  
 
-**Method**
-- `API.customers.get()`
+**Method**:
+- `API.customers.get(sorting)`
 
-**Parameters**
+**Parameters**:
 - `sorting` *Object* - Sorting criteria (optional).
 
 **Example**:
@@ -379,12 +456,17 @@ API.customers.get({ id : 'desc', firstname: 'asc'})
   .catch(console.error);
 ```
 
+**Returns in resolved promise**:
+```js
+
+```
+
 ### Customers - Get All Guests
 
-**Description**
+**Description**:
 - Returns all customers, that are guests.
 
-**Method**
+**Method**:
 - `API.customers.getGuests()`
 
 **Example**:
@@ -397,15 +479,20 @@ API.customers.getGuests()
   .catch(console.error);
 ```
 
+**Returns in resolved promise**:
+```js
+
+```
+
 ### Customers - Get
 
-**Description**
+**Description**:
 - Returns a customer, selected by the customer ID.
 
-**Method**
-- `API.customers.getById()`
+**Method**:
+- `API.customers.getById(id)`
 
-**Parameters**
+**Parameters**:
 - `id` *Integer* - Customer ID.
 
 
@@ -418,15 +505,20 @@ API.customers.getById(4)
   .catch(console.error);
 ```
 
+**Returns in resolved promise**:
+```js
+
+```
+
 ### Customers - Get Addresses From Customer
 
-**Description**
+**Description**:
 - Returns related addresses to a customer, selected by the customer ID.
 
-**Method**
-- `API.customers.getAddressesByCustomerId()`
+**Method**:
+- `API.customers.getAddressesByCustomerId(id)`
 
-**Parameters**
+**Parameters**:
 - `id` *Integer* - Customer ID.
 
 
@@ -439,15 +531,20 @@ API.customers.getAddressesByCustomerId(6)
   .catch(console.error);
 ```
 
+**Returns in resolved promise**:
+```js
+
+```
+
 ### Customers - Search
 
-**Description**
+**Description**:
 - Searches for specific term in customers.
 
-**Method**
-- `API.customers.search()`
+**Method**:
+- `API.customers.search(term)`
 
-**Parameters**
+**Parameters**:
 - `term` *String* - Search term.
 
 
@@ -460,15 +557,20 @@ API.customers.search('John')
   .catch(console.error);
 ```
 
+**Returns in resolved promise**:
+```js
+
+```
+
 ### Customers - Create
 
-**Description**
+**Description**:
 - Creates a new customer.
 
-**Method**
-- `API.customers.create()`
+**Method**:
+- `API.customers.create(data)`
 
-**Parameters**
+**Parameters**:
 - `data` *Object* - Customer data.
 
 
@@ -504,15 +606,20 @@ API.customers.create(data)
   .catch(console.error);
 ```
 
+**Returns in resolved promise**:
+```js
+
+```
+
 ### Customers - Delete
 
-**Description**
+**Description**:
 - Deletes a customer.
 
-**Method**
-- `API.customers.deleteById()`
+**Method**:
+- `API.customers.deleteById(id)`
 
-**Parameters**
+**Parameters**:
 - `id` *Integer* - Customer ID.
 
 
@@ -525,15 +632,20 @@ API.customers.deleteById(6)
   .catch(console.error);
 ```
 
+**Returns in resolved promise**:
+```js
+
+```
+
 ### Customers - Update
 
-**Description**
+**Description**:
 - Updates a customer.
 
-**Method**
-- `API.customers.updateById()`
+**Method**:
+- `API.customers.updateById(id, data)`
 
-**Parameters**
+**Parameters**:
 - `id` *Integer* - Customer ID.
 - `data` *Object* - Customer data.
 
@@ -570,21 +682,26 @@ API.customers.updateById(98, data)
   .catch(console.error);
 ```
 
+**Returns in resolved promise**:
+```js
+
+```
+
 [back to top](#table-of-contents)
 
 ---
 
 ### E-Mails - Get All
 
-**Description**
+**Description**:
 - Returns all E-Mails.
 - Optionally you can request a sorted result by passing a `sorting` argument.
 - If provided, `sorting` should be a hash with the field name as key and `asc` or `desc` as value.  
 
-**Method**
-- `API.emails.get()`
+**Method**:
+- `API.emails.get(sorting)`
 
-**Parameters**
+**Parameters**:
 - `sorting` *Object* - Sorting criteria (optional).
 
 **Example**:
@@ -607,12 +724,17 @@ API.emails.get({ id : 'desc', firstname: 'asc'})
   .catch(console.error);
 ```
 
+**Returns in resolved promise**:
+```js
+
+```
+
 ### E-Mails - Get All Pending
 
-**Description**
+**Description**:
 - Returns all pending E-Mails.
 
-**Method**
+**Method**:
 - `API.emails.getPending()`
 
 **Example**:
@@ -624,12 +746,17 @@ API.emails.getPending()
   .catch(console.error);
 ```
 
+**Returns in resolved promise**:
+```js
+
+```
+
 ### E-Mails - Get All Sent
 
-**Description**
+**Description**:
 - Returns all sent E-Mails.
 
-**Method**
+**Method**:
 - `API.emails.getSent()`
 
 **Example**:
@@ -641,15 +768,20 @@ API.emails.getSent()
   .catch(console.error);
 ```
 
+**Returns in resolved promise**:
+```js
+
+```
+
 ### E-Mails - Get
 
-**Description**
+**Description**:
 - Returns an E-Mail, selected by the E-Mail ID.
 
-**Method**
-- `API.emails.getById()`
+**Method**:
+- `API.emails.getById(id)`
 
-**Parameters**
+**Parameters**:
 - `id` *Integer* - E-Mail ID.
 
 **Example**:
@@ -661,15 +793,20 @@ API.emails.getById(4)
   .catch(console.error);
 ```
 
+**Returns in resolved promise**:
+```js
+
+```
+
 ### E-Mails - Search
 
-**Description**
+**Description**:
 - Searches for a specific term in E-Mails.
 
-**Method**
-- `API.emails.search()`
+**Method**:
+- `API.emails.search(term)`
 
-**Parameters**
+**Parameters**:
 - `term` *String* - Search term.
 
 **Example**:
@@ -681,15 +818,20 @@ API.emails.search('hello@test.com')
   .catch(console.error);
 ```
 
+**Returns in resolved promise**:
+```js
+
+```
+
 ### E-Mails - Delete
 
-**Description**
+**Description**:
 - Delete an E-Mails.
 
-**Method**
-- `API.emails.deleteById()`
+**Method**:
+- `API.emails.deleteById(id)`
 
-**Parameters**
+**Parameters**:
 - `id` *Integer* - E-Mail ID.
 
 **Example**:
@@ -701,15 +843,20 @@ API.emails.deleteById(82)
   .catch(console.error);
 ```
 
+**Returns in resolved promise**:
+```js
+
+```
+
 ### E-Mails - Queue
 
-**Description**
+**Description**:
 - Queues a new E-Mail, so that it can be sent later.
 
-**Method**
-- `API.emails.queue()`
+**Method**:
+- `API.emails.queue(data)`
 
-**Parameters**
+**Parameters**:
 - `data` *Object* - E-Mail data.
 
 **Example**:
@@ -751,17 +898,22 @@ API.emails.queue(data)
   .catch(console.error);
 ```
 
+**Returns in resolved promise**:
+```js
+
+```
+
 ### E-Mails - Send
 
-**Description**
+**Description**:
 - Sends a new or existing E-Mail.
 - Providing `id` only will send an existing one.
 - Skipping `id` with `null` or `undefined` while passing in `data` will create and send a new E-Mail.
 
-**Method**
-- `API.emails.send()`
+**Method**:
+- `API.emails.send(id, data)`
 
-**Parameters**
+**Parameters**:
 - `id` *Integer* - E-Mail ID (optional).
 - `data` *Object* - E-Mail data (optional).
 
@@ -810,13 +962,18 @@ API.emails.send(null, data)
   .catch(console.error);
 ```
 
+**Returns in resolved promise**:
+```js
+
+```
+
 [back to top](#table-of-contents)
 
 ## Contributing
 
 Feel free to send your pull requests!
 
-Read [Contributing docs](/CONTRIBUTING.md) for more information about contributing to this project.
+Read [contributing docs](/CONTRIBUTING.md) for more information about contributing to this project.
 
 [back to top](#table-of-contents)
 
