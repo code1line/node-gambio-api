@@ -7,6 +7,7 @@ Simple API for Node, that performs requests to the integrated REST-API of Gambio
 ## Table of contents
 - [Installation](#installation)
 - [Usage](#usage)
+- [Making requests](#making-requests)
 - [Options](#options)
 - [API](#api)
   - [Countries](#countries-get)
@@ -73,14 +74,45 @@ request
 
 ```
 
-**You can run a working example by running the files in the `demo` folder!** 
+[back to top](#table-of-contents)
+
+## Making requests
+Every request returns a promise which gets resolved, if a successful response is returned from server or rejected if an error has been thrown. If JSON is returned from server, the resolved promise contains the parsed JSON response as parameter.
+
+```js
+const API = new GambioApi({ ... });
+
+API.customers.getById(7)
+
+  // 'then' is always called on successful response.
+  .then((response) => {
+    // 'response' contains the parsed JSON respose.
+    console.log(response.id);
+  })
+
+  // 'catch' is called if any error has been thrown.
+  .catch((error) => {
+    // 'error' equals the thrown error.
+    console.error(error);
+  });
+
+```
+
+Please note, that this module uses custom error classes.
+
+Meaning, that `error` could be an instance of:
+- `RequestError` if there was an error while sending request to server
+- `ClientError` if the server returned a 4xx status code, mostly an error caused by the requesting client
+- `ServerError` if the server returned a 5xx status code, mostly a server-side error
+
+**You can run a working example by running the files in the `demo` folder!**
 
 [back to top](#table-of-contents)
 
 ## Options
 These instantiation options are available:
 
-- `url` *String* - Path to Gambio shop, without trailing slash (String).
+- `url` *String* - Path to Gambio shop, without trailing slash.
 - `user` *String* - Login user.
 - `pass` *String* - Login password.
 - `version` *String* - optional - API version (default: `v2`).
@@ -102,7 +134,7 @@ These instantiation options are available:
 
 **Example**:
 ```js
-const API = new GambioApi({ ... })
+const API = new GambioApi({ ... });
 
 API.countries.getById(28)
   .then(console.log)
@@ -122,7 +154,7 @@ API.countries.getById(28)
 
 **Example**:
 ```js
-const API = new GambioApi({ ... })
+const API = new GambioApi({ ... });
 
 API.countries.getZonesByCountryId(28)
   .then(console.log)
@@ -146,7 +178,7 @@ API.countries.getZonesByCountryId(28)
 
 **Example**:
 ```js
-const API = new GambioApi({ ... })
+const API = new GambioApi({ ... });
 
 API.zones.getById(2)
   .then(console.log)
@@ -170,7 +202,7 @@ API.zones.getById(2)
 
 **Example**:
 ```js
-const API = new GambioApi({ ... })
+const API = new GambioApi({ ... });
 
 API.addresses.getById(7)
   .then(console.log)
@@ -191,7 +223,7 @@ API.addresses.getById(7)
 
 **Example**:
 ```js
-const API = new GambioApi({ ... })
+const API = new GambioApi({ ... });
 
 const data = {
   customerId: 1,
@@ -228,7 +260,7 @@ API.addresses.create(data)
 
 **Example**:
 ```js
-const API = new GambioApi({ ... })
+const API = new GambioApi({ ... });
 
 API.addresses.deleteById(9)
   .then(console.log)
@@ -249,7 +281,7 @@ API.addresses.deleteById(9)
 
 **Example**:
 ```js
-const API = new GambioApi({ ... })
+const API = new GambioApi({ ... });
 
 const data = {
   customerId: 1,
@@ -287,11 +319,11 @@ API.addresses.updateById(9, data)
 - `API.customers.get()`
 
 **Parameters**
-- `sorting` *Object* Sorting criteria (optional).
+- `sorting` *Object* - Sorting criteria (optional).
 
 **Example**:
 ```js
-const API = new GambioApi({ ... })
+const API = new GambioApi({ ... });
 
 // Get all customers.
 API.customers.get()
@@ -319,7 +351,7 @@ API.customers.get({ id : 'desc', firstname: 'asc'})
 
 **Example**:
 ```js
-const API = new GambioApi({ ... })
+const API = new GambioApi({ ... });
 
 // Get all guest customers.
 API.customers.getGuests()
@@ -336,12 +368,12 @@ API.customers.getGuests()
 - `API.customers.getById()`
 
 **Parameters**
-- `id` *Integer* Customer ID.
+- `id` *Integer* - Customer ID.
 
 
 **Example**:
 ```js
-const API = new GambioApi({ ... })
+const API = new GambioApi({ ... });
 
 API.customers.getById(4)
   .then(console.log)
@@ -357,12 +389,12 @@ API.customers.getById(4)
 - `API.customers.getAddressesByCustomerId()`
 
 **Parameters**
-- `id` *Integer* Customer ID.
+- `id` *Integer* - Customer ID.
 
 
 **Example**:
 ```js
-const API = new GambioApi({ ... })
+const API = new GambioApi({ ... });
 
 API.customers.getAddressesByCustomerId(6)
   .then(console.log)
@@ -378,12 +410,12 @@ API.customers.getAddressesByCustomerId(6)
 - `API.customers.search()`
 
 **Parameters**
-- `term` *String* Search term.
+- `term` *String* - Search term.
 
 
 **Example**:
 ```js
-const API = new GambioApi({ ... })
+const API = new GambioApi({ ... });
 
 API.customers.search('John')
   .then(console.log)
@@ -399,7 +431,7 @@ API.customers.search('John')
 - `API.customers.create()`
 
 **Parameters**
-- `data` *Object* Customer data.
+- `data` *Object* - Customer data.
 
 
 **Example**:
@@ -443,7 +475,7 @@ API.customers.create(data)
 - `API.customers.deleteById()`
 
 **Parameters**
-- `id` *Integer* Customer ID.
+- `id` *Integer* - Customer ID.
 
 
 **Example**:
@@ -464,8 +496,8 @@ API.customers.deleteById(6)
 - `API.customers.updateById()`
 
 **Parameters**
-- `id` *Integer* Customer ID.
-- `data` *Object* Customer data.
+- `id` *Integer* - Customer ID.
+- `data` *Object* - Customer data.
 
 
 **Example**:
@@ -515,11 +547,11 @@ API.customers.updateById(98, data)
 - `API.emails.get()`
 
 **Parameters**
-- `sorting` *Object* Sorting criteria (optional).
+- `sorting` *Object* - Sorting criteria (optional).
 
 **Example**:
 ```js
-const API = new GambioApi({ ... })
+const API = new GambioApi({ ... });
 
 // Get all E-Mails.
 API.emails.get()
@@ -580,7 +612,7 @@ API.emails.getSent()
 - `API.emails.getById()`
 
 **Parameters**
-- `id` *Integer* E-Mail ID.
+- `id` *Integer* - E-Mail ID.
 
 **Example**:
 ```js
@@ -600,7 +632,7 @@ API.emails.getById(4)
 - `API.emails.search()`
 
 **Parameters**
-- `term` *String* Search term.
+- `term` *String* - Search term.
 
 **Example**:
 ```js
@@ -620,7 +652,7 @@ API.emails.search('hello@test.com')
 - `API.emails.deleteById()`
 
 **Parameters**
-- `id` *Integer* E-Mail ID.
+- `id` *Integer* - E-Mail ID.
 
 **Example**:
 ```js
@@ -640,7 +672,7 @@ API.emails.deleteById(82)
 - `API.emails.queue()`
 
 **Parameters**
-- `data` *Object* E-Mail data.
+- `data` *Object* - E-Mail data.
 
 **Example**:
 ```js
@@ -692,8 +724,8 @@ API.emails.queue(data)
 - `API.emails.send()`
 
 **Parameters**
-- `id` *Integer* E-Mail ID (optional).
-- `data` *Object* E-Mail data (optional).
+- `id` *Integer* - E-Mail ID (optional).
+- `data` *Object* - E-Mail data (optional).
 
 **Example**:
 ```js
@@ -746,24 +778,7 @@ API.emails.send(null, data)
 
 Feel free to send your pull requests!
 
-Tasks:
-
-- Install all necessary dependencies: `npm install`
-- Lint and run tests: `npm test`
-
-Directory structure:
-
-- `demo` contains demo credentials and some executable node files for demonstration.
-- `lib` contains the library core files.
-  - `api` contains API classes for each endpoint.
-  - `error` contains custom error classes.
-- `test` contains the test specs.
-
-Coding guidelines:
-
-- Code has to be written in ES6.
-- Code must pass through the linter - Refer to AirBnb's Coding Guidelines.
-- Test first, then write your code - TDD!
+Read [CONTRIBUTING](/CONTRIBUTING.md).
 
 [back to top](#table-of-contents)
 
