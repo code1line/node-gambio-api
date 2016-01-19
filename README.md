@@ -1,6 +1,4 @@
-# GambioApi [![Build Status](https://travis-ci.org/ronaldloyko/node-gambio-api.svg?branch=master)](https://travis-ci.org/ronaldloyko/node-gambio-api)
-
-[![NPM](https://nodei.co/npm/gambio-api.png)](https://nodei.co/npm/gambio-api)
+# GambioApi [![Build Status](https://travis-ci.org/ronaldloyko/node-gambio-api.svg?branch=master)](https://travis-ci.org/ronaldloyko/node-gambio-api) [![NPM](https://nodei.co/npm/gambio-api.png?mini=true)](https://nodei.co/npm/gambio-api/)
 
 Simple API for Node, that performs requests to the integrated REST-API of Gambio web shops.
 
@@ -44,7 +42,7 @@ Simple API for Node, that performs requests to the integrated REST-API of Gambio
 ## Installation
 `npm install gambio-api`
 
-**This library works with newer node versions only - minimum version required: 4.0**
+**Minimum node version required: 4.0**
 
 ## Usage
 ```js
@@ -78,39 +76,22 @@ request
 
 ## Making requests
 
-Every request returns a promise which gets resolved on successful response returned from server or it gets rejected if an error has been thrown.
+Every request returns a promise which
+- gets resolved on successful response returned from server
+- gets rejected if an error has been thrown/returned from server.
 
-If JSON is returned from server, the resolved promise contains the parsed JSON response as plain JS object.
+If the response content type is JSON, the resolved promise gets called with the parsed JSON response.
 
 ```js
 const API = new GambioApi({ ... });
 
 API.customers.getById(7)
 
-  /**
-   * 'then' is called when the promise is always called on successful response returned from server.
-   */
+  // 'then' is always called on
+  // successful response returned from server.
   .then(console.log)
 
-  /**
-   * 'catch' is called if any error has been thrown.
-   *
-   * In this example, the resource could not be found.
-   *
-   * Console output:
-   * { [ClientError: Customer record could not be found.]
-   *   name: 'ClientError',
-   *   code: 404,
-   *   data: {
-   *     response: {
-   *         statusCode: 404,
-   *         body: '...',
-   *       headers: {},
-   *     request: {}
-   *     }
-   *   }
-   * }
-   */
+  //'catch' is called if any error has been thrown.
   .catch(console.log);
 
 ```
@@ -123,6 +104,24 @@ Meaning, that the thrown error could be an instance of:
 - `RequestError` if there was an error while sending request to server
 - `ClientError` if the server returned a 4xx status code, mostly an error caused by the requesting client
 - `ServerError` if the server returned a 5xx status code, mostly a server-side error
+
+Returned promise from request gets rejected with following error if no record has been found:
+```js
+// Trying to get customer which does not exist in database.
+// Example request: API.customers.getById(999999999);
+{ [ClientError: Customer record could not be found.]
+  name: 'ClientError',
+  code: 404,
+  data: {
+    response: {
+        statusCode: 404,
+        body: '...',
+      headers: {},
+    request: {}
+    }
+  }
+}
+```
 
 [back to top](#table-of-contents)
 
@@ -158,7 +157,7 @@ API.countries.getById(28)
   .catch(console.error);
 ```
 
-**Returns in resolved promise**:
+**Returns in resolved promise**: *Object*
 ```js
 {
   id: 28,
@@ -190,7 +189,7 @@ API.countries.getZonesByCountryId(28)
   .catch(console.error);
 ```
 
-**Returns in resolved promise**:
+**Returns in resolved promise**: *Array*
 ```js
 [
     {
@@ -250,7 +249,7 @@ API.zones.getById(2)
   .catch(console.error);
 ```
 
-**Returns in resolved promise**:
+**Returns in resolved promise**: *Object*
 ```js
 {
     id: 2,
@@ -283,7 +282,7 @@ API.addresses.getById(7)
   .catch(console.error);
 ```
 
-**Returns in resolved promise**:
+**Returns in resolved promise**: *Object*
 ```js
 {
   id: 7,
@@ -299,12 +298,7 @@ API.addresses.getById(7)
   countryId: 81,
   zoneId: 84,
   class: null,
-  b2bStatus: false,
-  _links: {
-      customer: "https://www.gambio-shop.de/shop1/api.php/v2/customers/1",
-      country: "https://www.gambio-shop.de/shop1/api.php/v2/countries/81",
-      zone: "https://www.gambio-shop.de/shop1/api.php/v2/zones/84"
-  }
+  b2bStatus: false
 }
 
 ```
@@ -319,7 +313,6 @@ API.addresses.getById(7)
 
 **Parameters**:
 - `data` *Object* - Address data.
-
 
 **Example**:
 ```js
@@ -346,7 +339,7 @@ API.addresses.create(data)
   .catch(console.error);
 ```
 
-**Returns in resolved promise**:
+**Returns in resolved promise**: *Object*
 ```js
 {
   id: 44,
@@ -362,12 +355,7 @@ API.addresses.create(data)
   countryId: 81,
   zoneId: 84,
   class: null,
-  b2bStatus: false,
-  _links: {
-    customer: 'https://www.gambio-shop.de/shop1/api.php/v2/customers/1',
-    country: 'https://www.gambio-shop.de/shop1/api.php/v2/countries/81',
-    zone: 'https://www.gambio-shop.de/shop1/api.php/v2/zones/84'
-  }
+  b2bStatus: false
 }
 
 ```
@@ -383,7 +371,6 @@ API.addresses.create(data)
 **Parameters**:
 - `id` *Integer* - Address ID.
 
-
 **Example**:
 ```js
 const API = new GambioApi({ ... });
@@ -393,7 +380,7 @@ API.addresses.deleteById(2)
   .catch(console.error);
 ```
 
-**Returns in resolved promise**:
+**Returns in resolved promise**: *Object*
 ```js
 {
   code: 200,
@@ -429,7 +416,7 @@ API.addresses.updateById(9, data)
   .catch(console.error);
 ```
 
-**Returns in resolved promise**:
+**Returns in resolved promise**: *Object*
 ```js
 {
   id: 1,
@@ -445,12 +432,7 @@ API.addresses.updateById(9, data)
   countryId: 81,
   zoneId: 84,
   class: null,
-  b2bStatus: false,
-  _links: {
-    customer: 'https://www.gambio-shop.de/shop1/api.php/v2/customers/1',
-    country: 'https://www.gambio-shop.de/shop1/api.php/v2/countries/81',
-    zone: 'https://www.gambio-shop.de/shop1/api.php/v2/zones/84'
-  }
+  b2bStatus: false
 }
 
 ```
@@ -492,7 +474,7 @@ API.customers.get({ id : 'desc', firstname: 'asc'})
   .catch(console.error);
 ```
 
-**Returns in resolved promise**:
+**Returns in resolved promise**: *Array*
 ```js
 // API.customers.get();
 [{
@@ -509,10 +491,7 @@ API.customers.get({ id : 'desc', firstname: 'asc'})
   email: 'admin@shop.de',
   statusId: 0,
   isGuest: false,
-  addressId: 1,
-  _links: {
-    address: 'https://www.gambio-shop.de/shop1/api.php/v2/addresses/1'
-  }
+  addressId: 1
 }, {
   id: 2,
   number: '2',
@@ -527,8 +506,7 @@ API.customers.get({ id : 'desc', firstname: 'asc'})
   email: 'Testbestellung@gambio.de',
   statusId: 2,
   isGuest: false,
-  addressId: null,
-  _links: []
+  addressId: null
 }]
 
 ```
@@ -551,7 +529,7 @@ API.customers.getGuests()
   .catch(console.error);
 ```
 
-**Returns in resolved promise**:
+**Returns in resolved promise**: *Array*
 ```js
 [{
   id: 11,
@@ -567,10 +545,7 @@ API.customers.getGuests()
   email: 'hannah@gmail.com',
   statusId: 0,
   isGuest: true,
-  addressId: 11,
-  _links: {
-    address: 'https://www.gambio-shop.de/shop1/api.php/v2/addresses/11'
-  }
+  addressId: 11
 }, {
   id: 12,
   number: '12',
@@ -585,10 +560,7 @@ API.customers.getGuests()
   email: 'chrispaul@email.de',
   statusId: 1,
   isGuest: true,
-  addressId: 14,
-  _links: {
-    address: 'https://www.gambio-shop.de/shop1/api.php/v2/addresses/14'
-  }
+  addressId: 14
 }]
 
 ```
@@ -604,7 +576,6 @@ API.customers.getGuests()
 **Parameters**:
 - `id` *Integer* - Customer ID.
 
-
 **Example**:
 ```js
 const API = new GambioApi({ ... });
@@ -614,7 +585,7 @@ API.customers.getById(1)
   .catch(console.error);
 ```
 
-**Returns in resolved promise**:
+**Returns in resolved promise**: *Object*
 ```js
 {
   id: 1,
@@ -630,10 +601,7 @@ API.customers.getById(1)
   email: 'admin@shop.de',
   statusId: 0,
   isGuest: false,
-  addressId: 1,
-  _links: {
-    address: 'https://www.gambio-shop.de/shop1/api.php/v2/addresses/1'
-  }
+  addressId: 1
 }
 
 ```
@@ -649,7 +617,6 @@ API.customers.getById(1)
 **Parameters**:
 - `id` *Integer* - Customer ID.
 
-
 **Example**:
 ```js
 const API = new GambioApi({ ... });
@@ -659,7 +626,7 @@ API.customers.getAddressesByCustomerId(6)
   .catch(console.error);
 ```
 
-**Returns in resolved promise**:
+**Returns in resolved promise**: *Array*
 ```js
 [{
   id: 1,
@@ -675,12 +642,7 @@ API.customers.getAddressesByCustomerId(6)
   countryId: 81,
   zoneId: 84,
   class: null,
-  b2bStatus: false,
-  _links: {
-    customer: 'https://www.gambio-shop.de/shop1/api.php/v2/customers/1',
-    country: 'https://www.gambio-shop.de/shop1/api.php/v2/countries/81',
-    zone: 'https://www.gambio-shop.de/shop1/api.php/v2/zones/84'
-  }
+  b2bStatus: false
 }]
 
 ```
@@ -696,7 +658,6 @@ API.customers.getAddressesByCustomerId(6)
 **Parameters**:
 - `term` *String* - Search term.
 
-
 **Example**:
 ```js
 const API = new GambioApi({ ... });
@@ -706,7 +667,7 @@ API.customers.search('Otto')
   .catch(console.error);
 ```
 
-**Returns in resolved promise**:
+**Returns in resolved promise**: *Array*
 ```js
 [{
   id: 35,
@@ -722,12 +683,8 @@ API.customers.search('Otto')
   email: 'oltmann@test.de',
   statusId: 2,
   isGuest: false,
-  addressId: 38,
-  _links: {
-    address: 'https://www.gambio-shop.de/shop1/api.php/v2/addresses/38'
-  }
+  addressId: 38
 }]
-
 ```
 
 ### Customers - Create
@@ -740,7 +697,6 @@ API.customers.search('Otto')
 
 **Parameters**:
 - `data` *Object* - Customer data.
-
 
 **Example**:
 ```js
@@ -774,7 +730,7 @@ API.customers.create(data)
   .catch(console.error);
 ```
 
-**Returns in resolved promise**:
+**Returns in resolved promise**: *Object*
 ```js
 {
   id: 38,
@@ -790,10 +746,7 @@ API.customers.create(data)
   email: 'hello@email.com',
   statusId: 2,
   isGuest: false,
-  addressId: 41,
-  _links: {
-    address: 'https://www.gambio-shop.de/shop1/api.php/v2/addresses/41'
-  }
+  addressId: 41
 }
 
 ```
@@ -809,7 +762,6 @@ API.customers.create(data)
 **Parameters**:
 - `id` *Integer* - Customer ID.
 
-
 **Example**:
 ```js
 const API = new GambioApi({ ... });
@@ -819,7 +771,7 @@ API.customers.deleteById(38)
   .catch(console.error);
 ```
 
-**Returns in resolved promise**:
+**Returns in resolved promise**: *Object*
 ```js
 {
   code: 200,
@@ -842,7 +794,6 @@ API.customers.deleteById(38)
 - `id` *Integer* - Customer ID.
 - `data` *Object* - Customer data.
 
-
 **Example**:
 ```js
 const API = new GambioApi({ ... });
@@ -856,7 +807,7 @@ API.customers.updateById(1, data)
   .catch(console.error);
 ```
 
-**Returns in resolved promise**:
+**Returns in resolved promise**: *Object*
 ```js
 {
   id: 1,
@@ -872,10 +823,7 @@ API.customers.updateById(1, data)
   email: 'admin@shop.de',
   statusId: 0,
   isGuest: false,
-  addressId: 1,
-  _links: {
-    address: 'https://www.gambio-shop.de/shop1/api.php/v2/addresses/1'
-  }
+  addressId: 1
 }
 
 ```
@@ -917,7 +865,7 @@ API.emails.get({ id : 'desc', firstname: 'asc'})
   .catch(console.error);
 ```
 
-**Returns in resolved promise**:
+**Returns in resolved promise**: *Array*
 ```js
 // API.emails.get()
 [{
@@ -963,7 +911,7 @@ API.emails.getPending()
   .catch(console.error);
 ```
 
-**Returns in resolved promise**:
+**Returns in resolved promise**: *Array*
 ```js
 [{
   id: 18,
@@ -1007,7 +955,7 @@ API.emails.getSent()
   .catch(console.error);
 ```
 
-**Returns in resolved promise**:
+**Returns in resolved promise**: *Array*
 ```js
 [{
   id: 28,
@@ -1055,7 +1003,7 @@ API.emails.getById(4)
   .catch(console.error);
 ```
 
-**Returns in resolved promise**:
+**Returns in resolved promise**: *Object*
 ```js
 {
   id: 4,
@@ -1104,7 +1052,7 @@ API.emails.search('admin@shop.de')
   .catch(console.error);
 ```
 
-**Returns in resolved promise**:
+**Returns in resolved promise**: *Array*
 ```js
 [{
   id: 4,
@@ -1153,7 +1101,7 @@ API.emails.deleteById(15)
   .catch(console.error);
 ```
 
-**Returns in resolved promise**:
+**Returns in resolved promise**: *Object*
 ```js
 {
   code: 200,
@@ -1214,7 +1162,7 @@ API.emails.queue(data)
   .catch(console.error);
 ```
 
-**Returns in resolved promise**:
+**Returns in resolved promise**: *Object*
 ```js
 {
   id: 16,
@@ -1299,7 +1247,7 @@ API.emails.send(null, data)
   .catch(console.error);
 ```
 
-**Returns in resolved promise**:
+**Returns in resolved promise**: *Object*
 ```js
 // API.emails.send(16);
 {
@@ -1332,7 +1280,7 @@ API.emails.send(null, data)
 
 Feel free to send your pull requests!
 
-Read [contributing docs](/CONTRIBUTING.md) for more information about contributing to this project.
+Read [contributing docs](https://github.com/ronaldloyko/node-gambio-api/blob/master/CONTRIBUTING.md) for more information about contributing to this project.
 
 [back to top](#table-of-contents)
 
