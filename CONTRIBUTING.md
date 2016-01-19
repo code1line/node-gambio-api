@@ -21,7 +21,8 @@ Don't forget to lint your code and run the tests by doing `npm test` during deve
 
 - Code must be written in [ES6 syntax](https://babeljs.io/docs/learn-es2015/).
 - Code must be formatted according to [ AirBnb's coding guidelines](https://github.com/airbnb/javascript).
-- Always write tests! It's better to develop in the test-driven way.
+- Always write [tests](https://mochajs.org/)! It's better to develop in the test-driven way.
+- Code must pass lint and test procedure in `npm test`.
 
 ### How this module works
 
