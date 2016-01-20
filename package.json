@@ -1,6 +1,6 @@
 {
   "name": "gambio-api",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Simple API for Node, that performs requests to the integrated REST-API of Gambio web shops",
   "main": "index.js",
   "directories": {

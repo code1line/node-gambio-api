@@ -25,9 +25,9 @@
  *  	.then(console.log)
  *   	.catch(console.error);
  *
- * @version 0.1.0
+ * @version 0.1.1
  * @author Ronald Loyko
- * @license MIT
+ * @license GPL v2
  */
 
 'use strict';
