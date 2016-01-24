@@ -1,4 +1,4 @@
-### Get zones from a specific country
+# Get zones from a specific country
 
 ### Description
 
