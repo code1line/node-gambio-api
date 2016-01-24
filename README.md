@@ -146,7 +146,7 @@ This is a quick overview of all methods available.
 
 #### Zones
 
-- [Get a specific zone](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/zones/getById.md) - *API.zones.getById(4)*
+- [Get a specific zone](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/zones/getById.md) - *API.zones.getById(id)*
 
 #### Addresses
 
