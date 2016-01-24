@@ -1,25 +1,29 @@
-### Customers - Search
+# Search in customers
 
-**Description**:
-- Searches for specific term in customers.
+### Description
 
-**Method**:
-- `API.customers.search(term)`
+Searches for specific term in customers.
 
-**Parameters**:
-- `term` *String* - Search term.
+### Method
 
-**Example**:
 ```js
-const API = new GambioApi({ ... });
-
-API.customers.search('Otto')
-  .then(console.log)
-  .catch(console.error);
+API.customers.search(term)
 ```
 
-**Returns in resolved promise**: *Array*
+### Parameters
+
+`term` - *string* - Search term
+
+### Example
+
 ```js
+API.customers.search('Otto');
+```
+
+### Return value in resolved promise
+
+```js
+// Array.
 [{
   id: 35,
   number: '35',

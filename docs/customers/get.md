@@ -1,39 +1,40 @@
-### Customers - Get All
+# Get all customers
 
-**Description**:
-- Returns all customers.
-- Optionally you can request a sorted result by passing a `sorting` argument.
-- If provided, `sorting` should be a hash with the field name as key and `asc` or `desc` as value.  
+### Description
 
-**Method**:
-- `API.customers.get(sorting)`
+Returns all customers.
 
-**Parameters**:
-- `sorting` *Object* - Sorting criteria (optional).
 
-**Example**:
+Optionally you can request a sorted result by passing a `sorting` argument.
+
+If provided, `sorting` must be a hash with the field name as key and `asc` or `desc` as value.  
+
+### Method
+
 ```js
-const API = new GambioApi({ ... });
-
-// Get all customers.
-API.customers.get()
-  .then(console.log)
-  .catch(console.error);
-
-// With sorting criteria (sort by ID in descending order).
-API.customers.get({ id : 'desc' })
-  .then(console.log)
-  .catch(console.error);
-
-// With multiple sorting criteria (sort by ID in descending order and first name in ascending order).
-API.customers.get({ id : 'desc', firstname: 'asc'})
-  .then(console.log)
-  .catch(console.error);
+API.customers.get(sorting)
 ```
 
-**Returns in resolved promise**: *Array*
+### Parameters
+`sorting` - *object* - Sorting criteria **(optional)**.
+
+### Example
+
 ```js
-// API.customers.get();
+// Get all customers.
+API.customers.get();
+
+// With sorting criteria (sort by ID in descending order).
+API.customers.get({ id : 'desc' });
+
+// With multiple sorting criteria (sort by ID in descending order and first name in ascending order).
+API.customers.get({ id : 'desc', firstname: 'asc'});
+```
+
+### Return value in resolved promise
+
+```js
+// Array.
 [{
   id: 1,
   number: '',

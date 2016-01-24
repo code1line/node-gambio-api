@@ -1,30 +1,35 @@
-### Customers - Update
+# Update a customer
 
-**Description**:
-- Updates a customer.
+### Description
 
-**Method**:
-- `API.customers.updateById(id, data)`
+Updates a customer.
 
-**Parameters**:
-- `id` *Integer* - Customer ID.
-- `data` *Object* - Customer data.
+### Method
 
-**Example**:
 ```js
-const API = new GambioApi({ ... });
+API.customers.updateById(id, data)
+```
 
+### Parameters
+
+`id` - *integer* - Customer ID
+
+`data` - *object* - Customer data
+
+### Example
+
+```js
 const data = {
   gender: 'f'
 };
 
-API.customers.updateById(1, data)
-  .then(console.log)
-  .catch(console.error);
+API.customers.updateById(1, data);
 ```
 
-**Returns in resolved promise**: *Object*
+### Return value in resolved promise
+
 ```js
+// Object.
 {
   id: 1,
   number: '',
@@ -41,5 +46,4 @@ API.customers.updateById(1, data)
   isGuest: false,
   addressId: 1
 }
-
 ```

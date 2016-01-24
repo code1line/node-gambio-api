@@ -1,30 +1,32 @@
-### Customers - Delete
+# Delete a customer
 
-**Description**:
-- Deletes a customer.
+### Description
 
-**Method**:
-- `API.customers.deleteById(id)`
+Deletes a customer entry.
 
-**Parameters**:
-- `id` *Integer* - Customer ID.
+### Method
 
-**Example**:
 ```js
-const API = new GambioApi({ ... });
-
-API.customers.deleteById(38)
-  .then(console.log)
-  .catch(console.error);
+API.customers.deleteById(id)
 ```
 
-**Returns in resolved promise**: *Object*
+### Parameters
+`id` - *integer* - Customer ID
+
+### Example
+
 ```js
+API.customers.deleteById(38);
+```
+
+### Return value in resolved promise
+
+```js
+// Object.
 {
   code: 200,
   status: 'success',
   action: 'delete',
   customerId: 38
 }
-
 ```

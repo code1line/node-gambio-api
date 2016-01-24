@@ -1,25 +1,27 @@
-### Zones - Get
+# Get a specific zone
 
-**Description**:
-- Returns a zone, selected by the zone ID.
+### Description
 
-**Method**:
-- `API.zones.getById(id)`
+Returns a zone, selected by the zone ID.
 
-**Parameters**:
-- `id` *Integer* - Zone ID
+### Method
 
-**Example**:
 ```js
-const API = new GambioApi({ ... });
-
-API.zones.getById(2)
-  .then(console.log)
-  .catch(console.error);
+API.zones.getById(id)
 ```
 
-**Returns in resolved promise**: *Object*
+### Parameters
+`id` - *integer* - Zone ID
+
+### Example
+
 ```js
+API.zones.getById(2);
+```
+
+### Return value in resolved promise
+```js
+// Object.
 {
     id: 2,
     name: "Bremen",

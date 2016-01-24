@@ -1,25 +1,29 @@
-### E-Mails - Get
+# Get a specific E-Mail
 
-**Description**:
-- Returns an E-Mail, selected by the E-Mail ID.
+### Description
 
-**Method**:
-- `API.emails.getById(id)`
+Returns an E-Mail, selected by the E-Mail ID.
 
-**Parameters**:
-- `id` *Integer* - E-Mail ID.
+### Method
 
-**Example**:
 ```js
-const API = new GambioApi({ ... });
-
-API.emails.getById(4)
-  .then(console.log)
-  .catch(console.error);
+API.emails.getById(id)
 ```
 
-**Returns in resolved promise**: *Object*
+### Parameters
+
+`id` - *integer* - E-Mail ID
+
+### Example
+
 ```js
+API.emails.getById(4);
+```
+
+### Return value in resolved promise
+
+```js
+// Object.
 {
   id: 4,
   subject: 'Test-Mail',

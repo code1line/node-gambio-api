@@ -1,18 +1,23 @@
-### Addresses - Create
+# Create a new address
 
-**Description**:
-- Creates a new address.
+### Description
 
-**Method**:
-- `API.addresses.create(data)`
+Creates a new address entry.
 
-**Parameters**:
-- `data` *Object* - Address data.
+### Method
 
-**Example**:
 ```js
-const API = new GambioApi({ ... });
+API.addresses.create(data)
+```
 
+### Parameters
+
+`data` - *object* - Address data
+
+### Example
+
+```js
+// Address data.
 const data = {
   customerId: 1,
   gender: 'm',
@@ -29,13 +34,14 @@ const data = {
   b2bStatus: false,
 };
 
-API.addresses.create(data)
-  .then(console.log)
-  .catch(console.error);
+// Create address.
+API.addresses.create(data);
 ```
 
-**Returns in resolved promise**: *Object*
+### Return value in resolved promise
+
 ```js
+// Object.
 {
   id: 44,
   customerId: 1,
@@ -52,5 +58,4 @@ API.addresses.create(data)
   class: null,
   b2bStatus: false
 }
-
 ```

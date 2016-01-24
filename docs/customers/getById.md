@@ -1,25 +1,28 @@
-### Customers - Get
+# Get a specific customer
 
-**Description**:
-- Returns a customer, selected by the customer ID.
+### Description
 
-**Method**:
-- `API.customers.getById(id)`
+Returns a customer, selected by the customer ID.
 
-**Parameters**:
-- `id` *Integer* - Customer ID.
+### Method
 
-**Example**:
 ```js
-const API = new GambioApi({ ... });
-
-API.customers.getById(1)
-  .then(console.log)
-  .catch(console.error);
+API.customers.getById(id)
 ```
 
-**Returns in resolved promise**: *Object*
+### Parameters
+`id` - *integer* - Customer ID
+
+### Example
+
 ```js
+API.customers.getById(1);
+```
+
+### Return value in resolved promise
+
+```js
+// Object.
 {
   id: 1,
   number: '',

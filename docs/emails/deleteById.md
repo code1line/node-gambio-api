@@ -1,30 +1,33 @@
-### E-Mails - Delete
+# Delete an E-Mail
 
-**Description**:
-- Delete an E-Mails.
+### Description
 
-**Method**:
-- `API.emails.deleteById(id)`
+Delete an E-Mail entry.
 
-**Parameters**:
-- `id` *Integer* - E-Mail ID.
+### Method
 
-**Example**:
 ```js
-const API = new GambioApi({ ... });
-
-API.emails.deleteById(15)
-  .then(console.log)
-  .catch(console.error);
+API.emails.deleteById(id)
 ```
 
-**Returns in resolved promise**: *Object*
+### Parameters
+
+`id` - *integer* - E-Mail ID
+
+### Example
+
 ```js
+API.emails.deleteById(15);
+```
+
+### Return value in resolved promise
+
+```js
+// Object.
 {
   code: 200,
   status: 'success',
   action: 'delete',
   emailId: 15
 }
-
 ```

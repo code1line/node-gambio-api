@@ -1,25 +1,29 @@
-### Countries - Get Zones From A Country
+### Get zones from a specific country
 
-**Description**:
-- Returns the related zones from a country, selected by the country ID.
+### Description
 
-**Method**:
-- `API.countries.getZonesByCountryId(id)`
+Returns the related zones from a country, selected by the country ID.
 
-**Parameters**:
-- `id` *Integer* - Country ID
+## Method
 
-**Example**:
 ```js
-const API = new GambioApi({ ... });
-
-API.countries.getZonesByCountryId(28)
-  .then(console.log)
-  .catch(console.error);
+API.countries.getZonesByCountryId(id)
 ```
 
-**Returns in resolved promise**: *Array*
+### Parameters
+
+`id` - *integer* - Country ID
+
+### Example
+
 ```js
+API.countries.getZonesByCountryId(28);
+```
+
+### Return value in resolved promise
+
+```js
+// Array.
 [
     {
         id: 80,
@@ -50,6 +54,8 @@ API.countries.getZonesByCountryId(28)
         id: 85,
         name: "Hamburg",
         iso: "HAM"
-    }
+    },
+
+    // ...
 ]
 ```

@@ -1,22 +1,26 @@
-# GambioApi [![Build Status](https://travis-ci.org/ronaldloyko/node-gambio-api.svg?branch=master)](https://travis-ci.org/ronaldloyko/node-gambio-api) [![NPM](https://nodei.co/npm/gambio-api.png?mini=true)](https://nodei.co/npm/gambio-api/)
+# Gambio JavaScript API [![Build Status](https://travis-ci.org/ronaldloyko/node-gambio-api.svg?branch=master)](https://travis-ci.org/ronaldloyko/node-gambio-api) [![NPM](https://nodei.co/npm/gambio-api.png?mini=true)](https://nodei.co/npm/gambio-api/)
 
-Simple API for Node, that performs requests to the integrated REST-API of Gambio web shops.
+Simple API for Node, that performs requests to the integrated REST-API of Gambio.
 
 ## Table of contents
+
 - [Installation](#installation)
 - [Usage](#usage)
-- [Making requests](#making-requests)
-- [Options](#options)
-- [API](#api)
+- [Sending requests](#sending-requests)
+- [API reference](#api-reference)
 - [Contributing](#contributing)
 - [License](#license)
 
 ## Installation
-`npm install gambio-api`
 
-**Minimum node version required: 4.0**
+```sh
+npm install gambio-api
+```
+
+**Node version 4.0 or higher is required to run this module.**
 
 ## Usage
+
 ```js
 // Require module.
 const GambioApi = require('gambio-api');
@@ -24,45 +28,51 @@ const GambioApi = require('gambio-api');
 // Instantiation.
 const API = new GambioApi({
   url: 'http://myshop.com',
-  user: 'admin@myshop.de',
+  user: 'admin@myshop.com',
   pass: '12345',
 });
 
-// Get all customers.
-const request = API.customers.get();
+// Get customer with ID 6.
+API.customers.getById(6)
 
-// Request returns a promise.
-request
+  // Log customers.
   .then((result) => {
-    console.log('Showing all customers:');
     console.log(result);
   })
-  .catch(function (error) {
-    console.log('Oh no! An error occured!');
+
+  // Log error.
+  .catch((error) => {
     console.error(error);
   });
-
 ```
 
-[back to top](#table-of-contents)
+You may also [read an article](https://ronaldloyko.wordpress.com/2016/01/21/how-to-use-the-gambio-rest-api-in-node-js/) on how to use the Gambio JavaScript in Node.js.
 
-## Making requests
+## Sending requests
 
-**To see a working example you can run the [example script](https://github.com/ronaldloyko/node-gambio-api/blob/master/demo/CreateGetUpdateDeleteCustomer.js) inside the `demo` folder!**
-
-Every request returns a promise which
-- gets resolved on successful response returned from server
-- gets rejected if an error has been thrown/returned from server
+#### Creating a new instance
 
 ```js
-const API = new GambioApi({ ... });
+const API = new GambioApi({
+  url: 'http://myshop.com', // Path to Gambio shop (without trailing slash).
+  user: 'admin@myshop.com', // Login user.
+  pass: '12345', // Login password.
+  version: 'v2', // API version (optional, default: 'v2').
+});
+```
 
+#### Perform a request
+
+The methods always return a promise.
+
+```js
+// Send a request.
 API.customers.get()
 
   // 'then' is called, if a response is returned from server.
   .then()
 
-  //'catch' is called if any error has been thrown.
+  // 'catch' is called if any error has been thrown.
   .catch();
 
 ```
@@ -72,13 +82,13 @@ API.customers.get()
 Every successful response gets parsed from JSON to a JavaScript object/array.
 
 ```js
-// Create instance.
-const API = new GambioApi({ ... });
-
-// Perform request.
+// Send example request.
 API.customers.getById(1).then(console.log);
+```
 
-// Console output:
+Example console output would be:
+
+```js
 {
   id: 1,
   number: '',
@@ -95,55 +105,39 @@ API.customers.getById(1).then(console.log);
   isGuest: false,
   addressId: 1
 }
-
 ```
 
 #### Error
 
-Note, that this module uses custom error classes which means, that the thrown error in a rejected promise could be an instance of:
+This module uses custom error classes which means, that the thrown error in a rejected promise could be an instance of:
 - `RequestError` if there was an error while sending request to server.
 - `ClientError` if the server returned a 4xx status code, mostly an error caused by the requesting client.
 - `ServerError` if the server returned a 5xx status code, mostly an internal server-side error.
 
 ```js
-// Create instance.
-const API = new GambioApi({ ... });
-
-// Perform request (assuming that customer with ID 9999999 does not exist ).
+// Sending request (assuming that customer with ID 9999999 does not exist).
 API.customers.getById(9999999).catch(console.log);
+```
 
-// Console output:
+Example console output would be:
+
+```js
 { [ClientError: Customer record could not be found.]
   name: 'ClientError',
   code: 404,
   data: {
-    response: {
-        statusCode: 404,
-        body: '...',
-      headers: {},
-    request: {}
-    }
+    // ...
   }
 }
 ```
 
-The thrown error object contains additional properties like
-- `code` Status code sent from server
-- `data` raw request and response data
+The thrown error object contains additional properties:
+- `code` status code sent from server.
+- `data` raw request and response data.
 
-[back to top](#table-of-contents)
+## API reference
 
-## Options
-These instantiation options are available:
-
-- `url` *String* - Path to Gambio shop, without trailing slash.
-- `user` *String* - Login user.
-- `pass` *String* - Login password.
-- `version` *String* - optional - API version (default: `v2`).
-
-[back to top](#table-of-contents)
-
-## API
+This is a quick overview of all methods available.
 
 #### Countries
 
@@ -153,7 +147,6 @@ These instantiation options are available:
 #### Zones
 
 - [Get all zones](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/zones/get.md) - *API.zones.get()*
-
 
 #### Addresses
 
@@ -184,16 +177,11 @@ These instantiation options are available:
 - [Queue an E-Mail](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/emails/queue.md) - *API.emails.queue(data)*
 - [Send an E-Mail](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/emails/send.md) - *API.emails.send(id, data)*
 
-
-[back to top](#table-of-contents)
-
 ## Contributing
 
-Feel free to send your pull requests!
+Pull requests are always welcome!
 
-Read [contributing docs](https://github.com/ronaldloyko/node-gambio-api/blob/master/CONTRIBUTING.md) for more information about contributing to this project.
-
-[back to top](#table-of-contents)
+Read [contribution docs](https://github.com/ronaldloyko/node-gambio-api/blob/master/CONTRIBUTING.md) for more information about contributing to this project.
 
 ## License
 
@@ -211,5 +199,3 @@ GNU General Public License for more details.
 
 For the complete terms of the GNU General Public License, please see this URL:
 http://www.gnu.org/licenses/gpl-2.0.html
-
-[*^ back to top*](#table-of-contents)

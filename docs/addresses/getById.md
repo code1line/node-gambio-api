@@ -1,25 +1,29 @@
-### Addresses - Get
+# Get a specific address
 
-**Description**:
-- Returns an address, selected by the address ID.
+### Description
 
-**Method**:
-- `API.addresses.getById(id)`
+Returns an address, selected by the address ID.
 
-**Parameters**:
-- `id` *Integer* - Address ID
+### Method
 
-**Example**:
 ```js
-const API = new GambioApi({ ... });
-
-API.addresses.getById(7)
-  .then(console.log)
-  .catch(console.error);
+API.addresses.getById(id)
 ```
 
-**Returns in resolved promise**: *Object*
+### Parameters
+
+`id` - *integer* - Address ID
+
+### Example
+
 ```js
+API.addresses.getById(7);
+```
+
+### Return value in resolved promise
+
+```js
+// Object.
 {
   id: 7,
   customerId: 1,

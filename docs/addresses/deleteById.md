@@ -1,25 +1,29 @@
-### Addresses - Delete
+# Delete an address
 
-**Description**:
-- Deletes an address.
+### Description
 
-**Method**:
-- `API.addresses.deleteById(id)`
+Deletes an address entry.
 
-**Parameters**:
-- `id` *Integer* - Address ID.
+### Method
 
-**Example**:
 ```js
-const API = new GambioApi({ ... });
-
-API.addresses.deleteById(2)
-  .then(console.log)
-  .catch(console.error);
+API.addresses.deleteById(id)
 ```
 
-**Returns in resolved promise**: *Object*
+### Parameters
+
+`id` - *integer* - Address ID
+
+### Example
+
 ```js
+API.addresses.deleteById(2);
+```
+
+### Return value in resolved promise
+
+```js
+// Object.
 {
   code: 200,
   status: 'success',

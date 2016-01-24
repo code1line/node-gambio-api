@@ -1,7 +1,7 @@
 {
   "name": "gambio-api",
   "version": "0.1.1",
-  "description": "Simple API for Node, that performs requests to the integrated REST-API of Gambio web shops",
+  "description": "JavaScript API for Gambio",
   "main": "index.js",
   "directories": {
     "test": "test"
@@ -29,7 +29,7 @@
   "engines": {
     "node": ">=4.0"
   },
-  "homepage": "https://github.com/ronaldloyko/node-gambio-api#readme",
+  "homepage": "http://ronaldloyko.github.io/node-gambio-api",
   "dependencies": {
     "bluebird": "^3.1.1",
     "check-types": "^5.1.0",

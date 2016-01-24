@@ -1,18 +1,23 @@
-### Customers - Create
+# Create a new customer
 
-**Description**:
-- Creates a new customer.
+### Description
 
-**Method**:
-- `API.customers.create(data)`
+Creates a new customer.
 
-**Parameters**:
-- `data` *Object* - Customer data.
+### Method
 
-**Example**:
 ```js
-const API = new GambioApi({ ... });
+API.customers.create(data)
+```
 
+### Parameters
+
+`data` - *object* - Customer data
+
+### Example
+
+```js
+// Customer data used for creation.
 const data = {
   gender: 'm',
   firstname: 'John',
@@ -36,13 +41,14 @@ const data = {
   },
 };
 
-API.customers.create(data)
-  .then(console.log)
-  .catch(console.error);
+// Create customer.
+API.customers.create(data);
 ```
 
-**Returns in resolved promise**: *Object*
+### Return value in resolved promise
+
 ```js
+// Object.
 {
   id: 38,
   number: '38',

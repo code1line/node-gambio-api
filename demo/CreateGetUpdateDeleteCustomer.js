@@ -1,7 +1,8 @@
 /**
- * Demonstration of the GambioApi using the REST-API from the official Gambio test shop.
+ * Demonstration of the Gambio JavaScript API
+ * using the integrated REST-API of the official Gambio test shop.
  *
- * You can run this file by typing `node CreateGetUpdateDeleteCustomer.js` in the console.
+ * You can run this file by typing `node CreateGetUpdateDeleteCustomer.js` in terminal.
  *
  * Please make sure, that you have installed all dependencies
  * by running `npm install` before running this script.
@@ -21,10 +22,7 @@ const API = new GambioApi(credentials);
 // Some whitespace shortcut for console.
 const whiteSpace = '\n\n';
 
-// CREATE
-// ======
-
-// Customer data.
+// Customer data used for new customer creation.
 const data = {
   gender: 'm',
   firstname: 'John',

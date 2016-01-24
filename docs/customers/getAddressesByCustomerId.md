@@ -1,25 +1,28 @@
-### Customers - Get Addresses From Customer
+# Get addresses from a specific customer
 
-**Description**:
-- Returns related addresses to a customer, selected by the customer ID.
+### Description
 
-**Method**:
-- `API.customers.getAddressesByCustomerId(id)`
+Returns related addresses to a customer, selected by the customer ID.
 
-**Parameters**:
-- `id` *Integer* - Customer ID.
+### Method
 
-**Example**:
 ```js
-const API = new GambioApi({ ... });
-
-API.customers.getAddressesByCustomerId(6)
-  .then(console.log)
-  .catch(console.error);
+API.customers.getAddressesByCustomerId(id)
 ```
 
-**Returns in resolved promise**: *Array*
+### Parameters
+
+`id` - *integer* - Customer ID
+
+### Example
+
 ```js
+API.customers.getAddressesByCustomerId(6);
+```
+
+### Return value in resolved promise
+```js
+// Array.
 [{
   id: 1,
   customerId: 1,

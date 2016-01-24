@@ -1,25 +1,29 @@
-### E-Mails - Search
+# Search in E-Mails
 
-**Description**:
-- Searches for a specific term in E-Mails.
+### Description
 
-**Method**:
-- `API.emails.search(term)`
+Searches for a specific term in E-Mails.
 
-**Parameters**:
-- `term` *String* - Search term.
+### Method
 
-**Example**:
 ```js
-const API = new GambioApi({ ... });
-
-API.emails.search('admin@shop.de')
-  .then(console.log)
-  .catch(console.error);
+API.emails.search(term)
 ```
 
-**Returns in resolved promise**: *Array*
+### Parameters
+
+`term` - *string* - Search term
+
+### Example
+
 ```js
+API.emails.search('admin@shop.de');
+```
+
+### Return value in resolved promise
+
+```js
+// Array.
 [{
   id: 4,
   subject: 'Test-Mail',

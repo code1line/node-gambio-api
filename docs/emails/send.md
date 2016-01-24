@@ -1,21 +1,28 @@
-### E-Mails - Send
+# Send an E-Mail
 
-**Description**:
-- Sends a new or existing E-Mail.
-- Providing `id` only will send an existing one.
-- Skipping `id` with `null` or `undefined` while passing in `data` will create and send a new E-Mail.
+### Description
 
-**Method**:
-- `API.emails.send(id, data)`
+Sends a new or existing E-Mail.
 
-**Parameters**:
-- `id` *Integer* - E-Mail ID (optional).
-- `data` *Object* - E-Mail data (optional).
+Providing `id` only will send an existing one.
 
-**Example**:
+Skipping `id` with `null` or `undefined` while passing in `data` will create and send a new E-Mail.
+
+### Method
 ```js
-const API = new GambioApi({ ... });
+API.emails.send(id, data)
+```
 
+### Parameters
+
+`id` - *integer* - E-Mail ID **(optional)**
+
+`data` - *object* - E-Mail data **(optional)**
+
+### Example
+
+```js
+// E-Mail data.
 const data = {
   subject: 'Test Subject',
   sender: {
@@ -47,21 +54,18 @@ const data = {
 };
 
 // Send queued E-Mail by ID.
-API.emails.send(17)
-  .then(console.log)
-  .catch(console.error);
+API.emails.send(17);
 
 // Send new E-Mail.
-API.emails.send(null, data)
-  .then(console.log)
-  .catch(console.error);
+API.emails.send(null, data);
 ```
 
-**Returns in resolved promise**: *Object*
+### Return value in resolved promise
+
 ```js
-// API.emails.send(16);
+// Object.
 {
-  id: 16,
+  id: 17,
   subject: 'Eine kurze Test-Mail',
   sender: {
     emailAddress: 'sender@email.de',

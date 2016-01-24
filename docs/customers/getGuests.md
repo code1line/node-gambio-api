@@ -1,23 +1,25 @@
-### Customers - Get All Guests
+# Get all customers, that are guests
 
-**Description**:
-- Returns all customers, that are guests.
+### Description
 
-**Method**:
-- `API.customers.getGuests()`
+Returns all customers, that are guests.
 
-**Example**:
+### Method
+
 ```js
-const API = new GambioApi({ ... });
-
-// Get all guest customers.
 API.customers.getGuests()
-  .then(console.log)
-  .catch(console.error);
 ```
 
-**Returns in resolved promise**: *Array*
+### Example
 ```js
+// Get all guest customers.
+API.customers.getGuests();
+```
+
+### Return value in resolved promise
+
+```js
+// Array.
 [{
   id: 11,
   number: '11',

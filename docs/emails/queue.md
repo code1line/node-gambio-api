@@ -1,18 +1,23 @@
-### E-Mails - Queue
+# Queue an E-Mail
 
-**Description**:
-- Queues a new E-Mail, so that it can be sent later.
+### Description
 
-**Method**:
-- `API.emails.queue(data)`
+Queues a new E-Mail, so that it can be sent later.
 
-**Parameters**:
-- `data` *Object* - E-Mail data.
+### Method
 
-**Example**:
 ```js
-const API = new GambioApi({ ... });
+API.emails.queue(data)
+```
 
+### Parameters
+
+`data` - *object* - E-Mail data
+
+### Example
+
+```js
+// E-Mail data.
 const data = {
   subject: 'Test Subject',
   sender: {
@@ -43,13 +48,14 @@ const data = {
   ],
 };
 
-API.emails.queue(data)
-  .then(console.log)
-  .catch(console.error);
+// Queue E-Mail.
+API.emails.queue(data);
 ```
 
-**Returns in resolved promise**: *Object*
+### Returns in resolved promise
+
 ```js
+// Object.
 {
   id: 16,
   subject: 'Eine kurze Test-Mail',

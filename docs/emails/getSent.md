@@ -1,22 +1,25 @@
-### E-Mails - Get All Sent
+# Get all sent E-Mails
 
-**Description**:
-- Returns all sent E-Mails.
+### Description
 
-**Method**:
-- `API.emails.getSent()`
+Returns all sent E-Mails.
 
-**Example**:
+### Method
+
 ```js
-const API = new GambioApi({ ... });
-
 API.emails.getSent()
-  .then(console.log)
-  .catch(console.error);
 ```
 
-**Returns in resolved promise**: *Array*
+### Example
+
 ```js
+API.emails.getSent();
+```
+
+### Return value in resolved promise
+
+```js
+// Array.
 [{
   id: 28,
   subject: 'Test-Mail',

@@ -1,22 +1,25 @@
-### E-Mails - Get All Pending
+# Get all pending E-Mails
 
-**Description**:
-- Returns all pending E-Mails.
+### Description
 
-**Method**:
-- `API.emails.getPending()`
+Returns all pending E-Mails.
 
-**Example**:
+### Method
+
 ```js
-const API = new GambioApi({ ... });
-
 API.emails.getPending()
-  .then(console.log)
-  .catch(console.error);
 ```
 
-**Returns in resolved promise**: *Array*
+### Example
+
 ```js
+API.emails.getPending();
+```
+
+### Return value in resolved promise
+
+```js
+// Array.
 [{
   id: 18,
   subject: 'Test-Mail',

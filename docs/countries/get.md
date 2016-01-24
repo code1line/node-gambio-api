@@ -1,25 +1,28 @@
-### Countries - Get
+# Get a specific country
 
-**Description**:
-- Returns a country, selected by the country ID.
+### Description
 
-**Method**:
-- `API.countries.getById(id)`
+Returns a country, selected by the country ID.
 
-**Parameters**:
-- `id` *Integer* - Country ID
-
-**Example**:
+### Method
 ```js
-const API = new GambioApi({ ... });
-
-API.countries.getById(28)
-  .then(console.log)
-  .catch(console.error);
+API.countries.getById(id)
 ```
 
-**Returns in resolved promise**: *Object*
+### Parameters
+
+`id` - *integer* - Country ID
+
+### Example
+
 ```js
+API.countries.getById(28);
+```
+
+### Return value in resolved promise
+
+```js
+// Object.
 {
   id: 28,
   name: "Germany",

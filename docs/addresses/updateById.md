@@ -1,30 +1,37 @@
-### Addresses - Update
+# Update an address
 
-**Description**:
-- Updates an address.
+### Description
 
-**Method**:
-- `API.addresses.updateById(id, data)`
+Updates an address entry.
 
-**Parameters**:
-- `id` *Integer* - Address ID.
-- `data` *Object* - Address data.
+### Method
 
-**Example**:
 ```js
-const API = new GambioApi({ ... });
+API.addresses.updateById(id, data)
+```
 
+### Parameters
+
+`id` - *integer* - Address ID
+
+`data` - *object* - Address data
+
+### Example
+
+```js
+// Update address data.
 const data = {
   gender: 'f'
 };
 
-API.addresses.updateById(9, data)
-  .then(console.log)
-  .catch(console.error);
+// Update address entry.
+API.addresses.updateById(9, data);
 ```
 
-**Returns in resolved promise**: *Object*
+### Return value in resolved promise
+
 ```js
+// Object.
 {
   id: 1,
   customerId: 1,
