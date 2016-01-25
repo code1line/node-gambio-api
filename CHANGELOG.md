@@ -1,9 +1,9 @@
 # Changelog
 
 ## 1.0.0
-- Refactored entire code base.
-- Validator
+- Refactored Validator
   - Removed `checkUser`.
   - Removed `checkPassword`.
   - Removed `checkVersion`.
   - Removed `checkId`.
+  - Added `checkInteger`.
