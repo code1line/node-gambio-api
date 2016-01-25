@@ -1,5 +1,5 @@
 /**
- * Gambio demo shop 1 credentials.
+ * Credentials for Gambio's official demo shop 1.
  *
  * @see https://www.gambio-shop.de/shop1
  * @type {object}

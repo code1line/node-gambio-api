@@ -22,7 +22,7 @@
     "json"
   ],
   "author": "Ronald Loyko <ronald.loyko@gmail.com>",
-  "license": "MIT",
+  "license": "GPL",
   "bugs": {
     "url": "https://github.com/ronaldloyko/node-gambio-api/issues"
   },

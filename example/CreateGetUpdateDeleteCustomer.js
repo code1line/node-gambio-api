@@ -1,5 +1,5 @@
 /**
- * Demonstration of the Gambio JavaScript API
+ * Example implementation of the Gambio JavaScript API
  * using the integrated REST-API of the official Gambio test shop.
  *
  * You can run this file by typing `node CreateGetUpdateDeleteCustomer.js` in terminal.
