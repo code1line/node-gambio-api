@@ -7,15 +7,8 @@
   - Removed `checkVersion`.
   - Removed `checkId`.
   - Added `checkInteger`.
-- Refactored error classes.
-  - Removed `InvalidArgumentError`.
-  - Removed `NoArgumentError`.
-  - Removed `ClientError`.
-  - Added `ArgumentError`.
-  - Modified `ServerError.`
-    - Modified constructor parameter list.
+- Removed custom error classes, used error classes from package `common-errors` instead.
 - Moved message container `lib/messageContainer.js` to `lib/provider/messages.js`.
-- Created default header provider `lib/provider/headers.js`
+- Created default request headers provider `lib/provider/headers.js`
 - Moved API base class `lib/api/Api.js` to `lib/base/Api.js`.
-- Moved Error base class `lib/error/ExtendableError.js` to `lib/base/ExtendableError.js`.
-- Created `Helper`.
+- Added `http-status-codes` package as dependency.

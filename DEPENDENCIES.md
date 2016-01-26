@@ -4,6 +4,8 @@
 * [check-types](https://www.npmjs.com/package/check-types) (^5.1.0)
 * [extend](https://www.npmjs.com/package/extend) (^3.0.0)
 * [request](https://www.npmjs.com/package/request) (^2.67.0)
+* [common-errors](https://www.npmjs.com/package/common-errors) (^0.5.3)
+* [http-status-codes](https://www.npmjs.com/package/http-status-codes) (^1.0.5)
 
 
 ### For developers
@@ -12,4 +14,3 @@
 * [eslint-config-airbnb](https://www.npmjs.com/package/eslint-config-airbnb) (^3.1.0)
 * [eslint-plugin-react](https://www.npmjs.com/package/eslint-plugin-react) (^3.14.0)
 * [mocha](https://www.npmjs.com/package/mocha) (^2.3.4)
-

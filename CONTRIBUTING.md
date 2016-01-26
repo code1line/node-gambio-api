@@ -2,8 +2,6 @@
 
 Pull requests are always welcome!
 
-This project follows [semantic versioning](http://semver.org/).
-
 To see a structured dependency list of this module please refer to the [dependencies docs](/DEPENDENCIES.md).
 
 Before you start developing you must do `npm install` to install all necessary dependencies.
@@ -12,14 +10,17 @@ Don't forget to lint your code and run the tests by doing `npm test` during deve
 
 ### Directory structure
 
-- `demo` contains demo credentials and example usages.
+- `docs` contains documentation files.
+- `example` contains demo scripts for example usage.
 - `lib` contains library core files.
   - `api` contains API classes.
-  - `error` contains error classes.
+  - `base` contains base classes.
+  - `provider` contains provider objects.
 - `test` contains test specs.
 
 ### Rules
 
+- This project follows [semantic versioning](http://semver.org/).
 - Code must be written in [ES6 syntax](https://babeljs.io/docs/learn-es2015).
 - Code must be formatted according to [AirBnb's coding guidelines](https://github.com/airbnb/javascript).
 - Code must be documented with [JSDoc](http://usejsdoc.org).

@@ -1,7 +1,7 @@
 {
   "name": "gambio-api",
   "version": "0.1.1",
-  "description": "JavaScript API for Gambio",
+  "description": "Gambio JavaScript API client ",
   "main": "index.js",
   "directories": {
     "test": "test"
@@ -22,7 +22,7 @@
     "json"
   ],
   "author": "Ronald Loyko <ronald.loyko@gmail.com>",
-  "license": "GPL",
+  "license": "GPL-2.0",
   "bugs": {
     "url": "https://github.com/ronaldloyko/node-gambio-api/issues"
   },
@@ -33,7 +33,9 @@
   "dependencies": {
     "bluebird": "^3.1.1",
     "check-types": "^5.1.0",
+    "common-errors": "^0.5.3",
     "extend": "^3.0.0",
+    "http-status-codes": "^1.0.5",
     "request": "^2.67.0"
   },
   "devDependencies": {
