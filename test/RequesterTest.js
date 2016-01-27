@@ -2,136 +2,116 @@ const expect = require('chai').expect;
 
 const extend = require('extend');
 const Promise = require('bluebird');
+const errors = require('common-errors');
 
-const Requester = require('../lib/Requester');
-const demoCredentials = require('../demo/credentials');
+const Requester = require('./../lib/Requester');
+const credentials = require('./_credentials');
 
-const InvalidArgumentError = require('../lib/error/InvalidArgumentError');
-const NoArgumentError = require('../lib/error/NoArgumentError');
-const RequestError = require('../lib/error/RequestError');
-const ClientError = require('../lib/error/ClientError');
+// Credentials.
+const testUrl = `${credentials.url}/${credentials.apiSuffix}/customers`;
+const testAuth = {
+  user: credentials.user,
+  pass: credentials.pass,
+};
+const testData = {
+  gender: 'm',
+  firstname: 'John',
+  lastname: 'Doe',
+  dateOfBirth: '1985-02-13',
+  vatNumber: '0923429837942',
+  telephone: '2343948798345',
+  fax: '2093049283',
+  email: `gambio.js.api@test.com`,
+  password: '0123456789',
+  type: 'registree',
+  address: {
+    company: 'Test Company',
+    street: 'Test Street',
+    suburb: 'Test Suburb',
+    postcode: '23983',
+    city: 'Test City',
+    countryId: 81,
+    zoneId: 84,
+    b2bStatus: true,
+  },
+};
 
-// Test credentials.
-const credentials = extend(true, {}, demoCredentials,
-  { url: `${demoCredentials.url}/api.php/v2/customers` }
-);
+function generateNewEmailAddress() {
+  const email = `gambio.js.api.${Math.random() * (100000 - 100) + 100}@test.com`;
+  extend(true, testData, { email });
+}
 
-describe('Requester', () => {
-  describe('#constructor', () => {
-    it('should work when valid parameters has been passed', () => {
-      const func = () => new Requester(credentials);
-      expect(func).not.to.throw(Error);
-    });
+// Helper function to test `url` and `auth` arguments.
+// It also tests if a promise is returned.
+function argumentsAndPromiseTest(methodName, additionalParameters, url) {
+  additionalParameters = additionalParameters || [];
+  url = url || testUrl;
 
-    it('should throw NoArgumentError on missing arguments', () => {
-      const func = () => new Requester();
-      expect(func).to.throw(NoArgumentError);
-    });
-
-    it('should throw NoArgumentError on missing password', () => {
-      const crx = extend(true, {}, credentials);
-      delete crx.pass;
-
-      const func = () => new Requester(crx);
-      expect(func).to.throw(NoArgumentError);
-    });
-
-    it('should throw InvalidArgumentError on wrong type of password', () => {
-      const crx = extend(true, {}, credentials, { pass: 123 });
-      const func = () => new Requester(crx);
-      expect(func).to.throw(InvalidArgumentError);
-    });
-
-    it('should throw NoArgumentError on missing user', () => {
-      const crx = extend(true, {}, credentials);
-      delete crx.user;
-
-      const func = () => new Requester(crx);
-      expect(func).to.throw(NoArgumentError);
-    });
-
-    it('should throw InvalidArgumentError on wrong type of user', () => {
-      const crx = extend(true, {}, credentials, { user: 123 });
-      const func = () => new Requester(crx);
-      expect(func).to.throw(InvalidArgumentError);
-    });
-
-    it('should throw NoArgumentError on missing URL', () => {
-      const crx = extend(true, {}, credentials);
-      delete crx.url;
-
-      const func = () => new Requester(crx);
-      expect(func).to.throw(NoArgumentError);
-    });
-
-    it('should throw InvalidArgumentError on wrong type of URL', () => {
-      const crx = extend(true, {}, credentials, { url: 123 });
-      const func = () => new Requester(crx);
-      expect(func).to.throw(InvalidArgumentError);
-    });
+  it('should throw ArgumentNullError if no arguments are passed', () => {
+    const sandbox = () => Requester[methodName]();
+    expect(sandbox).to.throw(errors.ArgumentNullError);
   });
 
-  describe('#get', () => {
-    it('should throw InvalidArgumentError if invalid data argument is provided', () => {
-      const crx = extend(true, {}, credentials,
-        { url: `${demoCredentials.url}/api.php/v2/addresses` }
-      );
-      const request = new Requester(crx);
-      const func = () => request.get(123);
-      expect(func).to.throw(InvalidArgumentError);
-    });
+  it('should throw ArgumenNullError if no URL is passed', () => {
+    const sandbox = () => Requester[methodName](undefined, testAuth, ...additionalParameters);
+    expect(sandbox).to.throw(errors.ArgumentNullError);
+  });
 
-    it('should return a promise', () => {
-      const request = new Requester(credentials);
-      const get = request.get();
-      expect(get).to.be.an.instanceOf(Promise);
-    });
+  it('should throw ArgumentNullError if no authentication object is passed', () => {
+    const sandbox = () => Requester[methodName](url, undefined, ...additionalParameters);
+    expect(sandbox).to.throw(errors.ArgumentNullError);
+  });
 
-    it('should return rejected promise with ClientError 401 on invalid credentials', (done) => {
-      const crx = extend(true, {}, credentials, { user: 'blubb', pass: 'blubb' });
-      const request = new Requester(crx);
-      const get = request.get();
+  it('should return a Promise', () => {
+    const request = Requester[methodName](url, testAuth, ...additionalParameters);
+    expect(request).to.be.an.instanceOf(Promise);
+  });
+}
 
-      get.catch((error) => {
-        expect(error).to.be.instanceOf(ClientError);
-        expect(error.code).to.equal(401);
+describe('Requester', () => {
+  beforeEach(() => generateNewEmailAddress());
+
+  describe('Errors', () => {
+    it('should return rejected promise on invalid credentials', (done) => {
+      const myAuth = extend({}, testAuth, { user: 'blubb', pass: 'blubb' });
+      const request = Requester.get(testUrl, myAuth);
+
+      request.catch((error) => {
+        expect(error).to.be.instanceOf(errors.AuthenticationRequiredError);
+        expect(error.data.code).to.equal(401);
         done();
       });
     });
 
-    it('should return rejected promise with RequestError while performing request', (done) => {
-      const crx = extend(true, {}, credentials, { url: 'http://127.0.0.2' });
-      const request = new Requester(crx);
-      const get = request.get();
+    it('should return rejected promise on error while performing request', (done) => {
+      const myUrl = 'http://this-site-does-not.exist/man';
+      const request = Requester.get(myUrl, testAuth);
 
-      get
-        .catch((error) => {
-          expect(error).to.be.instanceOf(RequestError);
-          done();
-        });
+      request.catch((error) => {
+        expect(error).to.be.instanceOf(errors.ConnectionError);
+        done();
+      });
     });
 
-    it('should return rejected promise with ClientError 404 on not found resource', (done) => {
-      const crx = extend(true, {}, credentials,
-        { url: `${credentials.url}/99999999` }
-      );
-      const request = new Requester(crx);
-      const get = request.get();
+    it('should return rejected promise on not found resource', (done) => {
+      const myUrl = `${testUrl}/99999999`;
+      const request = Requester.get(myUrl, testAuth);
 
-      get
-        .catch((error) => {
-          expect(error).to.be.instanceOf(ClientError);
-          expect(error.code).to.equal(404);
-          done();
-        });
+      request.catch((error) => {
+        expect(error).to.be.instanceOf(errors.NotFoundError);
+        expect(error.data.code).to.equal(404);
+        done();
+      });
     });
+  });
 
-    it('should return resolved promise on successful request with custom headers', (done) => {
-      const request = new Requester(credentials);
-      const headers = { 'User-Agent': 'Tester' };
-      const get = request.get(headers);
+  describe('#get', () => {
+    argumentsAndPromiseTest('get');
 
-      get.then((response) => {
+    it('should work', (done) => {
+      const request = Requester.get(testUrl, testAuth);
+
+      request.then((response) => {
         expect(response).to.be.a('array');
         done();
       });
@@ -139,238 +119,52 @@ describe('Requester', () => {
   });
 
   describe('#post', () => {
-    it('should throw InvalidArgumentError if invalid data argument is provided', () => {
-      const crx = extend(true, {}, credentials,
-        { url: `${demoCredentials.url}/api.php/v2/addresses` }
-      );
-      const request = new Requester(crx);
-      const func = () => request.post(123);
-      expect(func).to.throw(InvalidArgumentError);
-    });
+    argumentsAndPromiseTest('post', [testData]);
 
-    it('should return a promise', () => {
-      const crx = extend(true, {}, credentials,
-        { url: `${demoCredentials.url}/api.php/v2/addresses` }
-      );
-      const request = new Requester(crx);
-      const post = request.post();
-      expect(post).to.be.an.instanceOf(Promise);
-    });
+    it('should work', (done) => {
+      const request = Requester.post(testUrl, testAuth, testData);
 
-    it('should return rejected promise with ClientError 401 on invalid credentials', (done) => {
-      const crx = extend(true, {}, credentials, { user: 'blubb', pass: 'blubb' });
-      const request = new Requester(crx);
-      const post = request.post();
-
-      post.catch((error) => {
-        expect(error).to.be.instanceOf(ClientError);
-        expect(error.code).to.equal(401);
-        done();
-      });
-    });
-
-    it('should return rejected promise with RequestError while performing request', (done) => {
-      const crx = extend(true, {}, credentials, { url: 'http://127.0.0.2/tztz' });
-      const request = new Requester(crx);
-      const post = request.post();
-
-      post
-        .catch((error) => {
-          expect(error).to.be.instanceOf(RequestError);
-          done();
-        });
-    });
-
-    it('should return rejected promise with ClientError 404 on not found status code', (done) => {
-      const crx = extend(true, {}, credentials,
-        { url: `${demoCredentials.url}/api.php/v2/abcde` }
-      );
-      const request = new Requester(crx);
-      const post = request.post();
-
-      post
-        .catch((error) => {
-          expect(error).to.be.instanceOf(ClientError);
-          expect(error.code).to.equal(404);
-          done();
-        });
-    });
-
-    it('should return resolved promise on successful request with custom data', (done) => {
-      const crx = extend(true, {}, credentials,
-        { url: `${demoCredentials.url}/api.php/v2/addresses` }
-      );
-      const request = new Requester(crx);
-      const data = {
-        customerId: 1,
-        gender: 'm',
-        company: 'Test Company',
-        firstname: 'John',
-        lastname: 'Doe',
-        street: 'Test Street 1',
-        suburb: 'Test Suburb',
-        postcode: '23983',
-        city: 'Test City',
-        countryId: 81,
-        zoneId: 84,
-        class: null,
-        b2bStatus: false,
-      };
-      const post = request.post(data);
-
-      post.then((response) => {
+      request.then((response) => {
         expect(response).to.be.a('object');
+        expect(response.firstname).to.equal(testData.firstname);
         done();
       });
     });
   });
 
   describe('#delete', () => {
-    it('should return a promise', () => {
-      const crx = extend(true, {}, credentials,
-        { url: `${demoCredentials.url}/api.php/v2/addresses/99999999` }
-      );
-      const request = new Requester(crx);
-      const del = request.delete();
-      expect(del).to.be.an.instanceOf(Promise);
-    });
+    argumentsAndPromiseTest('delete', null, `${testUrl}/999999`);
 
-    it('should return rejected promise with ClientError 401 on invalid credentials', (done) => {
-      const crx = extend(true, {}, credentials, { user: 'blubb', pass: 'blubb' });
-      const request = new Requester(crx);
-      const del = request.delete();
-
-      del.catch((error) => {
-        expect(error).to.be.instanceOf(ClientError);
-        expect(error.code).to.equal(401);
-        done();
-      });
-    });
-
-    it('should return rejected promise with RequestError while performing request', (done) => {
-      const crx = extend(true, {}, credentials, { url: 'http://127.0.0.2' });
-      const request = new Requester(crx);
-      const del = request.delete();
-
-      del
-        .catch((error) => {
-          expect(error).to.be.instanceOf(RequestError);
-          done();
-        });
-    });
-
-    it('should return rejected promise with ClientError 404 on not found resource', (done) => {
-      const crx = extend(true, {}, credentials,
-        { url: `${demoCredentials.url}/api.php/v2/99999999` }
-      );
-      const request = new Requester(crx);
-      const del = request.delete();
-
-      del
-        .catch((error) => {
-          expect(error).to.be.instanceOf(ClientError);
-          expect(error.code).to.equal(404);
-          done();
-        });
-    });
-
-    it('should return resolved promise on successful request', (done) => {
-      const crx = extend(true, {}, credentials,
-        { url: `${demoCredentials.url}/api.php/v2/addresses/99999999` }
-      );
-      const request = new Requester(crx);
-      request.delete()
+    it('should work', (done) => {
+      Requester.post(testUrl, testAuth, testData)
         .then((response) => {
-          expect(response).to.be.a('object');
+          const requestUrl = `${testUrl}/${response.id}`;
+          return Requester.delete(requestUrl, testAuth);
+        })
+        .then((response) => {
+          expect(response.code).to.equal(200);
+          expect(response.status).to.equal('success');
           done();
         });
     });
   });
 
   describe('#put', () => {
-    it('should throw InvalidArgumentError if invalid data argument is provided', () => {
-      const crx = extend(true, {}, credentials,
-        { url: `${demoCredentials.url}/api.php/v2/addresses` }
-      );
-      const request = new Requester(crx);
-      const func = () => request.put(123);
-      expect(func).to.throw(InvalidArgumentError);
-    });
+    const myData = { firstname: 'Franc' };
 
-    it('should return a promise', () => {
-      const crx = extend(true, {}, credentials,
-        { url: `${demoCredentials.url}/api.php/v2/addresses/2` }
-      );
-      const request = new Requester(crx);
-      const put = request.put();
-      expect(put).to.be.an.instanceOf(Promise);
-    });
+    argumentsAndPromiseTest('put', [myData], `${testUrl}/2`);
 
-    it('should return rejected promise with ClientError 401 on invalid credentials', (done) => {
-      const crx = extend(true, {}, credentials, { user: 'blubb', pass: 'blubb' });
-      const request = new Requester(crx);
-      const put = request.put();
-
-      put.catch((error) => {
-        expect(error).to.be.instanceOf(ClientError);
-        expect(error.code).to.equal(401);
-        done();
-      });
-    });
-
-    it('should return rejected promise with RequestError while performing request', (done) => {
-      const crx = extend(true, {}, credentials, { url: 'http://127.0.0.2/tztz' });
-      const request = new Requester(crx);
-      const put = request.put();
-
-      put
-        .catch((error) => {
-          expect(error).to.be.instanceOf(RequestError);
+    it('should work', (done) => {
+      Requester.post(testUrl, testAuth, testData)
+        .then((response) => {
+          const requestUrl = `${testUrl}/${response.id}`;
+          return Requester.put(requestUrl, testAuth, myData);
+        })
+        .then((response) => {
+          expect(response).to.be.a('object');
+          expect(response.firstname).to.equal(myData.firstname);
           done();
         });
-    });
-
-    it('should return rejected promise with ClientError 404 on not found status code', (done) => {
-      const crx = extend(true, {}, credentials,
-        { url: `${demoCredentials.url}/api.php/v2/abcde` }
-      );
-      const request = new Requester(crx);
-      const put = request.put();
-
-      put
-        .catch((error) => {
-          expect(error).to.be.instanceOf(ClientError);
-          expect(error.code).to.equal(404);
-          done();
-        });
-    });
-
-    it('should return resolved promise on successful request with custom data', (done) => {
-      const crx = extend(true, {}, credentials,
-        { url: `${demoCredentials.url}/api.php/v2/addresses/2` }
-      );
-      const request = new Requester(crx);
-      const data = {
-        customerId: 1,
-        gender: 'm',
-        company: 'Test Company',
-        firstname: 'John',
-        lastname: 'Doe',
-        street: 'Test Street 1',
-        suburb: 'Test Suburb',
-        postcode: '23983',
-        city: 'Test City',
-        countryId: 81,
-        zoneId: 84,
-        class: null,
-        b2bStatus: false,
-      };
-      const put = request.put(data);
-
-      put.then((response) => {
-        expect(response).to.be.a('object');
-        done();
-      });
     });
   });
 });
