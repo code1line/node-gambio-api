@@ -1,1 +1,1 @@
-require('./lib/Module');
+require('./lib/GambioApi');

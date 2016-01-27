@@ -2,7 +2,7 @@ const expect = require('chai').expect;
 
 const extend = require('extend');
 
-const GambioApi = require('../.');
+const GambioApi = require('../lib/GambioApi');
 
 const InvalidArgumentError = require('../lib/error/InvalidArgumentError');
 const NoArgumentError = require('../lib/error/NoArgumentError');
