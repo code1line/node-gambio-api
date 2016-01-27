@@ -3,25 +3,25 @@ const errors = require('common-errors');
 
 const Validator = require('./../lib/Validator');
 
-const validTestObject = { a: 1 };
-const validTestUrl = 'http://www.google.com';
-const validTestNumber = 46;
+const testObject = { a: 1 };
+const testUrl = 'http://www.google.com';
+const testNumber = 46;
 
 describe('Validator', () => {
   describe('#checkObject', () => {
     it('should throw no error on valid object', () => {
-      const func = () => Validator.checkObject(validTestObject);
-      expect(func).not.to.throw(Error);
+      const sandbox = () => Validator.checkObject(testObject);
+      expect(sandbox).not.to.throw(Error);
     });
 
     it('should throw ArgumentNullError on missing object', () => {
-      const func = () => Validator.checkObject();
-      expect(func).to.throw(errors.ArgumentNullError);
+      const sandbox = () => Validator.checkObject();
+      expect(sandbox).to.throw(errors.ArgumentNullError);
     });
 
     it('should throw ArgumentError on wrong argument type', () => {
-      const func = () => Validator.checkObject(22);
-      expect(func).to.throw(errors.ArgumentError);
+      const sandbox = () => Validator.checkObject(22);
+      expect(sandbox).to.throw(errors.ArgumentError);
     });
 
     it('should throw ArgumentError with entity name provided', () => {
@@ -37,23 +37,23 @@ describe('Validator', () => {
 
   describe('#checkUrl', () => {
     it('should throw no error on valid URL', () => {
-      const func = () => Validator.checkUrl(validTestUrl);
-      expect(func).not.to.throw(Error);
+      const sandbox = () => Validator.checkUrl(testUrl);
+      expect(sandbox).not.to.throw(Error);
     });
 
     it('should throw ArgumentNullError on missing URL', () => {
-      const func = () => Validator.checkUrl();
-      expect(func).to.throw(errors.ArgumentNullError);
+      const sandbox = () => Validator.checkUrl();
+      expect(sandbox).to.throw(errors.ArgumentNullError);
     });
 
     it('should throw ArgumentError on bad formatted URL', () => {
-      const func = () => Validator.checkUrl('u9712ez8o721ge');
-      expect(func).to.throw(errors.ArgumentError);
+      const sandbox = () => Validator.checkUrl('u9712ez8o721ge');
+      expect(sandbox).to.throw(errors.ArgumentError);
     });
 
     it('should throw ArgumentError on wrong argument type', () => {
-      const func = () => Validator.checkUrl(22);
-      expect(func).to.throw(errors.ArgumentError);
+      const sandbox = () => Validator.checkUrl(22);
+      expect(sandbox).to.throw(errors.ArgumentError);
     });
 
     it('should throw ArgumentError with entity name provided', () => {
@@ -69,18 +69,18 @@ describe('Validator', () => {
 
   describe('#checkNumber', () => {
     it('should throw no error on valid number', () => {
-      const func = () => Validator.checkNumber(validTestNumber);
-      expect(func).not.to.throw(Error);
+      const sandbox = () => Validator.checkNumber(testNumber);
+      expect(sandbox).not.to.throw(Error);
     });
 
     it('should throw ArgumentNullError on missing number', () => {
-      const func = () => Validator.checkNumber();
-      expect(func).to.throw(errors.ArgumentNullError);
+      const sandbox = () => Validator.checkNumber();
+      expect(sandbox).to.throw(errors.ArgumentNullError);
     });
 
     it('should throw ArgumentError on wrong argument type', () => {
-      const func = () => Validator.checkNumber('22');
-      expect(func).to.throw(errors.ArgumentError);
+      const sandbox = () => Validator.checkNumber('22');
+      expect(sandbox).to.throw(errors.ArgumentError);
     });
 
     it('should throw ArgumentError with entity name provided', () => {
@@ -96,18 +96,18 @@ describe('Validator', () => {
 
   describe('#checkString', () => {
     it('should throw no error on valid string', () => {
-      const func = () => Validator.checkString('2');
-      expect(func).not.to.throw(Error);
+      const sandbox = () => Validator.checkString('2');
+      expect(sandbox).not.to.throw(Error);
     });
 
     it('should throw ArgumentNullError on missing string', () => {
-      const func = () => Validator.checkString();
-      expect(func).to.throw(errors.ArgumentNullError);
+      const sandbox = () => Validator.checkString();
+      expect(sandbox).to.throw(errors.ArgumentNullError);
     });
 
     it('should throw ArgumentError on wrong argument type', () => {
-      const func = () => Validator.checkString(22);
-      expect(func).to.throw(errors.ArgumentError);
+      const sandbox = () => Validator.checkString(22);
+      expect(sandbox).to.throw(errors.ArgumentError);
     });
 
     it('should throw ArgumentError with entity name provided', () => {
@@ -123,23 +123,23 @@ describe('Validator', () => {
 
   describe('#checkInteger', () => {
     it('should throw no error on valid integer', () => {
-      const func = () => Validator.checkInteger(2);
-      expect(func).not.to.throw(Error);
+      const sandbox = () => Validator.checkInteger(2);
+      expect(sandbox).not.to.throw(Error);
     });
 
     it('should throw ArgumentNullError on missing integer', () => {
-      const func = () => Validator.checkInteger();
-      expect(func).to.throw(errors.ArgumentNullError);
+      const sandbox = () => Validator.checkInteger();
+      expect(sandbox).to.throw(errors.ArgumentNullError);
     });
 
     it('should throw ArgumentError on wrong argument type', () => {
-      const func = () => Validator.checkInteger('22');
-      expect(func).to.throw(errors.ArgumentError);
+      const sandbox = () => Validator.checkInteger('22');
+      expect(sandbox).to.throw(errors.ArgumentError);
     });
 
     it('should throw ArgumentError on float values', () => {
-      const func = () => Validator.checkInteger(3.2);
-      expect(func).to.throw(errors.ArgumentError);
+      const sandbox = () => Validator.checkInteger(3.2);
+      expect(sandbox).to.throw(errors.ArgumentError);
     });
 
     it('should throw ArgumentError with entity name provided', () => {
