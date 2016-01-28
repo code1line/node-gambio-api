@@ -1,28 +1,19 @@
 const expect = require('chai').expect;
 
-const extend = require('extend');
 const Promise = require('bluebird');
+const errors = require('common-errors');
 
-const Api = require('../lib/api/Api');
-const EmailApi = require('../lib/api/EmailApi');
+const Api = require('./../../lib/api/Api');
+const EmailApi = require('./../../lib/api/EmailApi');
+const manipulatorTest = require('./../_manipulatorTestHelper');
+const credentials = require('./../_credentials');
 
-const InvalidArgumentError = require('../lib/error/InvalidArgumentError');
-const NoArgumentError = require('../lib/error/NoArgumentError');
-const ClientError = require('../lib/error/ClientError');
-const RequestError = require('../lib/error/RequestError');
-
-const demoCredentials = require('../demo/credentials');
-
-// Test credentials.
-const credentials = extend(
-  true,
-  {},
-  demoCredentials,
-  { url: `${demoCredentials.url}/api.php/v2` }
-);
-
-// Test data.
-const data = {
+const testUrl = credentials.url + `/${credentials.apiSuffix}`;
+const testAuth = {
+  user: credentials.user,
+  pass: credentials.pass,
+};
+const testData = {
   subject: 'Test Subject',
   sender: {
     emailAddress: 'sender@email.de',
@@ -51,66 +42,59 @@ const data = {
     },
   ],
 };
+const testInstance = new EmailApi(testUrl, testAuth);
 
-// Path to test attachment file.
-const attachmentFile = `${__dirname}/testUploadFile.txt`;
 
 describe('EmailApi', () => {
   describe('#constructor', () => {
     it('should be an instance of Api', () => {
-      const instance = new EmailApi(credentials);
+      const instance = new EmailApi(testUrl, testAuth);
       expect(instance).to.be.instanceOf(Api);
+    });
+
+    it('should work if all arguments has been passed', () => {
+      const sandbox = () => new EmailApi(testUrl, testAuth);
+      expect(sandbox).not.to.throw(Error);
     });
   });
 
   describe('#get', () => {
-    it('should throw InvalidArgumentError on passing invalid optional argument', () => {
-      const func = () => {
-        const instance = new EmailApi(credentials);
-        instance.get(123);
-      };
-      expect(func).to.throw(InvalidArgumentError);
+    manipulatorTest({
+      testedObject: testInstance,
+      methodName: 'get',
+      limitedFields: ['subject'],
+      excludedField: 'sender',
     });
 
-    it('should return a instance of Promise', () => {
-      const instance = new EmailApi(credentials);
-      const request = instance.get();
+    it('should return a promise', () => {
+      const request = testInstance.get();
       expect(request).to.be.an.instanceOf(Promise);
     });
 
-    it('should return result in a resolved promise', (done) => {
-      const instance = new EmailApi(credentials);
-      instance.get()
+    it('should return result', (done) => {
+      testInstance.get()
         .then((result) => {
           expect(result).to.be.a('array');
-          done();
-        });
-    });
-
-    it('should return sorted result in resolved promise when criteria is passed', (done) => {
-      const instance = new EmailApi(credentials);
-      instance.get({ id: 'desc' })
-        .then((result) => {
-          if (result.length > 1) {
-            expect(result[0].id).to.be.above(result[1].id);
-          } else {
-            expect(result).to.be.a('array');
-          }
           done();
         });
     });
   });
 
   describe('#getPending', () => {
-    it('should return a instance of Promise', () => {
-      const instance = new EmailApi(credentials);
-      const request = instance.getPending();
+    manipulatorTest({
+      testedObject: testInstance,
+      methodName: 'getPending',
+      limitedFields: ['subject'],
+      excludedField: 'sender',
+    });
+
+    it('should return a promise', () => {
+      const request = testInstance.getPending();
       expect(request).to.be.an.instanceOf(Promise);
     });
 
-    it('should return result in a resolved promise', (done) => {
-      const instance = new EmailApi(credentials);
-      instance.getPending()
+    it('should return result', (done) => {
+      testInstance.getPending()
         .then((result) => {
           expect(result).to.be.a('array');
           done();
@@ -119,15 +103,20 @@ describe('EmailApi', () => {
   });
 
   describe('#getSent', () => {
-    it('should return a instance of Promise', () => {
-      const instance = new EmailApi(credentials);
-      const request = instance.getSent();
+    manipulatorTest({
+      testedObject: testInstance,
+      methodName: 'getSent',
+      limitedFields: ['subject'],
+      excludedField: 'sender',
+    });
+
+    it('should return a promise', () => {
+      const request = testInstance.getSent();
       expect(request).to.be.an.instanceOf(Promise);
     });
 
-    it('should return result in a resolved promise', (done) => {
-      const instance = new EmailApi(credentials);
-      instance.getSent()
+    it('should return result', (done) => {
+      testInstance.getSent()
         .then((result) => {
           expect(result).to.be.a('array');
           done();
@@ -136,31 +125,23 @@ describe('EmailApi', () => {
   });
 
   describe('#search', () => {
-    it('should throw NoArgumentError on missing argument', () => {
-      const func = () => {
-        const instance = new EmailApi(credentials);
-        instance.search();
-      };
-      expect(func).to.throw(NoArgumentError);
+    it('should throw ArgumentNullError on missing argument', () => {
+      const sandbox = () => testInstance.search();
+      expect(sandbox).to.throw(errors.ArgumentNullError);
     });
 
-    it('should throw InvalidArgumentError on invalid type of argument', () => {
-      const func = () => {
-        const instance = new EmailApi(credentials);
-        instance.search(2123);
-      };
-      expect(func).to.throw(InvalidArgumentError);
+    it('should throw ArgumentError on invalid type of argument', () => {
+      const sandbox = () => testInstance.search(2123);
+      expect(sandbox).to.throw(errors.ArgumentError);
     });
 
     it('should return a instance of Promise', () => {
-      const instance = new EmailApi(credentials);
-      const request = instance.search('test');
+      const request = testInstance.search('test');
       expect(request).to.be.an.instanceOf(Promise);
     });
 
-    it('should return result in a resolved promise', (done) => {
-      const instance = new EmailApi(credentials);
-      instance.search('test')
+    it('should return result', (done) => {
+      testInstance.search('test')
         .then((result) => {
           expect(result).to.be.a('array');
           done();
@@ -169,40 +150,24 @@ describe('EmailApi', () => {
   });
 
   describe('#getById', () => {
-    it('should throw NoArgumentError if no ID has been passed', () => {
-      const func = () => {
-        const instance = new EmailApi(credentials);
-        instance.getById();
-      };
-      expect(func).to.throw(NoArgumentError);
+    it('should throw ArgumentNullError on missing argument', () => {
+      const sandbox = () => testInstance.getById();
+      expect(sandbox).to.throw(errors.ArgumentNullError);
     });
 
-    it('should throw InvalidArgumentError if argument is not an integer', () => {
-      const func = () => {
-        const instance = new EmailApi(credentials);
-        instance.getById(2.5);
-      };
-      expect(func).to.throw(InvalidArgumentError);
-    });
-
-    it('should throw InvalidArgumentError if argument is not a number', () => {
-      const func = () => {
-        const instance = new EmailApi(credentials);
-        instance.getById('asdsadasd');
-      };
-      expect(func).to.throw(InvalidArgumentError);
+    it('should throw ArgumentError if argument is not an integer', () => {
+      const sandbox = () => testInstance.getById(2.5);
+      expect(sandbox).to.throw(errors.ArgumentError);
     });
 
     it('should return a promise', () => {
-      const instance = new EmailApi(credentials);
-      const request = instance.getById(15);
+      const request = testInstance.getById(15);
       expect(request).to.be.an.instanceOf(Promise);
     });
 
-    it('should return a result on valid ID', (done) => {
+    it('should return a result', (done) => {
       const id = 15;
-      const instance = new EmailApi(credentials);
-      instance
+      testInstance
         .getById(id)
         .then((response) => {
           expect(response).to.be.a('object');
@@ -211,216 +176,122 @@ describe('EmailApi', () => {
         });
     });
 
-    it('should return rejected promise with ClientError on not found entry', (done) => {
-      const id = 819999;
-      const instance = new EmailApi(credentials);
-      instance
-        .getById(id)
+    it('should return rejected promise with NotFoundError on not found entry', (done) => {
+      testInstance
+        .getById(819999)
         .catch((error) => {
-          expect(error).to.be.instanceOf(ClientError);
+          expect(error).to.be.instanceOf(errors.NotFoundError);
           done();
         });
     });
   });
 
   describe('#queue', () => {
-    it('should throw NoArgumentError if no object has been passed', () => {
-      const func = () => {
-        const instance = new EmailApi(credentials);
-        instance.queue();
-      };
-      expect(func).to.throw(NoArgumentError);
+    it('should throw ArgumentNullError on missing argument', () => {
+      const sandbox = () => testInstance.queue();
+      expect(sandbox).to.throw(errors.ArgumentNullError);
     });
 
-    it('should throw InvalidArgumentError if argument is not an object', () => {
-      const func = () => {
-        const instance = new EmailApi(credentials);
-        instance.queue('asdsadasd');
-      };
-      expect(func).to.throw(InvalidArgumentError);
+    it('should throw ArgumentError if argument is not an object', () => {
+      const sandbox = () => testInstance.queue('asdsadasd');
+      expect(sandbox).to.throw(errors.ArgumentError);
     });
 
     it('should return a promise', () => {
-      const instance = new EmailApi(credentials);
-      const request = instance.queue(data);
+      const request = testInstance.queue(testData);
       expect(request).to.be.an.instanceOf(Promise);
     });
 
-    it('should queue a new customer on valid data', (done) => {
-      const instance = new EmailApi(credentials);
-      instance
-        .queue(data)
+    it('should queue a new E-Mail', (done) => {
+      testInstance
+        .queue(testData)
         .then((response) => {
           expect(response).to.be.a('object');
           expect(response.id).to.be.a('number');
-          expect(response.subject).to.equal(data.subject);
+          expect(response.subject).to.equal(testData.subject);
           done();
         });
     });
   });
 
   describe('#send', () => {
-    it('should throw NoArgumentError if no argument has been passed', () => {
-      const func = () => {
-        const instance = new EmailApi(credentials);
-        instance.send();
-      };
-      expect(func).to.throw(NoArgumentError);
+    it('should throw ArgumentNullError if no arguments have been passed', () => {
+      const sandbox = () => testInstance.send();
+      expect(sandbox).to.throw(errors.ArgumentNullError);
     });
 
-    it('should throw InvalidArgumentError if invalid ID has been passed', () => {
-      const func = () => {
-        const instance = new EmailApi(credentials);
-        instance.send('1121');
-      };
-      expect(func).to.throw(InvalidArgumentError);
+    it('should throw ArgumentError if invalid ID argument has been passed', () => {
+      const sandbox = () => testInstance.send('1121');
+      expect(sandbox).to.throw(errors.ArgumentError);
     });
 
-    it('should throw InvalidArgumentError if invalid data object has been passed', () => {
-      const func = () => {
-        const instance = new EmailApi(credentials);
-        instance.send(null, '123');
-      };
-      expect(func).to.throw(InvalidArgumentError);
+    it('should throw ArgumentError if invalid data argument has been passed', () => {
+      const sandbox = () => testInstance.send(null, '123');
+      expect(sandbox).to.throw(errors.ArgumentError);
     });
 
     it('should work with undefined ID and data object as parameters', () => {
-      const func = () => {
-        const instance = new EmailApi(credentials);
-        instance.send(undefined, data);
-      };
-      expect(func).not.to.throw(InvalidArgumentError);
+      const sandbox = () => testInstance.send(undefined, testData);
+      expect(sandbox).not.to.throw(Error);
     });
 
     it('should work with null ID and data object as parameters', () => {
-      const func = () => {
-        const instance = new EmailApi(credentials);
-        instance.send(null, data);
-      };
-      expect(func).not.to.throw(InvalidArgumentError);
+      const sandbox = () => testInstance.send(null, testData);
+      expect(sandbox).not.to.throw(Error);
     });
 
     it('should work with ID as single parameter', () => {
-      const func = () => {
-        const instance = new EmailApi(credentials);
-        instance.send(16);
-      };
-      expect(func).not.to.throw(InvalidArgumentError);
+      const sandbox = () => testInstance.send(16);
+      expect(sandbox).not.to.throw(Error);
     });
 
     it('should return a promise', () => {
-      const instance = new EmailApi(credentials);
-      const request = instance.send(null, data);
+      const request = testInstance.send(null, testData);
       expect(request).to.be.an.instanceOf(Promise);
     });
 
-    it('should send a new E-Mail on valid data', (done) => {
-      const instance = new EmailApi(credentials);
-      instance
-        .send(null, data)
+    it('should send a new E-Mail', (done) => {
+      testInstance
+        .send(null, testData)
         .then((response) => {
           expect(response).to.be.a('object');
           expect(response.id).to.be.a('number');
-          expect(response.subject).to.equal(data.subject);
+          expect(response.subject).to.equal(testData.subject);
           done();
         });
     });
   });
 
   describe('#deleteById', () => {
-    it('should throw NoArgumentError if no ID has been passed', () => {
-      const func = () => {
-        const instance = new EmailApi(credentials);
-        instance.deleteById();
-      };
-      expect(func).to.throw(NoArgumentError);
+    it('should throw ArgumentNullError on missing argument', () => {
+      const sandbox = () => testInstance.deleteById();
+      expect(sandbox).to.throw(errors.ArgumentNullError);
     });
 
-    it('should throw InvalidArgumentError if argument is not an integer', () => {
-      const func = () => {
-        const instance = new EmailApi(credentials);
-        instance.deleteById(2.5);
-      };
-      expect(func).to.throw(InvalidArgumentError);
-    });
-
-    it('should throw InvalidArgumentError if argument is not a number', () => {
-      const func = () => {
-        const instance = new EmailApi(credentials);
-        instance.deleteById('asdsadasd');
-      };
-      expect(func).to.throw(InvalidArgumentError);
+    it('should throw ArgumentError if argument is not an integer', () => {
+      const sandbox = () => testInstance.deleteById(2.5);
+      expect(sandbox).to.throw(errors.ArgumentError);
     });
 
     it('should return a promise', () => {
-      const instance = new EmailApi(credentials);
-      instance
-        .send(null, data)
+      testInstance
+        .send(null, testData)
         .then((response) => {
-          const request = instance.deleteById(response.id);
+          const request = testInstance.deleteById(response.id);
           expect(request).to.be.an.instanceOf(Promise);
         });
     });
 
-    it('should return a result on valid ID', (done) => {
-      const instance = new EmailApi(credentials);
-      instance
-        .send(null, data)
+    it('should return a result', (done) => {
+      testInstance
+        .send(null, testData)
         .then((createResponse) => {
-          instance
+          testInstance
             .deleteById(createResponse.id)
             .then((response) => {
               expect(response).to.be.a('object');
               done();
             });
-        });
-    });
-  });
-
-  describe.skip('#uploadAttachment', () => {
-    it('should throw NoArgumentError if no file has been passed', () => {
-      const func = () => {
-        const instance = new EmailApi(credentials);
-        instance.uploadAttachment();
-      };
-      expect(func).to.throw(NoArgumentError);
-    });
-
-    it('should throw InvalidArgumentError on wrong argument type', () => {
-      const func = () => {
-        const instance = new EmailApi(credentials);
-        instance.uploadAttachment(2213);
-      };
-      expect(func).to.throw(InvalidArgumentError);
-    });
-
-    it('should throw RequestError on wrong file path', (done) => {
-      const instance = new EmailApi(credentials);
-      instance
-        .uploadAttachment('2213')
-        .catch((error) => {
-          expect(error).to.be.instanceOf(RequestError);
-          done();
-        });
-    });
-
-    it('should return a instance of Promise', () => {
-      const instance = new EmailApi(credentials);
-      const request = instance.uploadAttachment(attachmentFile);
-      expect(request).to.be.an.instanceOf(Promise);
-    });
-
-    it('should work with file path string', (done) => {
-      const instance = new EmailApi(credentials);
-      instance
-        .uploadAttachment(attachmentFile)
-        .then((response) => {
-          console.log(response);
-          done();
-        })
-        .catch((error) => {
-          console.error(error);
-          done();
         });
     });
   });

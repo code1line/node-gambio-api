@@ -7,7 +7,6 @@ const errors = require('common-errors');
 const Requester = require('./../lib/Requester');
 const credentials = require('./_credentials');
 
-// Credentials.
 const testUrl = `${credentials.url}/${credentials.apiSuffix}/customers`;
 const testAuth = {
   user: credentials.user,
@@ -84,7 +83,7 @@ describe('Requester', () => {
     });
 
     it('should return rejected promise on error while performing request', (done) => {
-      const myUrl = 'http://this-site-does-not.exist/man';
+      const myUrl = 'http://172.0.0.2';
       const request = Requester.get(myUrl, testAuth);
 
       request.catch((error) => {

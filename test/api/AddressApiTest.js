@@ -5,7 +5,6 @@ const errors = require('common-errors');
 
 const Api = require('./../../lib/api/Api');
 const AddressApi = require('./../../lib/api/AddressApi');
-
 const credentials = require('./../_credentials');
 
 const testUrl = credentials.url + `/${credentials.apiSuffix}`;

@@ -1,24 +1,18 @@
 const expect = require('chai').expect;
 
-const extend = require('extend');
+const errors = require('common-errors');
 const Promise = require('bluebird');
 
-const Api = require('../lib/api/Api');
-const ZoneApi = require('../lib/api/ZoneApi');
+const Api = require('./../../lib/api/Api');
+const ZoneApi = require('./../../lib/api/ZoneApi');
+const credentials = require('./../_credentials');
 
-const InvalidArgumentError = require('../lib/error/InvalidArgumentError');
-const NoArgumentError = require('../lib/error/NoArgumentError');
-const ServerError = require('../lib/error/ServerError');
-
-const demoCredentials = require('../demo/credentials');
-
-// Test credentials.
-const credentials = extend(
-  true,
-  {},
-  demoCredentials,
-  { url: `${demoCredentials.url}/api.php/v2` }
-);
+const testUrl = credentials.url + `/${credentials.apiSuffix}`;
+const testAuth = {
+  user: credentials.user,
+  pass: credentials.pass,
+};
+const testInstance = new ZoneApi(testUrl, testAuth);
 
 describe('ZoneApi', () => {
   describe('#constructor', () => {
@@ -26,48 +20,32 @@ describe('ZoneApi', () => {
       const instance = new ZoneApi(credentials);
       expect(instance).to.be.instanceOf(Api);
     });
+
+    it('should work if all arguments has been passed', () => {
+      const sandbox = () => new ZoneApi(testUrl, testAuth);
+      expect(sandbox).not.to.throw(Error);
+    });
   });
 
   describe('#getById', () => {
-    it('should correctly if all arguments has been passed', () => {
-      const func = () => new ZoneApi(credentials);
-      expect(func).not.to.throw(Error);
+    it('should throw ArgumentNullError on missing argument', () => {
+      const sandbox = () => testInstance.getById();
+      expect(sandbox).to.throw(errors.ArgumentNullError);
     });
 
-    it('should throw NoArgumentError if no ID has been passed', () => {
-      const func = () => {
-        const instance = new ZoneApi(credentials);
-        instance.getById();
-      };
-      expect(func).to.throw(NoArgumentError);
-    });
-
-    it('should throw InvalidArgumentError if argument is not an integer', () => {
-      const func = () => {
-        const instance = new ZoneApi(credentials);
-        instance.getById(2.5);
-      };
-      expect(func).to.throw(InvalidArgumentError);
-    });
-
-    it('should throw InvalidArgumentError if argument is not a number', () => {
-      const func = () => {
-        const instance = new ZoneApi(credentials);
-        instance.getById('asdsadasd');
-      };
-      expect(func).to.throw(InvalidArgumentError);
+    it('should throw ArgumentError if argument is not an integer', () => {
+      const sandbox = () => testInstance.getById(2.5);
+      expect(sandbox).to.throw(errors.ArgumentError);
     });
 
     it('should return a promise', () => {
-      const instance = new ZoneApi(credentials);
-      const request = instance.getById(81);
+      const request = testInstance.getById(81);
       expect(request).to.be.an.instanceOf(Promise);
     });
 
-    it('should return a result on valid ID', (done) => {
+    it('should return a result', (done) => {
       const id = 46;
-      const instance = new ZoneApi(credentials);
-      instance
+      testInstance
         .getById(id)
         .then((response) => {
           expect(response).to.be.a('object');
@@ -76,13 +54,11 @@ describe('ZoneApi', () => {
         });
     });
 
-    it('should return rejected promise with ServerError', (done) => {
-      const id = 819999;
-      const instance = new ZoneApi(credentials);
-      instance
-        .getById(id)
+    it('should return rejected promise with NotFoundError on not found entry', (done) => {
+      testInstance
+        .getById(819999)
         .catch((error) => {
-          expect(error).to.be.instanceOf(ServerError);
+          expect(error).to.be.instanceOf(errors.NotFoundError);
           done();
         });
     });

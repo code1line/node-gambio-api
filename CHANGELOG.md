@@ -17,3 +17,4 @@
 - Refactored API base class `Api`.
   - Added possibility to limit returned fields.
 - Refactored sub API classes.
+- Refactored tests.
