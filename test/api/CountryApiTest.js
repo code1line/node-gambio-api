@@ -1,74 +1,52 @@
 const expect = require('chai').expect;
 
-const extend = require('extend');
 const Promise = require('bluebird');
+const errors = require('common-errors');
 
-const Api = require('../lib/api/Api');
-const CountryApi = require('../lib/api/CountryApi');
+const Api = require('./../../lib/api/Api');
+const CountryApi = require('./../../lib/api/CountryApi');
 
-const InvalidArgumentError = require('../lib/error/InvalidArgumentError');
-const NoArgumentError = require('../lib/error/NoArgumentError');
-const ServerError = require('../lib/error/ServerError');
+const credentials = require('./../_credentials');
 
-const demoCredentials = require('../demo/credentials');
-
-// Test credentials.
-const credentials = extend(
-  true,
-  {},
-  demoCredentials,
-  { url: `${demoCredentials.url}/api.php/v2` }
-);
-
+const testUrl = credentials.url + `/${credentials.apiSuffix}`;
+const testAuth = {
+  user: credentials.user,
+  pass: credentials.pass,
+};
+const testInstance = new CountryApi(testUrl, testAuth);
 
 describe('CountryApi', () => {
   describe('#constructor', () => {
     it('should be an instance of Api', () => {
-      const instance = new CountryApi(credentials);
+      const instance = new CountryApi(testUrl, testAuth);
       expect(instance).to.be.instanceOf(Api);
+    });
+
+    it('should work if all arguments has been passed', () => {
+      const sandbox = () => new CountryApi(testUrl, testAuth);
+      expect(sandbox).not.to.throw(Error);
     });
   });
 
   describe('#getById', () => {
-    it('should correctly if all arguments has been passed', () => {
-      const func = () => new CountryApi(credentials);
-      expect(func).not.to.throw(Error);
+    it('should throw ArgumentNullError if argument is missing', () => {
+      const sandbox = () => testInstance.getById();
+      expect(sandbox).to.throw(errors.ArgumentNullError);
     });
 
-    it('should throw NoArgumentError if no ID has been passed', () => {
-      const func = () => {
-        const instance = new CountryApi(credentials);
-        instance.getById();
-      };
-      expect(func).to.throw(NoArgumentError);
-    });
-
-    it('should throw InvalidArgumentError if argument is not an integer', () => {
-      const func = () => {
-        const instance = new CountryApi(credentials);
-        instance.getById(2.5);
-      };
-      expect(func).to.throw(InvalidArgumentError);
-    });
-
-    it('should throw InvalidArgumentError if argument is not a number', () => {
-      const func = () => {
-        const instance = new CountryApi(credentials);
-        instance.getById('asdsadasd');
-      };
-      expect(func).to.throw(InvalidArgumentError);
+    it('should throw ArgumentError if argument is not an integer', () => {
+      const sandbox = () => testInstance.getById(2.5);
+      expect(sandbox).to.throw(errors.ArgumentError);
     });
 
     it('should return a promise', () => {
-      const instance = new CountryApi(credentials);
-      const request = instance.getById(81);
+      const request = testInstance.getById(81);
       expect(request).to.be.an.instanceOf(Promise);
     });
 
-    it('should return a result on valid ID', (done) => {
+    it('should return a result', (done) => {
       const id = 81;
-      const instance = new CountryApi(credentials);
-      instance
+      testInstance
         .getById(id)
         .then((response) => {
           expect(response).to.be.a('object');
@@ -77,55 +55,37 @@ describe('CountryApi', () => {
         });
     });
 
-    it('should return rejected promise with ServerError', (done) => {
+    it('should return rejected promise with Error on not found entries', (done) => {
       const id = 819999;
-      const instance = new CountryApi(credentials);
-      instance
+
+      testInstance
         .getById(id)
         .catch((error) => {
-          expect(error).to.be.instanceOf(ServerError);
-          expect(error.code).to.equal(500);
+          expect(error).to.be.instanceOf(Error);
           done();
         });
     });
   });
 
   describe('#getZonesByCountryId', () => {
-    it('should throw NoArgumentError if no ID has been passed', () => {
-      const func = () => {
-        const instance = new CountryApi(credentials);
-        instance.getZonesByCountryId();
-      };
-      expect(func).to.throw(NoArgumentError);
+    it('should throw ArgumentNullError on missing argument', () => {
+      const sandbox = () => testInstance.getZonesByCountryId();
+      expect(sandbox).to.throw(errors.ArgumentNullError);
     });
 
-    it('should throw InvalidArgumentError if argument is not an integer', () => {
-      const func = () => {
-        const instance = new CountryApi(credentials);
-        instance.getZonesByCountryId(2.5);
-      };
-      expect(func).to.throw(InvalidArgumentError);
-    });
-
-    it('should throw InvalidArgumentError if argument is not a number', () => {
-      const func = () => {
-        const instance = new CountryApi(credentials);
-        instance.getZonesByCountryId('asdsadasd');
-      };
-      expect(func).to.throw(InvalidArgumentError);
+    it('should throw ArgumentError if argument is not an integer', () => {
+      const sandbox = () => testInstance.getZonesByCountryId(2.5);
+      expect(sandbox).to.throw(errors.ArgumentError);
     });
 
     it('should return a promise', () => {
-      const instance = new CountryApi(credentials);
-      const request = instance.getZonesByCountryId(81);
+      const request = testInstance.getZonesByCountryId(81);
       expect(request).to.be.an.instanceOf(Promise);
     });
 
-    it('should return a result on valid ID', (done) => {
-      const id = 81;
-      const instance = new CountryApi(credentials);
-      instance
-        .getZonesByCountryId(id)
+    it('should return a result', (done) => {
+      testInstance
+        .getZonesByCountryId(81)
         .then((response) => {
           expect(response).to.be.a('array');
           done();
@@ -133,10 +93,8 @@ describe('CountryApi', () => {
     });
 
     it('should return resolved promise with empty array on not found resources', (done) => {
-      const id = 819999;
-      const instance = new CountryApi(credentials);
-      instance
-        .getZonesByCountryId(id)
+      testInstance
+        .getZonesByCountryId(819999)
         .then((response) => {
           expect(response).to.be.a('array');
           expect(response).to.have.length(0);
