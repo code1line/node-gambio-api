@@ -15,3 +15,4 @@
 - Added `http-status-codes` package as dependency.
 - Added `common-errors` package as dependency.
 - Refactored API base class `Api`.
+  - Added possibility to limit returned fields.
