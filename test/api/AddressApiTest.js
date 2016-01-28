@@ -38,7 +38,7 @@ describe('AddressApi', () => {
       expect(instance).to.be.instanceOf(Api);
     });
 
-    it('should correctly if all arguments has been passed', () => {
+    it('should work if all arguments has been passed', () => {
       const sandbox = () => new AddressApi(testUrl, testAuth);
       expect(sandbox).not.to.throw(Error);
     });
