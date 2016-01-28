@@ -2,15 +2,12 @@ const expect = require('chai').expect;
 
 const extend = require('extend');
 const Promise = require('bluebird');
+const errors = require('common-errors');
 
-const Api = require('../lib/api/Api');
-const AddressApi = require('../lib/api/AddressApi');
+const Api = require('./../../lib/api/Api');
+const AddressApi = require('./../../lib/api/AddressApi');
 
-const InvalidArgumentError = require('../lib/error/InvalidArgumentError');
-const NoArgumentError = require('../lib/error/NoArgumentError');
-const ClientError = require('../lib/error/ClientError');
-
-const demoCredentials = require('../demo/credentials');
+const credentials = require('./_credentials');
 
 // Test credentials.
 const credentials = extend(
