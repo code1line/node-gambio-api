@@ -152,4 +152,78 @@ describe('Validator', () => {
       }
     });
   });
+
+  describe('#checkArray', () => {
+    it('should throw no error on valid array', () => {
+      const sandbox = () => Validator.checkArray([1, 2]);
+      expect(sandbox).not.to.throw(Error);
+    });
+
+    it('should throw ArgumentNullError on missing array', () => {
+      const sandbox = () => Validator.checkArray();
+      expect(sandbox).to.throw(errors.ArgumentNullError);
+    });
+
+    it('should throw ArgumentError on wrong argument type', () => {
+      const sandbox = () => Validator.checkArray('22');
+      expect(sandbox).to.throw(errors.ArgumentError);
+    });
+
+    it('should throw ArgumentError with entity name provided', () => {
+      const entityName = 'Zone array';
+
+      try {
+        Validator.checkArray(3, entityName);
+      } catch (error) {
+        expect(error.message).to.contain(entityName);
+      }
+    });
+  });
+
+  describe('#checkTypedArray', () => {
+    it('should throw no error on valid typed array', () => {
+      const sandbox = () => Validator.checkTypedArray(['A', 'B', 'C'], 'string');
+      expect(sandbox).not.to.throw(Error);
+    });
+
+    it('should throw ArgumentNullError on missing typed array', () => {
+      const sandbox = () => Validator.checkTypedArray();
+      expect(sandbox).to.throw(errors.ArgumentNullError);
+    });
+
+    it('should throw ArgumentError on wrong typed array parameter', () => {
+      const sandbox = () => Validator.checkTypedArray('22');
+      expect(sandbox).to.throw(errors.ArgumentError);
+    });
+
+    it('should throw ArgumentNullError on missing expected type', () => {
+      const sandbox = () => Validator.checkTypedArray([]);
+      expect(sandbox).to.throw(errors.ArgumentNullError);
+    });
+
+    it('should throw ArgumentError on wrong typed expected type parameter', () => {
+      const sandbox = () => Validator.checkTypedArray([], 2);
+      expect(sandbox).to.throw(errors.ArgumentError);
+    });
+
+    it('should throw ArgumentError if given expected type is not valid', () => {
+      const sandbox = () => Validator.checkTypedArray([], 'bla');
+      expect(sandbox).to.throw(errors.ArgumentError);
+    });
+
+    it('should throw ArgumentError if given array does not match expected type given', () => {
+      const sandbox = () => Validator.checkTypedArray([1, 2, 3], 'string');
+      expect(sandbox).to.throw(errors.ArgumentError);
+    });
+
+    it('should throw ArgumentError with entity name provided', () => {
+      const entityName = 'Zone numbers';
+
+      try {
+        Validator.checkTypedArray(['text'], 'number', entityName);
+      } catch (error) {
+        expect(error.message).to.contain(entityName);
+      }
+    });
+  });
 });

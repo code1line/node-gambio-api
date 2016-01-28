@@ -7,6 +7,8 @@
   - Removed `checkVersion`.
   - Removed `checkId`.
   - Added `checkInteger`.
+  - Added `checkArray`.
+  - Added `checkTypedArray`.
 - Removed custom error classes, used error classes from package `common-errors` instead.
 - Moved message container `lib/messageContainer.js` to `lib/provider/messages.js`.
 - Created default request headers provider `lib/provider/headers.js`
