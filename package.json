@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test": "./node_modules/.bin/eslint index.js lib && ./node_modules/.bin/mocha --timeout 15000"
+    "test": "./node_modules/.bin/eslint index.js lib && ./node_modules/.bin/mocha --timeout 15000 --recursive"
   },
   "repository": {
     "type": "git",
