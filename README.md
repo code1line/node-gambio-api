@@ -143,7 +143,7 @@ This is a quick overview of all methods available.
 
 #### Countries
 
-- [Get a specific country](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/countries/getMyId.md) - *API.countries.getById(id)*
+- [Get a specific country](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/countries/getById.md) - *API.countries.getById(id)*
 - [Get zones from a specific country](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/countries/getZonesByCountryId.md) - *API.countries.getZonesByCountryId(id)*
 
 #### Zones
