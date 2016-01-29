@@ -285,13 +285,12 @@ describe('EmailApi', () => {
     it('should return a result', (done) => {
       testInstance
         .send(null, testData)
-        .then((createResponse) => {
-          testInstance
-            .deleteById(createResponse.id)
-            .then((response) => {
-              expect(response).to.be.a('object');
-              done();
-            });
+        .then((response) => {
+          return testInstance.deleteById(response.id);
+        })
+        .then((response) => {
+          expect(response).to.be.a('object');
+          done();
         });
     });
   });

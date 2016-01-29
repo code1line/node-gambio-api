@@ -35,34 +35,44 @@ const testData = {
   },
 };
 
+/**
+ * Generate a new random E-Mail address and put it to the test data object.
+ */
 function generateNewEmailAddress() {
   const email = `gambio.js.api.${Math.random() * (100000 - 100) + 100}@test.com`;
   extend(true, testData, { email });
 }
 
-// Helper function to test `url` and `auth` arguments.
-// It also tests if a promise is returned.
-function argumentsAndPromiseTest(methodName, additionalParameters, url) {
-  additionalParameters = additionalParameters || [];
+/**
+ * Helper function to test `url` and `auth` arguments and promise instance.
+ *
+ * @param  {String} testedMethodName    Name of tested method.
+ * @param  {*}      additionalParameter Addtional parameter.
+ * @param  {String} url                 URL string.
+ */
+function argumentsAndPromiseTest(testedMethodName, additionalParameter, url) {
   url = url || testUrl;
 
   it('should throw ArgumentNullError if no arguments are passed', () => {
-    const sandbox = () => Requester[methodName]();
+    const sandbox = () => Requester[testedMethodName].apply(Requester);
     expect(sandbox).to.throw(errors.ArgumentNullError);
   });
 
   it('should throw ArgumenNullError if no URL is passed', () => {
-    const sandbox = () => Requester[methodName](undefined, testAuth, ...additionalParameters);
+    const parameters = [null, testAuth, additionalParameter];
+    const sandbox = () => Requester[testedMethodName].apply(Requester, parameters);
     expect(sandbox).to.throw(errors.ArgumentNullError);
   });
 
   it('should throw ArgumentNullError if no authentication object is passed', () => {
-    const sandbox = () => Requester[methodName](url, undefined, ...additionalParameters);
+    const parameters = [url, null, additionalParameter];
+    const sandbox = () => Requester[testedMethodName].apply(Requester, parameters);
     expect(sandbox).to.throw(errors.ArgumentNullError);
   });
 
   it('should return a Promise', () => {
-    const request = Requester[methodName](url, testAuth, ...additionalParameters);
+    const parameters = [url, testAuth, additionalParameter];
+    const request = Requester[testedMethodName].apply(Requester, parameters);
     expect(request).to.be.an.instanceOf(Promise);
   });
 }
@@ -78,16 +88,6 @@ describe('Requester', () => {
       request.catch((error) => {
         expect(error).to.be.instanceOf(errors.AuthenticationRequiredError);
         expect(error.data.code).to.equal(401);
-        done();
-      });
-    });
-
-    it('should return rejected promise on error while performing request', (done) => {
-      const myUrl = 'http://172.0.0.2';
-      const request = Requester.get(myUrl, testAuth);
-
-      request.catch((error) => {
-        expect(error).to.be.instanceOf(errors.ConnectionError);
         done();
       });
     });
@@ -118,7 +118,7 @@ describe('Requester', () => {
   });
 
   describe('#post', () => {
-    argumentsAndPromiseTest('post', [testData]);
+    argumentsAndPromiseTest('post', testData);
 
     it('should work', (done) => {
       const request = Requester.post(testUrl, testAuth, testData);
@@ -151,7 +151,7 @@ describe('Requester', () => {
   describe('#put', () => {
     const myData = { firstname: 'Franc' };
 
-    argumentsAndPromiseTest('put', [myData], `${testUrl}/2`);
+    argumentsAndPromiseTest('put', myData, `${testUrl}/2`);
 
     it('should work', (done) => {
       Requester.post(testUrl, testAuth, testData)

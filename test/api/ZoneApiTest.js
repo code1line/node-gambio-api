@@ -17,7 +17,7 @@ const testInstance = new ZoneApi(testUrl, testAuth);
 describe('ZoneApi', () => {
   describe('#constructor', () => {
     it('should be an instance of Api', () => {
-      const instance = new ZoneApi(credentials);
+      const instance = new ZoneApi(testUrl, testAuth);
       expect(instance).to.be.instanceOf(Api);
     });
 
@@ -54,11 +54,11 @@ describe('ZoneApi', () => {
         });
     });
 
-    it('should return rejected promise with NotFoundError on not found entry', (done) => {
+    it('should return rejected promise with Error on not found entry', (done) => {
       testInstance
         .getById(819999)
         .catch((error) => {
-          expect(error).to.be.instanceOf(errors.NotFoundError);
+          expect(error).to.be.instanceOf(Error);
           done();
         });
     });
