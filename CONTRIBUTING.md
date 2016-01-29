@@ -14,7 +14,6 @@ Don't forget to lint your code and run the tests by doing `npm test` during deve
 - `example` contains demo scripts for example usage.
 - `lib` contains library core files.
   - `api` contains API classes.
-  - `base` contains base classes.
   - `provider` contains provider objects.
 - `test` contains test specs.
 
@@ -41,13 +40,7 @@ Don't forget to lint your code and run the tests by doing `npm test` during deve
   - Requester
   - Validator
   - Errors
-      - Error base class
-        - ClientError
-        - RequestError
-        - ServerError
-        - InvalidArgumentError
-        - NoArgumentError
-  - Message container
+  - Providers
 
 **Example request sequence**
 
@@ -56,7 +49,7 @@ Example API command: `API.customers.getById(5)`
 ```
 1. GambioApi -> calls -> CustomerApi
 2. CustomerApi -> opens method -> CustomerApi#getById()
-3. CustomerApi#getById() -> validates parameter by calling -> Validator#checkId()
+3. CustomerApi#getById() -> validates parameter by calling -> Validator#checkInteger()
 4. CustomerApi#getById() -> prepares request by calling -> Requester#get()
 5. Requester#get() -> sends GET request using -> request (Node library)
 6. Requester#get() -> returns -> Promise

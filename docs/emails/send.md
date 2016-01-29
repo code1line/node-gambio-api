@@ -8,6 +8,8 @@ Providing `id` only will send an existing one.
 
 Skipping `id` with `null` or `undefined` while passing in `data` will create and send a new E-Mail.
 
+Note, that at least one argument has to be passed.
+
 ### Method
 ```js
 API.emails.send(id, data)
