@@ -110,30 +110,32 @@ Example console output would be:
 #### Error
 
 This module uses custom error classes which means, that the thrown error in a rejected promise could be an instance of:
-- `RequestError` if there was an error while sending request to server.
-- `ClientError` if the server returned a 4xx status code, mostly an error caused by the requesting client.
-- `ServerError` if the server returned a 5xx status code, mostly an internal server-side error.
+- `InvalidOperationError` on **400 Bad Request** response.
+- `AuthenticationRequiredError` on **401 Unauthorized** response.
+- `NotPermittedError` on **403 Forbidden** response.
+- `NotFoundError` on **404 Not Found** response.
+- `NotSupportedError` on **415 Unsupported Media Type** response.
+- `Error` on **500 Internal Server Error** response.
+- `NotImplementedError` on **501 Not Implemented** response.
+- `HttpStatusError` on all other responses.
 
 ```js
-// Sending request (assuming that customer with ID 9999999 does not exist).
+// Sending request (assuming that customer 9999999 does not exist).
 API.customers.getById(9999999).catch(console.log);
 ```
 
 Example console output would be:
 
 ```js
-{ [ClientError: Customer record could not be found.]
-  name: 'ClientError',
-  code: 404,
+{ [NotFoundError: Customer record could not be found.]
+  name: 'NotFoundError',
   data: {
+    statusCode: 404,
     // ...
   }
 }
 ```
-
-The thrown error object contains additional properties:
-- `code` status code sent from server.
-- `data` raw request and response data.
+All error object have a `data` property that contains the request and response data.
 
 ## API reference
 
@@ -141,7 +143,7 @@ This is a quick overview of all methods available.
 
 #### Countries
 
-- [Get all countries](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/countries/get.md) - *API.countries.get()*
+- [Get a specific country](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/countries/getMyId.md) - *API.countries.getById(id)*
 - [Get zones from a specific country](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/countries/getZonesByCountryId.md) - *API.countries.getZonesByCountryId(id)*
 
 #### Zones
@@ -157,8 +159,8 @@ This is a quick overview of all methods available.
 
 #### Customers
 
-- [Get all customers](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/customers/get.md) - *API.customers.get()*
-- [Get all customers, that are guests](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/customers/getGuests.md) - *API.customers.getGuests()*
+- [Get all customers](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/customers/get.md) - *API.customers.get([sorting], [limitedFields])*
+- [Get all customers, that are guests](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/customers/getGuests.md) - *API.customers.getGuests([sorting], [limitedFields])*
 - [Get a specific customer](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/customers/getById.md) - *API.customers.getById(id)*
 - [Get addresses from a specific customer](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/customers/getAddressesByCustomerId.md) - *API.customers.getAddressesByCustomerId(id)*
 - [Search in customers](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/customers/search.md) - *API.customers.search(term)*
@@ -168,14 +170,14 @@ This is a quick overview of all methods available.
 
 #### E-Mails
 
-- [Get all E-Mails](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/emails/get.md) - *API.emails.get()*
-- [Get all pending E-Mails](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/emails/getPending.md) - *API.emails.getPending()*
-- [Get all sent E-Mails](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/emails/getSent.md) - - *API.emails.getSent()*
+- [Get all E-Mails](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/emails/get.md) - *API.emails.get([sorting], [limitedFields])*
+- [Get all pending E-Mails](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/emails/getPending.md) - *API.emails.getPending([sorting], [limitedFields])*
+- [Get all sent E-Mails](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/emails/getSent.md) - - *API.emails.getSent([sorting], [limitedFields])*
 - [Get a specific E-Mail](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/emails/getById.md) - *API.emails.getById(id)*
 - [Search in E-Mails](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/emails/search.md) - *API.emails.search(term)*
 - [Delete an E-Mail](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/emails/deleteById.md) - *API.emails.deleteById(id)*
 - [Queue an E-Mail](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/emails/queue.md) - *API.emails.queue(data)*
-- [Send an E-Mail](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/emails/send.md) - *API.emails.send(id, data)*
+- [Send an E-Mail](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/emails/send.md) - *API.emails.send([id], [data])*
 
 ## Contributing
 

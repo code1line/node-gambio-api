@@ -1,87 +1,88 @@
 const expect = require('chai').expect;
 
 const extend = require('extend');
+const errors = require('common-errors');
 
-const GambioApi = require('../.');
+const GambioApi = require('./../lib/GambioApi');
+const credentials = require('./_credentials');
 
-const InvalidArgumentError = require('../lib/error/InvalidArgumentError');
-const NoArgumentError = require('../lib/error/NoArgumentError');
-
-const demoCredentials = require('../demo/credentials');
+const testCredentials = {
+  url: credentials.url,
+  user: credentials.user,
+  pass: credentials.pass,
+};
+const testInstance = new GambioApi(testCredentials);
 
 describe('GambioApi', () => {
   describe('#constructor', () => {
-    it('should throw NoArgumentError on instantiating without credentials', () => {
-      const func = () => new GambioApi();
-      expect(func).to.throw(NoArgumentError);
+    it('should throw ArgumentNullError on missing arguments', () => {
+      const sandbox = () => new GambioApi();
+      expect(sandbox).to.throw(errors.ArgumentNullError);
     });
 
-    it('should throw InvalidArgumentError on instantiating with invalid credentials', () => {
-      const func = () => new GambioApi('s');
-      expect(func).to.throw(InvalidArgumentError);
+    it('should throw ArgumentError on instantiating with invalid argument', () => {
+      const sandbox = () => new GambioApi('s');
+      expect(sandbox).to.throw(errors.ArgumentError);
     });
 
-    it('should work on instantiating with valid credentials', () => {
-      const func = () => new GambioApi(demoCredentials);
-      expect(func).not.to.throw(Error);
+    it('should work', () => {
+      const sandbox = () => new GambioApi(testCredentials);
+      expect(sandbox).not.to.throw(Error);
     });
 
-    it('should throw InvalidArgumentError on instantiating with invalid version type', () => {
-      const credentials = extend(true, {}, demoCredentials, { version: 234 });
-      const func = () => new GambioApi(credentials);
-      expect(func).to.throw(InvalidArgumentError);
+    it('should throw ArgumentError on invalid version type', () => {
+      const sandbox = () => new GambioApi(extend(true, {}, testCredentials, { version: 234 }));
+      expect(sandbox).to.throw(errors.ArgumentError);
     });
 
-    it('should throw NoArgument on missing URL', () => {
-      const credentials = extend(true, {}, demoCredentials);
-      delete credentials.url;
-      const func = () => new GambioApi(credentials);
-      expect(func).to.throw(NoArgumentError);
+    it('should throw ArgumentError on missing URL', () => {
+      const myCredentials = extend(true, {}, testCredentials);
+      delete myCredentials.url;
+      const sandbox = () => new GambioApi(myCredentials);
+      expect(sandbox).to.throw(errors.ArgumentError);
     });
 
-    it('should throw InvalidArgumentError on wrong URL type', () => {
-      const credentials = extend(true, {}, demoCredentials, { url: 123 });
-      const func = () => new GambioApi(credentials);
-      expect(func).to.throw(InvalidArgumentError);
+    it('should throw ArgumentError on wrong URL type', () => {
+      const myCredentials = extend(true, {}, testCredentials, { url: 1 });
+      const sandbox = () => new GambioApi(myCredentials);
+      expect(sandbox).to.throw(errors.ArgumentError);
     });
 
-    it('should throw NoArgument on missing user', () => {
-      const credentials = extend(true, {}, demoCredentials);
-      delete credentials.user;
-      const func = () => new GambioApi(credentials);
-      expect(func).to.throw(NoArgumentError);
+    it('should throw ArgumentError on missing user', () => {
+      const myCredentials = extend(true, {}, testCredentials);
+      delete myCredentials.user;
+      const sandbox = () => new GambioApi(myCredentials);
+      expect(sandbox).to.throw(errors.ArgumentError);
     });
 
-    it('should throw InvalidArgumentError on wrong user type', () => {
-      const credentials = extend(true, {}, demoCredentials, { user: 123 });
-      const func = () => new GambioApi(credentials);
-      expect(func).to.throw(InvalidArgumentError);
+    it('should throw ArgumentError on wrong user type', () => {
+      const myCredentials = extend(true, {}, testCredentials, { user: 1 });
+      const sandbox = () => new GambioApi(myCredentials);
+      expect(sandbox).to.throw(errors.ArgumentError);
     });
 
-    it('should throw NoArgument on missing password', () => {
-      const credentials = extend(true, {}, demoCredentials);
-      delete credentials.pass;
-      const func = () => new GambioApi(credentials);
-      expect(func).to.throw(NoArgumentError);
+    it('should throw ArgumentError on missing password', () => {
+      const myCredentials = extend(true, {}, testCredentials);
+      delete myCredentials.pass;
+      const sandbox = () => new GambioApi(myCredentials);
+      expect(sandbox).to.throw(errors.ArgumentError);
     });
 
-    it('should throw InvalidArgumentError on wrong password type', () => {
-      const credentials = extend(true, {}, demoCredentials, { pass: 123 });
-      const func = () => new GambioApi(credentials);
-      expect(func).to.throw(InvalidArgumentError);
+    it('should throw ArgumentError on wrong password type', () => {
+      const myCredentials = extend(true, {}, testCredentials, { pass: 123 });
+      const sandbox = () => new GambioApi(myCredentials);
+      expect(sandbox).to.throw(errors.ArgumentError);
     });
   });
 
   describe('#countries', () => {
     describe('#getById', () => {
       it('should be a function', () => {
-        const API = new GambioApi(demoCredentials);
-        expect(API.countries.getById).to.be.a('function');
+        expect(testInstance.countries.getById).to.be.a('function');
       });
 
       it('should return a result', (done) => {
-        const API = new GambioApi(demoCredentials);
-        API.countries.getById(80)
+        testInstance.countries.getById(80)
           .then((result) => {
             expect(result).to.be.a('object');
             done();
@@ -91,13 +92,11 @@ describe('GambioApi', () => {
 
     describe('#getZonesByCountryId', () => {
       it('should be a function', () => {
-        const API = new GambioApi(demoCredentials);
-        expect(API.countries.getZonesByCountryId).to.be.a('function');
+        expect(testInstance.countries.getZonesByCountryId).to.be.a('function');
       });
 
       it('should return a result', (done) => {
-        const API = new GambioApi(demoCredentials);
-        API.countries.getZonesByCountryId(80)
+        testInstance.countries.getZonesByCountryId(80)
           .then((result) => {
             expect(result).to.be.a('array');
             done();
@@ -109,13 +108,11 @@ describe('GambioApi', () => {
   describe('#zones', () => {
     describe('#getById', () => {
       it('should be a function', () => {
-        const API = new GambioApi(demoCredentials);
-        expect(API.zones.getById).to.be.a('function');
+        expect(testInstance.zones.getById).to.be.a('function');
       });
 
       it('should return a result', (done) => {
-        const API = new GambioApi(demoCredentials);
-        API.zones.getById(80)
+        testInstance.zones.getById(80)
           .then((result) => {
             expect(result).to.be.a('object');
             done();
@@ -127,13 +124,11 @@ describe('GambioApi', () => {
   describe('#addresses', () => {
     describe('#getById', () => {
       it('should be a function', () => {
-        const API = new GambioApi(demoCredentials);
-        expect(API.addresses.getById).to.be.a('function');
+        expect(testInstance.addresses.getById).to.be.a('function');
       });
 
       it('should return a result', (done) => {
-        const API = new GambioApi(demoCredentials);
-        API.addresses.getById(10)
+        testInstance.addresses.getById(10)
           .then((result) => {
             expect(result).to.be.a('object');
             done();
@@ -143,13 +138,11 @@ describe('GambioApi', () => {
 
     describe('#create', () => {
       it('should be a function', () => {
-        const API = new GambioApi(demoCredentials);
-        expect(API.addresses.create).to.be.a('function');
+        expect(testInstance.addresses.create).to.be.a('function');
       });
 
       it('should return a result', (done) => {
-        const API = new GambioApi(demoCredentials);
-        API.addresses.create({})
+        testInstance.addresses.create({})
           .then((result) => {
             expect(result).to.be.a('object');
             done();
@@ -159,13 +152,11 @@ describe('GambioApi', () => {
 
     describe('#deleteById', () => {
       it('should be a function', () => {
-        const API = new GambioApi(demoCredentials);
-        expect(API.addresses.deleteById).to.be.a('function');
+        expect(testInstance.addresses.deleteById).to.be.a('function');
       });
 
       it('should return a result', (done) => {
-        const API = new GambioApi(demoCredentials);
-        API.addresses.deleteById(9999)
+        testInstance.addresses.deleteById(9999)
           .then((result) => {
             expect(result).to.be.a('object');
             done();
@@ -175,13 +166,11 @@ describe('GambioApi', () => {
 
     describe('#updateById', () => {
       it('should be a function', () => {
-        const API = new GambioApi(demoCredentials);
-        expect(API.addresses.updateById).to.be.a('function');
+        expect(testInstance.addresses.updateById).to.be.a('function');
       });
 
       it('should return a result', (done) => {
-        const API = new GambioApi(demoCredentials);
-        API.addresses.updateById(9998, { company: 'test' })
+        testInstance.addresses.updateById(9998, { company: 'test' })
           .then((result) => {
             expect(result).to.be.a('object');
             done();
@@ -191,15 +180,42 @@ describe('GambioApi', () => {
   });
 
   describe('#customers', () => {
+    // Customer test data.
+    const data = {
+      gender: 'm',
+      firstname: 'John',
+      lastname: 'Doe',
+      dateOfBirth: '1985-02-13',
+      vatNumber: '0923429837942',
+      telephone: '2343948798345',
+      fax: '2093049283',
+      email: `customer@test.com`,
+      password: '0123456789',
+      type: 'registree',
+      address: {
+        company: 'Test Company',
+        street: 'Test Street',
+        suburb: 'Test Suburb',
+        postcode: '23983',
+        city: 'Test City',
+        countryId: 81,
+        zoneId: 84,
+        b2bStatus: true,
+      },
+    };
+
+    beforeEach(() => {
+      const email = `gambio.js.api.${Math.random() * (100000 - 100) + 100}@test.com`;
+      extend(true, data, { email });
+    });
+
     describe('#get', () => {
       it('should be a function', () => {
-        const API = new GambioApi(demoCredentials);
-        expect(API.customers.get).to.be.a('function');
+        expect(testInstance.customers.get).to.be.a('function');
       });
 
       it('should return a result', (done) => {
-        const API = new GambioApi(demoCredentials);
-        API.customers.get()
+        testInstance.customers.get()
           .then((result) => {
             expect(result).to.be.a('array');
             done();
@@ -207,8 +223,7 @@ describe('GambioApi', () => {
       });
 
       it('should return a result with sorting', (done) => {
-        const API = new GambioApi(demoCredentials);
-        API.customers.get({ id: 'desc' })
+        testInstance.customers.get({ id: 'desc' })
           .then((result) => {
             expect(result).to.be.a('array');
             expect(result[0].id).to.be.above(result[1].id);
@@ -219,13 +234,11 @@ describe('GambioApi', () => {
 
     describe('#search', () => {
       it('should be a function', () => {
-        const API = new GambioApi(demoCredentials);
-        expect(API.customers.search).to.be.a('function');
+        expect(testInstance.customers.search).to.be.a('function');
       });
 
       it('should return a result', (done) => {
-        const API = new GambioApi(demoCredentials);
-        API.customers.search('test')
+        testInstance.customers.search('test')
           .then((result) => {
             expect(result).to.be.a('array');
             done();
@@ -235,13 +248,11 @@ describe('GambioApi', () => {
 
     describe('#getGuests', () => {
       it('should be a function', () => {
-        const API = new GambioApi(demoCredentials);
-        expect(API.customers.getGuests).to.be.a('function');
+        expect(testInstance.customers.getGuests).to.be.a('function');
       });
 
       it('should return a result', (done) => {
-        const API = new GambioApi(demoCredentials);
-        API.customers.getGuests()
+        testInstance.customers.getGuests()
           .then((result) => {
             expect(result).to.be.a('array');
             done();
@@ -251,13 +262,11 @@ describe('GambioApi', () => {
 
     describe('#getAddressesByCustomerId', () => {
       it('should be a function', () => {
-        const API = new GambioApi(demoCredentials);
-        expect(API.customers.getAddressesByCustomerId).to.be.a('function');
+        expect(testInstance.customers.getAddressesByCustomerId).to.be.a('function');
       });
 
       it('should return a result', (done) => {
-        const API = new GambioApi(demoCredentials);
-        API.customers.getAddressesByCustomerId(28)
+        testInstance.customers.getAddressesByCustomerId(28)
           .then((result) => {
             expect(result).to.be.a('array');
             done();
@@ -267,13 +276,11 @@ describe('GambioApi', () => {
 
     describe('#getById', () => {
       it('should be a function', () => {
-        const API = new GambioApi(demoCredentials);
-        expect(API.customers.getById).to.be.a('function');
+        expect(testInstance.customers.getById).to.be.a('function');
       });
 
       it('should return a result', (done) => {
-        const API = new GambioApi(demoCredentials);
-        API.customers.getById(28)
+        testInstance.customers.getById(28)
           .then((result) => {
             expect(result).to.be.a('object');
             done();
@@ -283,38 +290,11 @@ describe('GambioApi', () => {
 
     describe('#create', () => {
       it('should be a function', () => {
-        const API = new GambioApi(demoCredentials);
-        expect(API.customers.create).to.be.a('function');
+        expect(testInstance.customers.create).to.be.a('function');
       });
 
       it('should return a result', (done) => {
-        const API = new GambioApi(demoCredentials);
-
-        // Test data.
-        const data = {
-          gender: 'm',
-          firstname: 'John',
-          lastname: 'Doe',
-          dateOfBirth: '1985-02-13',
-          vatNumber: '0923429837942',
-          telephone: '2343948798345',
-          fax: '2093049283',
-          email: `customer${Math.random() * (100000 - 100) + 100}@email.de`,
-          password: '0123456789',
-          type: 'registree',
-          address: {
-            company: 'Test Company',
-            street: 'Test Street',
-            suburb: 'Test Suburb',
-            postcode: '23983',
-            city: 'Test City',
-            countryId: 81,
-            zoneId: 84,
-            b2bStatus: true,
-          },
-        };
-
-        API.customers.create(data)
+        testInstance.customers.create(data)
           .then((result) => {
             expect(result).to.be.a('object');
             done();
@@ -324,13 +304,15 @@ describe('GambioApi', () => {
 
     describe('#deleteById', () => {
       it('should be a function', () => {
-        const API = new GambioApi(demoCredentials);
-        expect(API.customers.deleteById).to.be.a('function');
+        expect(testInstance.customers.deleteById).to.be.a('function');
       });
 
       it('should return a result', (done) => {
-        const API = new GambioApi(demoCredentials);
-        API.customers.deleteById(32)
+        testInstance.customers
+          .create(data)
+          .then((result) => {
+            return testInstance.customers.deleteById(result.id);
+          })
           .then((result) => {
             expect(result).to.be.a('object');
             done();
@@ -340,13 +322,11 @@ describe('GambioApi', () => {
 
     describe('#updateById', () => {
       it('should be a function', () => {
-        const API = new GambioApi(demoCredentials);
-        expect(API.customers.updateById).to.be.a('function');
+        expect(testInstance.customers.updateById).to.be.a('function');
       });
 
       it('should return a result', (done) => {
-        const API = new GambioApi(demoCredentials);
-        API.customers.updateById(28, { firstname: 'test' })
+        testInstance.customers.updateById(28, { firstname: 'test' })
           .then((result) => {
             expect(result).to.be.a('object');
             done();
@@ -356,15 +336,44 @@ describe('GambioApi', () => {
   });
 
   describe('#emails', () => {
+    // E-Mail test data.
+    const data = {
+      subject: 'Test Subject',
+      sender: {
+        emailAddress: 'sender@email.de',
+        contactName: 'John Doe',
+      },
+      recipient: {
+        emailAddress: 'recipient@email.de',
+        contactName: 'Jane Doe',
+      },
+      replyTo: {
+        emailAddress: 'reply_to@email.de',
+        contactName: 'John Doe (Reply To)',
+      },
+      contentHtml: '<strong>HTML Content</content>',
+      contentPlain: 'Plain Content',
+      bcc: [
+        {
+          emailAddress: 'bcc@email.de',
+          contactName: 'Chris Doe',
+        },
+      ],
+      cc: [
+        {
+          emailAddress: 'cc@email.de',
+          contactName: 'Chloe Doe',
+        },
+      ],
+    };
+
     describe('#get', () => {
       it('should be a function', () => {
-        const API = new GambioApi(demoCredentials);
-        expect(API.emails.get).to.be.a('function');
+        expect(testInstance.emails.get).to.be.a('function');
       });
 
       it('should return a result', (done) => {
-        const API = new GambioApi(demoCredentials);
-        API.emails.get()
+        testInstance.emails.get()
           .then((result) => {
             expect(result).to.be.a('array');
             done();
@@ -372,8 +381,7 @@ describe('GambioApi', () => {
       });
 
       it('should return a result with sorting', (done) => {
-        const API = new GambioApi(demoCredentials);
-        API.emails.get({ id: 'desc' })
+        testInstance.emails.get({ id: 'desc' })
           .then((result) => {
             expect(result).to.be.a('array');
             expect(result[0].id).to.be.above(result[1].id);
@@ -384,13 +392,11 @@ describe('GambioApi', () => {
 
     describe('#getPending', () => {
       it('should be a function', () => {
-        const API = new GambioApi(demoCredentials);
-        expect(API.emails.getPending).to.be.a('function');
+        expect(testInstance.emails.getPending).to.be.a('function');
       });
 
       it('should return a result', (done) => {
-        const API = new GambioApi(demoCredentials);
-        API.emails.getPending()
+        testInstance.emails.getPending()
           .then((result) => {
             expect(result).to.be.a('array');
             done();
@@ -400,13 +406,11 @@ describe('GambioApi', () => {
 
     describe('#getSent', () => {
       it('should be a function', () => {
-        const API = new GambioApi(demoCredentials);
-        expect(API.emails.getSent).to.be.a('function');
+        expect(testInstance.emails.getSent).to.be.a('function');
       });
 
       it('should return a result', (done) => {
-        const API = new GambioApi(demoCredentials);
-        API.emails.getSent()
+        testInstance.emails.getSent()
           .then((result) => {
             expect(result).to.be.a('array');
             done();
@@ -416,13 +420,11 @@ describe('GambioApi', () => {
 
     describe('#search', () => {
       it('should be a function', () => {
-        const API = new GambioApi(demoCredentials);
-        expect(API.emails.search).to.be.a('function');
+        expect(testInstance.emails.search).to.be.a('function');
       });
 
       it('should return a result', (done) => {
-        const API = new GambioApi(demoCredentials);
-        API.emails.search('test')
+        testInstance.emails.search('test')
           .then((result) => {
             expect(result).to.be.a('array');
             done();
@@ -432,13 +434,14 @@ describe('GambioApi', () => {
 
     describe('#getById', () => {
       it('should be a function', () => {
-        const API = new GambioApi(demoCredentials);
-        expect(API.emails.getById).to.be.a('function');
+        expect(testInstance.emails.getById).to.be.a('function');
       });
 
       it('should return a result', (done) => {
-        const API = new GambioApi(demoCredentials);
-        API.emails.getById(15)
+        testInstance.emails.queue(data)
+          .then((result) => {
+            return testInstance.emails.getById(result.id);
+          })
           .then((result) => {
             expect(result).to.be.a('object');
             done();
@@ -448,95 +451,28 @@ describe('GambioApi', () => {
 
     describe('#deleteById', () => {
       it('should be a function', () => {
-        const API = new GambioApi(demoCredentials);
-        expect(API.emails.deleteById).to.be.a('function');
+        expect(testInstance.emails.deleteById).to.be.a('function');
       });
 
       it('should return a result', (done) => {
-        const data = {
-          subject: 'Test Subject',
-          sender: {
-            emailAddress: 'sender@email.de',
-            contactName: 'John Doe',
-          },
-          recipient: {
-            emailAddress: 'recipient@email.de',
-            contactName: 'Jane Doe',
-          },
-          replyTo: {
-            emailAddress: 'reply_to@email.de',
-            contactName: 'John Doe (Reply To)',
-          },
-          contentHtml: '<strong>HTML Content</content>',
-          contentPlain: 'Plain Content',
-          bcc: [
-            {
-              emailAddress: 'bcc@email.de',
-              contactName: 'Chris Doe',
-            },
-          ],
-          cc: [
-            {
-              emailAddress: 'cc@email.de',
-              contactName: 'Chloe Doe',
-            },
-          ],
-        };
-
-        const API = new GambioApi(demoCredentials);
-
-        API.emails
-          .send(null, data)
-            .then((result) => {
-              API.emails.deleteById(result.id)
-                .then((result2) => {
-                  expect(result2).to.be.a('object');
-                  done();
-                });
-            });
+        testInstance.emails.queue(data)
+          .then((result) => {
+            return testInstance.emails.deleteById(result.id);
+          })
+          .then((result) => {
+            expect(result).to.be.a('object');
+            done();
+          });
       });
     });
 
     describe('#queue', () => {
       it('should be a function', () => {
-        const API = new GambioApi(demoCredentials);
-        expect(API.emails.queue).to.be.a('function');
+        expect(testInstance.emails.queue).to.be.a('function');
       });
 
       it('should return a result', (done) => {
-        const data = {
-          subject: 'Test Subject',
-          sender: {
-            emailAddress: 'sender@email.de',
-            contactName: 'John Doe',
-          },
-          recipient: {
-            emailAddress: 'recipient@email.de',
-            contactName: 'Jane Doe',
-          },
-          replyTo: {
-            emailAddress: 'reply_to@email.de',
-            contactName: 'John Doe (Reply To)',
-          },
-          contentHtml: '<strong>HTML Content</content>',
-          contentPlain: 'Plain Content',
-          bcc: [
-            {
-              emailAddress: 'bcc@email.de',
-              contactName: 'Chris Doe',
-            },
-          ],
-          cc: [
-            {
-              emailAddress: 'cc@email.de',
-              contactName: 'Chloe Doe',
-            },
-          ],
-        };
-
-        const API = new GambioApi(demoCredentials);
-
-        API.emails.queue(data)
+        testInstance.emails.queue(data)
           .then((result) => {
             expect(result).to.be.a('object');
             expect(data.subject).to.equal(data.subject);
@@ -547,44 +483,11 @@ describe('GambioApi', () => {
 
     describe('#send', () => {
       it('should be a function', () => {
-        const API = new GambioApi(demoCredentials);
-        expect(API.emails.send).to.be.a('function');
+        expect(testInstance.emails.send).to.be.a('function');
       });
 
       it('should return a result on sending with data', (done) => {
-        const data = {
-          subject: 'Test Subject',
-          sender: {
-            emailAddress: 'sender@email.de',
-            contactName: 'John Doe',
-          },
-          recipient: {
-            emailAddress: 'recipient@email.de',
-            contactName: 'Jane Doe',
-          },
-          replyTo: {
-            emailAddress: 'reply_to@email.de',
-            contactName: 'John Doe (Reply To)',
-          },
-          contentHtml: '<strong>HTML Content</content>',
-          contentPlain: 'Plain Content',
-          bcc: [
-            {
-              emailAddress: 'bcc@email.de',
-              contactName: 'Chris Doe',
-            },
-          ],
-          cc: [
-            {
-              emailAddress: 'cc@email.de',
-              contactName: 'Chloe Doe',
-            },
-          ],
-        };
-
-        const API = new GambioApi(demoCredentials);
-
-        API.emails.send(null, data)
+        testInstance.emails.send(null, data)
           .then((result) => {
             expect(result).to.be.a('object');
             expect(data.subject).to.equal(data.subject);
@@ -593,9 +496,10 @@ describe('GambioApi', () => {
       });
 
       it('should return a result on sending with ID', (done) => {
-        const API = new GambioApi(demoCredentials);
-
-        API.emails.send(16)
+        testInstance.emails.queue(data)
+          .then((result) => {
+            return testInstance.emails.send(result.id);
+          })
           .then((result) => {
             expect(result).to.be.a('object');
             done();
