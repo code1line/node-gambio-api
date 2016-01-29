@@ -11,18 +11,22 @@
  */
 
 // Gambio demo shop credentials.
-const credentials = require('./credentials');
+const credentials = require('./../test/_credentials');
 
 // Gambio API class.
 const GambioApi = require('./../lib/GambioApi');
 
 // Create a new Gambio API instance with demo credentials.
-const API = new GambioApi(credentials);
+const API = new GambioApi({
+  url: credentials.url,
+  user: credentials.user,
+  pass: credentials.pass,
+});
 
-// Some whitespace shortcut for console.
-const whiteSpace = '\n\n';
+// Whitespace for console output.
+const whiteSpace = '\n';
 
-// Customer data used for new customer creation.
+// Data used for new customer creation.
 const data = {
   gender: 'm',
   firstname: 'John',
@@ -31,7 +35,7 @@ const data = {
   vatNumber: '0923429837942',
   telephone: '2343948798345',
   fax: '2093049283',
-  email: 'gambio.test.emai.from.node.api@test.com',
+  email: `gambio.js.api.${Math.random() * (100000 - 100) + 100}@test.com`,
   password: '0123456789',
   type: 'registree',
   address: {
@@ -46,80 +50,45 @@ const data = {
   },
 };
 
-// Log creation process.
-console.log('Creating customer...');
-
-// Perform reqeust.
-const createRequest = API.customers.create(data);
-
-// Handle promise.
-createRequest
-
-  // Creation request promise.
+// Perform requests.
+API.customers.create(data)
   .then((response) => {
-    // Log created customer to console.
+    // Log created customer.
     console.log(whiteSpace);
     console.log('Customer created:');
     console.log(response);
 
-    // Save ID from created customer in variable.
-    const newCustomerId = response.id;
-
-    // Log GET request process to console.
-    console.log(whiteSpace);
-    console.log('Fetching customer...');
-
-    // Perform get request.
-    return API.customers.getById(newCustomerId);
+    // Perform GET request with received ID from result object.
+    return API.customers.getById(response.id);
   })
-
-  // Get request promise.
   .then((response) => {
-    // Log fetched customer to console.
+    // Log fetched customer.
     console.log(whiteSpace);
     console.log('Customer fetched:');
     console.log(response);
 
-    // Save ID from fetched customer in variable.
-    const fetchedCustomerId = response.id;
-
-    // Log update request process to console.
+    // Log UPDATE request.
     console.log(whiteSpace);
-    console.log('Now we want to change John\'s firstname to Marcus!');
-    console.log('Updating customer...');
+    console.log('Now we want to change John\'s firstname to Marcus...');
 
-    // Data to change.
-    const dataToChange = {
-      firstname: 'Marcus',
-    };
-
-    // Perform update request.
-    return API.customers.updateById(fetchedCustomerId, dataToChange);
+    // Perform UPDATE request.
+    return API.customers.updateById(response.id, { firstname: 'Marcus' });
   })
-
-  // Update request promise.
   .then((response) => {
-    // Log changed customer to console.
+    // Log changed customer.
     console.log(whiteSpace);
-    console.log('Customer firstname should be Marcus now.');
     console.log('Changed customer:');
     console.log(response);
 
-    // Save ID from changed customer in variable.
-    const changedCustomerId = response.id;
-
-    // Log delete request process to console.
+    // Log DELETE request.
     console.log(whiteSpace);
-    console.log('Lets delete him from the database');
-    console.log('Deleting customer...');
+    console.log('Lets delete him from the database...');
 
-    // Perform delete request.
-    return API.customers.deleteById(changedCustomerId);
+    // Perform DELETE request.
+    return API.customers.deleteById(response.id);
   })
-
-  // Delete request promise.
   .then((response) => {
-    // Log deleted customer to console.
+    // Log deleted customer.
     console.log(whiteSpace);
     console.log('Customer has been deleted:');
     console.log(response);
@@ -127,6 +96,7 @@ createRequest
     // Exiting program notice.
     console.log(whiteSpace);
     console.log('Everything worked! Exiting program...');
+    process.exit(0);
   })
 
   // Log errors to console.
