@@ -14,3 +14,4 @@
 * [eslint-config-airbnb](https://www.npmjs.com/package/eslint-config-airbnb) (^3.1.0)
 * [eslint-plugin-react](https://www.npmjs.com/package/eslint-plugin-react) (^3.14.0)
 * [mocha](https://www.npmjs.com/package/mocha) (^2.3.4)
+* [semver](https://www.npmjs.com/package/semver) (^5.1.0)

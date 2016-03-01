@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.0
+- Added `getVersion` static method.
+- Fixed `index.js` by prepending `module.exports`.
+- Changed require path in example script.
+- Installed development dependency package `semver`.
+
 ## 1.0.0
 - Refactored Validator.
   - Methods are static now.

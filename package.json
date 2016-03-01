@@ -1,6 +1,6 @@
 {
   "name": "gambio-api",
-  "version": "1.0.1",
+  "version": "1.2.0",
   "description": "Gambio JavaScript API client ",
   "main": "index.js",
   "directories": {
@@ -43,6 +43,7 @@
     "eslint": "^1.10.3",
     "eslint-config-airbnb": "^3.1.0",
     "eslint-plugin-react": "^3.14.0",
-    "mocha": "^2.3.4"
+    "mocha": "^2.3.4",
+    "semver": "^5.1.0"
   }
 }

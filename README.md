@@ -174,6 +174,9 @@ This is a quick overview of all methods available.
 - [Queue an E-Mail](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/emails/queue.md) - *API.emails.queue(data)*
 - [Send an E-Mail](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/emails/send.md) - *API.emails.send([id], [data])*
 
+#### API
+- [Return module version](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/api/getVersion.md) - *API.getVersion()*
+
 ## Contributing
 
 Pull requests are always welcome!
