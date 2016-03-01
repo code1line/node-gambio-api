@@ -11,17 +11,13 @@
  */
 
 // Gambio demo shop credentials.
-const credentials = require('./../test/_credentials');
+const credentials = require('./../test/_data/credentials');
 
 // Gambio API class.
 const GambioApi = require('./..');
 
 // Create a new Gambio API instance with demo credentials.
-const API = new GambioApi({
-  url: credentials.url,
-  user: credentials.user,
-  pass: credentials.pass,
-});
+const API = new GambioApi(credentials);
 
 // Whitespace for console output.
 const whiteSpace = '\n';

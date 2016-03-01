@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.0
+- Usage of [Gulp-ES6-Module-Generator](https://github.com/ronaldloyko/generator-gulp-es6-module)
+- Refactored code to use complete ES6 syntax.
+
 ## 1.2.0
 - Added `getVersion` static method.
 - Fixed `index.js` by prepending `module.exports`.

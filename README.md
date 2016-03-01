@@ -21,8 +21,6 @@ Simple API for Node, that performs requests to the integrated REST-API of Gambio
 npm install gambio-api
 ```
 
-**Node version 4.0 or higher is required to run this module. Alternatively you can use [Babel](https://babeljs.io/) if you are on an older version.**
-
 ## Usage
 
 ```js
@@ -175,7 +173,7 @@ This is a quick overview of all methods available.
 - [Send an E-Mail](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/emails/send.md) - *API.emails.send([id], [data])*
 
 #### API
-- [Return module version](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/api/getVersion.md) - *API.getVersion()*
+- [Get module version](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/api/getVersion.md) - *API.getVersion()*
 
 ## Contributing
 

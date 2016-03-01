@@ -10,12 +10,18 @@ Don't forget to lint your code and run the tests by doing `npm test` during deve
 
 ### Directory structure
 
+- `src` contains the source code.
 - `docs` contains documentation files.
 - `example` contains demo scripts for example usage.
-- `lib` contains library core files.
-  - `api` contains API classes.
-  - `provider` contains provider objects.
+- `lib` contains the compiled code.
 - `test` contains test specs.
+
+## Commands
+
+`$ npm start` to start developing. This command compiles the scripts and watches for file changes.
+
+`$ npm test` to lint the scripts and run unit tests.
+
 
 ### Rules
 
