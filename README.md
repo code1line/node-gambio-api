@@ -1,4 +1,8 @@
-# Gambio JavaScript API [![Build Status](https://travis-ci.org/ronaldloyko/node-gambio-api.svg?branch=master)](https://travis-ci.org/ronaldloyko/node-gambio-api) [![NPM](https://nodei.co/npm/gambio-api.png?mini=true)](https://nodei.co/npm/gambio-api/)
+![Logo](https://github.com/ronaldloyko/node-gambio-api/raw/master/logo.png)
+
+# Gambio JavaScript API Client
+
+[![Build Status](https://travis-ci.org/ronaldloyko/node-gambio-api.svg?branch=master)](https://travis-ci.org/ronaldloyko/node-gambio-api) [![NPM](https://nodei.co/npm/gambio-api.png?mini=true)](https://nodei.co/npm/gambio-api/)
 
 Simple API for Node, that performs requests to the integrated REST-API of Gambio.
 
@@ -17,15 +21,13 @@ Simple API for Node, that performs requests to the integrated REST-API of Gambio
 npm install gambio-api
 ```
 
-**Node version 4.0 or higher is required to run this module.**
+**Node version 4.0 or higher is required to run this module. Alternatively you can use [Babel](https://babeljs.io/) if you are on an older version.**
 
 ## Usage
 
 ```js
-// Require module.
 const GambioApi = require('gambio-api');
 
-// Instantiation.
 const API = new GambioApi({
   url: 'http://myshop.com',
   user: 'admin@myshop.com',
@@ -34,19 +36,11 @@ const API = new GambioApi({
 
 // Get customer with ID 6.
 API.customers.getById(6)
-
-  // Log customers.
-  .then((result) => {
-    console.log(result);
-  })
-
-  // Log error.
-  .catch((error) => {
-    console.error(error);
-  });
+  .then((result) => console.log(result))
+  .catch((error) => console.error(error));
 ```
 
-You may also [read an article](https://ronaldloyko.wordpress.com/2016/01/21/how-to-use-the-gambio-rest-api-in-node-js/) on how to use the Gambio JavaScript in Node.js.
+You may also [read an article](https://ronaldloyko.wordpress.com/2016/01/21/how-to-use-the-gambio-rest-api-in-node-js/) on how to use this module.
 
 ## Sending requests
 
@@ -54,10 +48,14 @@ You may also [read an article](https://ronaldloyko.wordpress.com/2016/01/21/how-
 
 ```js
 const API = new GambioApi({
-  url: 'http://myshop.com', // Path to Gambio shop (without trailing slash).
-  user: 'admin@myshop.com', // Login user.
-  pass: '12345', // Login password.
-  version: 'v2', // API version (optional, default: 'v2').
+  // Path to Gambio shop (without trailing slash).
+  url: 'http://myshop.com',
+  // Login user.
+  user: 'admin@myshop.com',
+  // Login password.
+  pass: '12345',
+  // API version (optional, default: 'v2').
+  version: 'v2',
 });
 ```
 
@@ -66,27 +64,24 @@ const API = new GambioApi({
 The methods always return a promise.
 
 ```js
-// Send a request.
 API.customers.get()
-
   // 'then' is called, if a response is returned from server.
   .then()
 
-  // 'catch' is called if any error has been thrown.
+  // 'catch' is called if an error has been thrown.
   .catch();
-
 ```
 
 #### Response
 
-Every successful response gets parsed from JSON to a JavaScript object/array.
+Every successful response is parsed from JSON to a JavaScript object/array.
 
 ```js
-// Send example request.
+// Example request.
 API.customers.getById(1).then(console.log);
 ```
 
-Example console output would be:
+Example console output could be:
 
 ```js
 {
@@ -109,7 +104,7 @@ Example console output would be:
 
 #### Error
 
-This module uses custom error classes which means, that the thrown error in a rejected promise could be an instance of:
+This module uses custom error classes. Meaning that the thrown error in a rejected promise could be an instance of:
 - `InvalidOperationError` on **400 Bad Request** response.
 - `AuthenticationRequiredError` on **401 Unauthorized** response.
 - `NotPermittedError` on **403 Forbidden** response.
@@ -120,11 +115,11 @@ This module uses custom error classes which means, that the thrown error in a re
 - `HttpStatusError` on all other responses.
 
 ```js
-// Sending request (assuming that customer 9999999 does not exist).
+// Sending example request assuming that customer 9999999 does not exist.
 API.customers.getById(9999999).catch(console.log);
 ```
 
-Example console output would be:
+Example console output could be:
 
 ```js
 { [NotFoundError: Customer record could not be found.]
@@ -135,7 +130,7 @@ Example console output would be:
   }
 }
 ```
-All error object have a `data` property that contains the request and response data.
+All error objects have a `data` property that contains the raw request and response data.
 
 ## API reference
 
