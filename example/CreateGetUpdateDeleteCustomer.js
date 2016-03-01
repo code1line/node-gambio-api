@@ -14,7 +14,7 @@
 const credentials = require('./../test/_credentials');
 
 // Gambio API class.
-const GambioApi = require('./../lib/GambioApi');
+const GambioApi = require('./..');
 
 // Create a new Gambio API instance with demo credentials.
 const API = new GambioApi({
