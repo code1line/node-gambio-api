@@ -1,1 +1,1 @@
-require('./lib/GambioApi');
+module.exports = require('./lib/GambioApi');
