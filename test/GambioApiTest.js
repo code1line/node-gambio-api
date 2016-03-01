@@ -2,6 +2,7 @@ const expect = require('chai').expect;
 
 const extend = require('extend');
 const errors = require('common-errors');
+const semver = require('semver');
 
 const GambioApi = require('./../lib/GambioApi');
 const credentials = require('./_credentials');
@@ -72,6 +73,17 @@ describe('GambioApi', () => {
       const myCredentials = extend(true, {}, testCredentials, { pass: 123 });
       const sandbox = () => new GambioApi(myCredentials);
       expect(sandbox).to.throw(errors.ArgumentError);
+    });
+  });
+
+  describe('#getVersion', () => {
+    it('should be a function', () => {
+      expect(GambioApi.getVersion).to.be.a('function');
+    });
+
+    it('should be a valid version number', () => {
+      const validateVersion = semver.valid(GambioApi.getVersion());
+      expect(validateVersion).not.to.be.a('null');
     });
   });
 
