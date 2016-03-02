@@ -1,31 +1,15 @@
+import _ from 'lodash';
+import Provider from './Provider';
+
 /**
- * @name E-Mail API
+ * Class representing an email provider.
  * @description Provides an API for E-Mails.
- * @example
- * 	API.emails.getById(36)
- * 		.then(console.log)
- * 		.catch(console.error);
+ * @extends Provider
  */
-
-'use strict';
-
-const check = require('check-types');
-const errors = require('common-errors');
-
-const Api = require('./Api');
-const Requester = require('./../Requester');
-const Validator = require('./../Validator');
-
-/**
- * Class representing an E-Mail API.
- * @extends Api
- */
-class EmailApi extends Api {
+class EmailProvider extends Provider {
   /**
    * Returns the API endpoint URL suffix.
-   *
    * @return {String}
-   * @override
    * @private
    */
   _getSuffix() {
@@ -34,153 +18,86 @@ class EmailApi extends Api {
 
   /**
    * Returns all E-Mails.
-   * Optionally, it is possible to pass in sorting and fieldname limitation criteria.
-   *
-   * @param {Object}    [sorting] Sorting criteria.
-   * @param {String[]}  [limits]  Response fields limits.
-   *
-   * @example
-   * 	CustomerApi.get({ subject: 'desc' }, ['id', 'subject']);
-   *
    * @return {Promise}
    */
-  get(sorting, limits) {
-    // Check manipulator arguments and change URL if required.
-    const url = this._modifyUrlByManipulatorArguments(this._getEndpointUrl(), sorting, limits);
-
-    // Return request promise.
-    return Requester.get(url, this._getAuth());
+  get() {
+    return this.dispatcher.get(this._getEndpointUrl());
   }
 
   /**
    * Returns all pending E-Mails.
-   * Optionally, it is possible to pass in sorting and fieldname limitation criteria.
-   *
-   * @param {Object}    [sorting] Sorting criteria.
-   * @param {String[]}  [limits]  Response fields limits.
-   *
    * @return {Promise}
    */
-  getPending(sorting, limits) {
-    // URL parameters to be appended to URL.
-    const suffixParameters = ['state=pending'];
-
-    // Check manipulator arguments and change URL if required.
-    const url = this._modifyUrlByManipulatorArguments(
-      this._getEndpointUrl(),
-      sorting,
-      limits,
-      suffixParameters
-    );
-
-    // Return request promise.
-    return Requester.get(url, this._getAuth());
+  getPending() {
+    return this.dispatcher.get(`${this._getEndpointUrl()}?state=pending`);
   }
 
   /**
    * Returns all sent E-Mails.
-   * Optionally, it is possible to pass in sorting and fieldname limitation criteria.
-   *
-   * @param {Object}    [sorting] Sorting criteria.
-   * @param {String[]}  [limits]  Response fields limits.
-   *
    * @return {Promise}
    */
-  getSent(sorting, limits) {
-    // URL parameters to be appended to URL.
-    const suffixParameters = ['state=sent'];
-
-    // Check manipulator arguments and change URL if required.
-    const url = this._modifyUrlByManipulatorArguments(
-      this._getEndpointUrl(),
-      sorting,
-      limits,
-      suffixParameters
-    );
-
-    // Return request promise.
-    return Requester.get(url, this._getAuth());
+  getSent() {
+    return this.dispatcher.get(`${this._getEndpointUrl()}?state=sent`);
   }
 
   /**
    * Searches in E-Mails.
-   *
    * @param {String} term Search term.
-   *
-   * @throws ArgumentNullError  If argument is missing.
-   * @throws ArgumentError      If argument is invalid.
-   *
+   * @throws {Error} On missing or invalid argument.
    * @return {Promise}
    */
   search(term) {
-    // Check argument.
-    Validator.checkString(term, 'E-Mails search term');
+    // Check search term.
+    if (_.isNil(term) || !_.isString(term)) {
+      throw new Error('Search term is missing or invalid');
+    }
 
-    // Compose URL.
-    const url = this._getEndpointUrl() + `?q=${term}`;
-
-    // Return request promise.
-    return Requester.get(url, this._getAuth());
+    return this.dispatcher.get(`${this._getEndpointUrl()}?q=${term}`);
   }
 
   /**
    * Returns E-Mail by provided E-Mail ID.
-   *
    * @param {Number} id E-Mail ID.
-   *
-   * @throws ArgumentNullError  If argument is missing.
-   * @throws ArgumentError      If argument is invalid.
-   *
+   * @throws {Error} On missing or invalid argument.
    * @return {Promise}
    */
   getById(id) {
-    // Check argument.
-    Validator.checkInteger(id, 'E-Mail ID');
+    // Check ID.
+    if (_.isNil(id) || !_.isInteger(id)) {
+      throw new Error('ID is missing or invalid');
+    }
 
-    // Compose URL.
-    const url = this._getEndpointUrl() + `/${id}`;
-
-    // Return request promise.
-    return Requester.get(url, this._getAuth());
+    return this.dispatcher.get(`${this._getEndpointUrl()}/${id}`);
   }
 
   /**
    * Deletes E-mail by provided E-Mail ID.
-   *
    * @param {Number} id E-Mail ID.
-   *
-   * @throws ArgumentNullError  If argument is missing.
-   * @throws ArgumentError      If argument is invalid.
-   *
+   * @throws {Error} On missing or invalid argument.
    * @return {Promise}
    */
   deleteById(id) {
-    // Check argument.
-    Validator.checkInteger(id, 'E-Mail ID');
+    // Check ID.
+    if (_.isNil(id) || !_.isInteger(id)) {
+      throw new Error('ID is missing or invalid');
+    }
 
-    // Compose URL.
-    const url = this._getEndpointUrl() + `/${id}`;
-
-    // Return request promise.
-    return Requester.delete(url, this._getAuth());
+    return this.dispatcher.delete(`${this._getEndpointUrl()}/${id}`);
   }
 
   /**
    * Queues a new E-Mail, so that it can be sent later over `send()`.
-   *
    * @param {Object} data E-Mail data.
-   *
-   * @throws ArgumentNullError  If argument is missing.
-   * @throws ArgumentError      If argument is invalid.
-   *
+   * @throws {Error} On missing or invalid argument.
    * @return {Promise}
    */
   queue(data) {
-    // Check argument.
-    Validator.checkObject(data, 'E-Mail data');
+    // Check data.
+    if (_.isNil(data) || !_.isObject(data)) {
+      throw new Error('Email data object is missing or invalid');
+    }
 
-    // Return request promise.
-    return Requester.put(this._getEndpointUrl(), this._getAuth(), data);
+    return this.dispatcher.put(this._getEndpointUrl(), data);
   }
 
   /**
@@ -195,10 +112,7 @@ class EmailApi extends Api {
    *
    * @param {Number} [id]   E-Mail ID (for sending existing E-Mail).
    * @param {Object} [data] E-Mail data (for creating a new E-Mail).
-   *
-   * @throws ArgumentNullError  If arguments are missing.
-   * @throws ArgumentError      If any argument is invalid.
-   *
+   * @throws {Error} On missing or invalid argument.
    * @example
    * 	// Send exising E-Mail.
    * 	EmailApi
@@ -220,26 +134,29 @@ class EmailApi extends Api {
     // Use URL with ID?.
     let isUsingIdUrl;
 
-    // Check arguments.
-    if (check.assigned(id)) {
-      // Check ID argument.
-      Validator.checkInteger(id, 'E-Mail ID');
+    if (id) {
+      // Check ID.
+      if (_.isNil(id) || !_.isInteger(id)) {
+        throw new Error('ID is missing or invalid');
+      }
+
       isUsingIdUrl = true;
-    } else if (check.assigned(data)) {
-      // Check data argument.
-      Validator.checkObject(data, 'E-Mail data');
+    } else if (data) {
+      // Check data.
+      if (_.isNil(data) || !_.isObject(data)) {
+        throw new Error('E-Mail data object is missing or invalid');
+      }
       isUsingIdUrl = false;
     } else {
       // Throw error due to missing arguments.
-      throw new errors.ArgumentNullError('E-Mail ID and data');
+      throw new Error('E-Mail ID and data are missing');
     }
 
-    // Compose URL.
     const url = this._getEndpointUrl() + (isUsingIdUrl ? `/${id}` : '');
+    const dataObject = (isUsingIdUrl ? null : data);
 
-    // Return request promise.
-    return Requester.post(url, this._getAuth(), (isUsingIdUrl ? null : data));
+    return this.dispatcher.post(url, dataObject);
   }
 }
 
-module.exports = EmailApi;
+export default EmailProvider;
