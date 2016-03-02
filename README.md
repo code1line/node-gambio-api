@@ -1,10 +1,10 @@
 ![Logo](https://github.com/ronaldloyko/node-gambio-api/raw/master/logo.png)
 
-# Gambio JavaScript API Client
+# Gambio API Client for Node.js
 
 [![Build Status](https://travis-ci.org/ronaldloyko/node-gambio-api.svg?branch=master)](https://travis-ci.org/ronaldloyko/node-gambio-api) [![NPM](https://nodei.co/npm/gambio-api.png?mini=true)](https://nodei.co/npm/gambio-api/)
 
-Simple API for Node, that performs requests to the integrated REST-API of Gambio.
+Simple API client for Node, that performs requests to the integrated REST-API of Gambio.
 
 ## Table of contents
 
@@ -32,7 +32,6 @@ const API = new GambioApi({
   pass: '12345',
 });
 
-// Get customer with ID 6.
 API.customers.getById(6)
   .then((result) => console.log(result))
   .catch((error) => console.error(error));
@@ -52,8 +51,6 @@ const API = new GambioApi({
   user: 'admin@myshop.com',
   // Login password.
   pass: '12345',
-  // API version (optional, default: 'v2').
-  version: 'v2',
 });
 ```
 
@@ -102,32 +99,8 @@ Example console output could be:
 
 #### Error
 
-This module uses custom error classes. Meaning that the thrown error in a rejected promise could be an instance of:
-- `InvalidOperationError` on **400 Bad Request** response.
-- `AuthenticationRequiredError` on **401 Unauthorized** response.
-- `NotPermittedError` on **403 Forbidden** response.
-- `NotFoundError` on **404 Not Found** response.
-- `NotSupportedError` on **415 Unsupported Media Type** response.
-- `Error` on **500 Internal Server Error** response.
-- `NotImplementedError` on **501 Not Implemented** response.
-- `HttpStatusError` on all other responses.
+If an error code between 300 and 600 is returned the promise will be rejected with an error.
 
-```js
-// Sending example request assuming that customer 9999999 does not exist.
-API.customers.getById(9999999).catch(console.log);
-```
-
-Example console output could be:
-
-```js
-{ [NotFoundError: Customer record could not be found.]
-  name: 'NotFoundError',
-  data: {
-    statusCode: 404,
-    // ...
-  }
-}
-```
 All error objects have a `data` property that contains the raw request and response data.
 
 ## API reference
@@ -152,8 +125,8 @@ This is a quick overview of all methods available.
 
 #### Customers
 
-- [Get all customers](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/customers/get.md) - *API.customers.get([sorting], [limitedFields])*
-- [Get all customers, that are guests](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/customers/getGuests.md) - *API.customers.getGuests([sorting], [limitedFields])*
+- [Get all customers](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/customers/get.md) - *API.customers.get()*
+- [Get all customers, that are guests](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/customers/getGuests.md) - *API.customers.getGuests()*
 - [Get a specific customer](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/customers/getById.md) - *API.customers.getById(id)*
 - [Get addresses from a specific customer](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/customers/getAddressesByCustomerId.md) - *API.customers.getAddressesByCustomerId(id)*
 - [Search in customers](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/customers/search.md) - *API.customers.search(term)*
@@ -163,9 +136,9 @@ This is a quick overview of all methods available.
 
 #### E-Mails
 
-- [Get all E-Mails](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/emails/get.md) - *API.emails.get([sorting], [limitedFields])*
-- [Get all pending E-Mails](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/emails/getPending.md) - *API.emails.getPending([sorting], [limitedFields])*
-- [Get all sent E-Mails](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/emails/getSent.md) - - *API.emails.getSent([sorting], [limitedFields])*
+- [Get all E-Mails](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/emails/get.md) - *API.emails.get()*
+- [Get all pending E-Mails](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/emails/getPending.md) - *API.emails.getPending()*
+- [Get all sent E-Mails](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/emails/getSent.md) - - *API.emails.getSent()*
 - [Get a specific E-Mail](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/emails/getById.md) - *API.emails.getById(id)*
 - [Search in E-Mails](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/emails/search.md) - *API.emails.search(term)*
 - [Delete an E-Mail](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/emails/deleteById.md) - *API.emails.deleteById(id)*
