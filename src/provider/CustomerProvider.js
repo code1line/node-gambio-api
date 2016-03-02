@@ -33,7 +33,7 @@ class CustomerProvider extends Provider {
   search(term) {
     // Check search term.
     if (_.isNil(term) || !_.isString(term)) {
-      throw new Error('Search term is missing or invalid.');
+      throw new Error('Search term is missing or invalid');
     }
 
     return this.dispatcher.get(`${this._getEndpointUrl()}?q=${term}`);
@@ -56,7 +56,7 @@ class CustomerProvider extends Provider {
   getAddressesByCustomerId(id) {
     // Check ID.
     if (_.isNil(id) || !_.isInteger(id)) {
-      throw new Error('ID is missing or invalid.');
+      throw new Error('ID is missing or invalid');
     }
 
     return this.dispatcher.get(`${this._getEndpointUrl()}/${id}/addresses`);
@@ -71,7 +71,7 @@ class CustomerProvider extends Provider {
   getById(id) {
     // Check ID.
     if (_.isNil(id) || !_.isInteger(id)) {
-      throw new Error('ID is missing or invalid.');
+      throw new Error('ID is missing or invalid');
     }
 
     return this.dispatcher.get(`${this._getEndpointUrl()}/${id}`);
@@ -84,9 +84,9 @@ class CustomerProvider extends Provider {
    * @return {Promise}
    */
   create(data) {
-    // Check customer data.
+    // Check data.
     if (_.isNil(data) || !_.isObject(data)) {
-      throw new Error('Customer data object is missing or invalid.');
+      throw new Error('Customer data object is missing or invalid');
     }
 
     return this.dispatcher.post(this._getEndpointUrl(), data);
@@ -101,7 +101,7 @@ class CustomerProvider extends Provider {
   deleteById(id) {
     // Check ID.
     if (_.isNil(id) || !_.isInteger(id)) {
-      throw new Error('ID is missing or invalid.');
+      throw new Error('ID is missing or invalid');
     }
 
     return this.dispatcher.delete(`${this._getEndpointUrl()}/${id}`);
@@ -117,12 +117,12 @@ class CustomerProvider extends Provider {
   updateById(id, data) {
     // Check ID.
     if (_.isNil(id) || !_.isInteger(id)) {
-      throw new Error('ID is missing or invalid.');
+      throw new Error('ID is missing or invalid');
     }
 
-    // Check customer data.
+    // Check data.
     if (_.isNil(data) || !_.isObject(data)) {
-      throw new Error('Customer data object is missing or invalid.');
+      throw new Error('Customer data object is missing or invalid');
     }
 
     return this.dispatcher.put(`${this._getEndpointUrl()}/${id}`, data);

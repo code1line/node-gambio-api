@@ -25,7 +25,7 @@ class AddressProvider extends Provider {
   getById(id) {
     // Check ID.
     if (_.isNil(id) || !_.isInteger(id)) {
-      throw new Error('ID is missing or invalid.');
+      throw new Error('ID is missing or invalid');
     }
 
     return this.dispatcher.get(`${this._getEndpointUrl()}/${id}`);
@@ -40,7 +40,7 @@ class AddressProvider extends Provider {
   create(data) {
     // Check data.
     if (_.isNil(data) || !_.isObject(data)) {
-      throw new Error('Data is missing or invalid.');
+      throw new Error('Address data is missing or invalid');
     }
 
     return this.dispatcher.post(`${this._getEndpointUrl()}`, data);
@@ -55,7 +55,7 @@ class AddressProvider extends Provider {
   deleteById(id) {
     // Check ID.
     if (_.isNil(id) || !_.isInteger(id)) {
-      throw new Error('ID is missing or invalid.');
+      throw new Error('ID is missing or invalid');
     }
 
     return this.dispatcher.delete(`${this._getEndpointUrl()}/${id}`);
@@ -71,12 +71,12 @@ class AddressProvider extends Provider {
   updateById(id, data) {
     // Check ID.
     if (_.isNil(id) || !_.isInteger(id)) {
-      throw new Error('ID is missing or invalid.');
+      throw new Error('ID is missing or invalid');
     }
 
     // Check data.
     if (_.isNil(data) || !_.isObject(data)) {
-      throw new Error('Data is missing or invalid.');
+      throw new Error('Address data is missing or invalid');
     }
 
     return this.dispatcher.put(`${this._getEndpointUrl()}/${id}`);

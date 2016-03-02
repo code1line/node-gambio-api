@@ -25,7 +25,7 @@ class CountryProvider extends Provider {
   getById(id) {
     // Check ID.
     if (_.isNil(id) || !_.isInteger(id)) {
-      throw new Error('ID is missing or invalid.');
+      throw new Error('ID is missing or invalid');
     }
 
     return this.dispatcher.get(`${this._getEndpointUrl()}/${id}`);
@@ -40,7 +40,7 @@ class CountryProvider extends Provider {
   getZonesByCountryId(id) {
     // Check ID.
     if (_.isNil(id) || !_.isInteger(id)) {
-      throw new Error('ID is missing or invalid.');
+      throw new Error('ID is missing or invalid');
     }
 
     return this.dispatcher.get(`${this._getEndpointUrl()}/${id}/zones`);
