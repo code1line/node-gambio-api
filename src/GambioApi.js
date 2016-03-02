@@ -9,7 +9,6 @@ import checkUrl from './helper/checkUrl';
 /**
  * Class representing the main Gambio API module.
  *
- * @name gambio-api.
  * @description Simple API for Node, that performs requests to the integrated REST-API of Gambio.
  * @example
  * 	const GambioApi = require('gambio-api');
