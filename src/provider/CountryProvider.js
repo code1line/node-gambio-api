@@ -1,28 +1,15 @@
+import _ from 'lodash';
+import Provider from './Provider';
+
 /**
- * @name Country API
+ * Class representing a country provider.
  * @description Provides an API for countries.
- * @example
- * 	API.countries.getById(36)
- * 		.then(console.log)
- * 		.catch(console.error);
+ * @extends Provider
  */
-
-'use strict';
-
-const Api = require('./Api');
-const Requester = require('./../Requester');
-const Validator = require('./../Validator');
-
-/**
- * Class representing a country API.
- * @extends Api
- */
-class CountryApi extends Api {
+class CountryApi extends Provider {
   /**
    * Returns the API endpoint URL suffix.
-   *
    * @return {String}
-   * @override
    * @private
    */
   _getSuffix() {
@@ -31,46 +18,33 @@ class CountryApi extends Api {
 
   /**
    * Returns country by provided country ID.
-   *
    * @param {Number} id Country ID.
-   *
-   * @throws ArgumentNullError  If argument is missing.
-   * @throws ArgumentError      If argument is invalid.
-   *
+   * @throws {Error} On missing or invalid argument.
    * @return {Promise}
    */
   getById(id) {
-    // Check argument.
-    Validator.checkInteger(id, 'Country ID');
+    // Check ID.
+    if (_.isNil(id) || !_.isInteger(id)) {
+      throw new Error('ID is missing or invalid.');
+    }
 
-    // Compose URL.
-    const url = this._getEndpointUrl() + `/${id}`;
-
-    // Return request promise.
-    return Requester.get(url, this._getAuth());
+    return this.dispatcher.get(`${this._getEndpointUrl()}/${id}`);
   }
 
   /**
    * Returns zones of a country by provided country ID.
-   *
    * @param {Number} id Country ID.
-   *
-   * @throws ArgumentNullError  If argument is missing.
-   * @throws ArgumentError      If argument is invalid.
-   *
+   * @throws {Error} On missing or invalid argument.
    * @return {Promise}
    */
   getZonesByCountryId(id) {
-    // Check argument.
-    Validator.checkInteger(id, 'Country ID');
+    // Check ID.
+    if (_.isNil(id) || !_.isInteger(id)) {
+      throw new Error('ID is missing or invalid.');
+    }
 
-    // Compose URL.
-    const url = this._getEndpointUrl() + `/${id}/zones`;
-
-    // Return request promise.
-    return Requester.get(url, this._getAuth());
+    return this.dispatcher.get(`${this._getEndpointUrl()}/${id}/zones`);
   }
 }
 
-// Export class.
-module.exports = CountryApi;
+export default CountryApi;
