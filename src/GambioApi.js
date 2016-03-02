@@ -1,4 +1,14 @@
+import _ from 'lodash';
+import CountryProvider from './provider/CountryProvider';
+import ZoneProvider from './provider/ZoneProvider';
+import AddressProvider from './provider/AddressProvider';
+import CustomerProvider from './provider/CustomerProvider';
+import EmailProvider from './provider/EmailProvider';
+import checkUrl from './helper/checkUrl';
+
 /**
+ * Class representing the main Gambio API module.
+ *
  * @name gambio-api.
  * @description Simple API for Node, that performs requests to the integrated REST-API of Gambio.
  * @example
@@ -20,18 +30,6 @@
  * @author Ronald Loyko
  * @license GPL v2
  */
-
-import extend from 'extend';
-import check from 'check-types';
-import CountryApi from './api/CountryApi';
-import ZoneApi from './api/ZoneApi';
-import AddressApi from './api/AddressApi';
-import CustomerApi from './api/CustomerApi';
-import EmailApi from './api/EmailApi';
-
-/**
- * Class representing the main Gambio API module.
- */
 class GambioApi {
 
   /**
@@ -44,87 +42,58 @@ class GambioApi {
   }
 
   /**
-   * Creates a new instance with provided parameters.
-   *
-   * @param {Object} parameters           API parameters.
+   * Creates a new instance of the API client.
+   * @param {Object} parameters           Parameters object.
    * @param {String} parameters.url       URL to Gambio shop root (e.g.: 'http://shop.de/shop1').
    * @param {String} parameters.user      Login user (e.g.: 'admin@shop.de').
    * @param {String} parameters.pass      Login password (e.g.: '12345').
-   * @param {String} [parameters.version] API version (e.g.: 'v2').
    */
   constructor(parameters) {
-    // Validates the provided parameters.
-    this._validate(parameters);
+    // Validate parameters.
+    this._validateParameters(parameters);
 
-    // Extend default parameters with provided ones.
-    const extendedParameters = extend(true, {}, defaultParameters, parameters);
+    // Compose REST-API URL.
+    const url = `${parameters.url}/api.php/v2`;
 
-    // Compose API URL.
-    const apiUrl = this._getApiUrl(extendedParameters.url, extendedParameters.version);
-
-    // Create authentication object which is required in each sub API call.
-    const apiAuth = {
-      user: extendedParameters.user,
-      pass: extendedParameters.pass,
+    // Authentication object which is required for each provider.
+    const auth = {
+      user: parameters.user,
+      pass: parameters.pass,
     };
 
-    // Set sub APIs.
-    this.countries = new CountryApi(apiUrl, apiAuth);
-    this.zones = new ZoneApi(apiUrl, apiAuth);
-    this.addresses = new AddressApi(apiUrl, apiAuth);
-    this.customers = new CustomerApi(apiUrl, apiAuth);
-    this.emails = new EmailApi(apiUrl, apiAuth);
-  }
-
-  /**
-   * Composes the Shop URL and the version.
-   * The returned value is the composed URL, which represents the URL to the REST-API.
-   *
-   * @param {String} url      Object of parameters.
-   * @param {String} version  URL to shop.
-   *
-   * @return {String}
-   * @private
-   */
-  _getApiUrl(url, version) {
-    // Relative path to API file with specific version.
-    const apiUrl = `/api.php/${version}`;
-
-    // Compose shop URL and REST-API relative path.
-    const composedUrl = url + apiUrl;
-
-    // Return composed URL.
-    return composedUrl;
+    // Set providers.
+    this.countries = new CountryProvider(url, auth);
+    this.zones = new ZoneProvider(url, auth);
+    this.addresses = new AddressProvider(url, auth);
+    this.customers = new CustomerProvider(url, auth);
+    this.emails = new EmailProvider(url, auth);
   }
 
   /**
    * Validates the provided parameters in constructor.
-   *
-   * @param {Object} parameters Constructor parameter object (see #constructor).
-   *
-   * @throws ArgumentNullError  If argument is not assigned.
-   * @throws ArgumentError      If argument type does not match.
-   *
+   * @see #constructor for parameters.
+   * @throws {Error} On missing or invalid parameters.
    * @private
    */
-  _validate(parameters) {
-    // Validate object parameter.
-    Validator.checkObject(parameters, 'Constructor parameter');
+  _validateParameters(parameters) {
+    // Check object.
+    if (_.isNil(parameters) || !_.isObject(parameters)) {
+      throw new Error('Missing or invalid parameter object');
+    }
 
-    // Validate URL.
-    Validator.checkUrl(parameters.url, 'Shop URL');
+    // Check URL.
+    checkUrl(parameters.url);
 
-    // Validate user.
-    Validator.checkString(parameters.user, 'Login user');
+    // Check user.
+    if (_.isNil(parameters.user) || !_.isString(parameters.user)) {
+      throw new Error('Missing or invalid user');
+    }
 
-    // Validate password.
-    Validator.checkString(parameters.pass, 'Login password');
-
-    // Check API version, if provided.
-    if (check.assigned(parameters.version)) {
-      Validator.checkString(parameters.version, 'API version');
+    // Check password.
+    if (_.isNil(parameters.pass) || !_.isString(parameters.pass)) {
+      throw new Error('Missing or invalid password');
     }
   }
 }
 
-module.exports = GambioApi;
+export default GambioApi;

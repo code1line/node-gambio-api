@@ -10,14 +10,15 @@
  * @author Ronald Loyko
  */
 
-// Gambio demo shop credentials.
-const credentials = require('./../test/_data/credentials');
-
 // Gambio API class.
 const GambioApi = require('./..');
 
 // Create a new Gambio API instance with demo credentials.
-const API = new GambioApi(credentials);
+const API = new GambioApi({
+  url: 'http://www.gambio-shop.de/shop1',
+  user: 'admin@shop.de',
+  pass: '12345',
+});
 
 // Whitespace for console output.
 const whiteSpace = '\n';

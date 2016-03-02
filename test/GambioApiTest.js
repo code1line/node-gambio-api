@@ -1,78 +1,30 @@
-const expect = require('chai').expect;
-
-const extend = require('extend');
-const errors = require('common-errors');
-const semver = require('semver');
-
-const GambioApi = require('./../lib/GambioApi');
-const credentials = require('./_credentials');
-
-const testCredentials = {
-  url: credentials.url,
-  user: credentials.user,
-  pass: credentials.pass,
-};
-const testInstance = new GambioApi(testCredentials);
+import { assert } from 'chai';
+import semver from 'semver';
+import GambioApi from './..';
+import credentials from './_credentials';
 
 describe('GambioApi', () => {
+  // Valid instance.
+  const instance = new GambioApi(credentials);
+
   describe('#constructor', () => {
-    it('should throw ArgumentNullError on missing arguments', () => {
+    it('throws error on missing arguments', () => {
       const sandbox = () => new GambioApi();
-      expect(sandbox).to.throw(errors.ArgumentNullError);
+      assert.throws(sandbox, Error);
     });
 
-    it('should throw ArgumentError on instantiating with invalid argument', () => {
-      const sandbox = () => new GambioApi('s');
-      expect(sandbox).to.throw(errors.ArgumentError);
+    it('throws error on invalid argument', () => {
+      const sandbox = () => new GambioApi(1);
+      assert.throws(sandbox, Error);
     });
 
-    it('should work', () => {
-      const sandbox = () => new GambioApi(testCredentials);
-      expect(sandbox).not.to.throw(Error);
-    });
-
-    it('should throw ArgumentError on invalid version type', () => {
-      const sandbox = () => new GambioApi(extend(true, {}, testCredentials, { version: 234 }));
-      expect(sandbox).to.throw(errors.ArgumentError);
-    });
-
-    it('should throw ArgumentError on missing URL', () => {
-      const myCredentials = extend(true, {}, testCredentials);
-      delete myCredentials.url;
-      const sandbox = () => new GambioApi(myCredentials);
-      expect(sandbox).to.throw(errors.ArgumentError);
-    });
-
-    it('should throw ArgumentError on wrong URL type', () => {
-      const myCredentials = extend(true, {}, testCredentials, { url: 1 });
-      const sandbox = () => new GambioApi(myCredentials);
-      expect(sandbox).to.throw(errors.ArgumentError);
-    });
-
-    it('should throw ArgumentError on missing user', () => {
-      const myCredentials = extend(true, {}, testCredentials);
-      delete myCredentials.user;
-      const sandbox = () => new GambioApi(myCredentials);
-      expect(sandbox).to.throw(errors.ArgumentError);
-    });
-
-    it('should throw ArgumentError on wrong user type', () => {
-      const myCredentials = extend(true, {}, testCredentials, { user: 1 });
-      const sandbox = () => new GambioApi(myCredentials);
-      expect(sandbox).to.throw(errors.ArgumentError);
-    });
-
-    it('should throw ArgumentError on missing password', () => {
-      const myCredentials = extend(true, {}, testCredentials);
-      delete myCredentials.pass;
-      const sandbox = () => new GambioApi(myCredentials);
-      expect(sandbox).to.throw(errors.ArgumentError);
-    });
-
-    it('should throw ArgumentError on wrong password type', () => {
-      const myCredentials = extend(true, {}, testCredentials, { pass: 123 });
-      const sandbox = () => new GambioApi(myCredentials);
-      expect(sandbox).to.throw(errors.ArgumentError);
+    it('throws error on missing URL', () => {
+      const myCredentials = {
+        user: credentials.user,
+        pass: credentials.pass,
+      };
+      const sandbox = () => new GambioApi();
+      assert.throws(sandbox, Error);
     });
   });
 
