@@ -36,17 +36,9 @@ Don't forget to lint your code and run the tests by doing `npm test` during deve
 
 **Module structure**
 - Gambio API
-  - APIs
-    - API base class
-      - Address API
-      - Country API
-      - Customer API
-      - E-Mail API
-      - Zone API
-  - Requester
-  - Validator
-  - Errors
   - Providers
+  - RequestDispatcher
+  - Helpers
 
 **Example request sequence**
 
@@ -54,10 +46,7 @@ Example API command: `API.customers.getById(5)`
 
 ```
 1. GambioApi -> calls -> CustomerApi
-2. CustomerApi -> opens method -> CustomerApi#getById()
-3. CustomerApi#getById() -> validates parameter by calling -> Validator#checkInteger()
-4. CustomerApi#getById() -> prepares request by calling -> Requester#get()
-5. Requester#get() -> sends GET request using -> request (Node library)
-6. Requester#get() -> returns -> Promise
-
+2. CustomerApi -> opens method -> CustomerApi#getById
+3. CustomerApi#getById -> prepares request by calling -> RequestDispatcher#get
+5. RequestDispatcher#get -> sends GET request -> returns -> Promise
 ```
