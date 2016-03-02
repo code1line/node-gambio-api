@@ -107,7 +107,9 @@ describe('CustomerProvider', () => {
     });
 
     it('returns a promise', () => {
-      assert.instanceOf(instance.getAddressesByCustomerId(1), Promise);
+      instance
+        .create(getData())
+        .then((result) => assert.instanceOf(instance.getAddressesByCustomerId(result.id), Promise));
     });
 
     it('resolves the promise', (done) => {
@@ -150,7 +152,9 @@ describe('CustomerProvider', () => {
     });
 
     it('returns a promise', () => {
-      assert.instanceOf(instance.getById(1), Promise);
+      instance
+        .create(getData())
+        .then((result) => assert.instanceOf(instance.getById(result.id), Promise));
     });
 
     it('resolves the promise', (done) => {
@@ -235,7 +239,9 @@ describe('CustomerProvider', () => {
     });
 
     it('returns a promise', () => {
-      assert.instanceOf(instance.deleteById(99999999999), Promise);
+      instance
+        .create(getData())
+        .then((result) => assert.instanceOf(instance.deleteById(result.id), Promise));
     });
 
     it('resolves the promise', (done) => {
