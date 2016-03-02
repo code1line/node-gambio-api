@@ -1,7 +1,7 @@
 {
   "name": "gambio-api",
   "version": "2.0.0",
-  "description": "Node.js API client for Gambio",
+  "description": "Gambio API Client for Node.js",
   "main": "index.js",
   "directories": {
     "src": "./src",
@@ -28,9 +28,6 @@
   "license": "GPL-2.0",
   "bugs": {
     "url": "https://github.com/ronaldloyko/node-gambio-api/issues"
-  },
-  "engines": {
-    "node": ">=4.0"
   },
   "homepage": "http://ronaldloyko.github.io/node-gambio-api",
   "dependencies": {
