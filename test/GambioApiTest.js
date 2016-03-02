@@ -29,7 +29,7 @@ describe('GambioApi', () => {
 
     it('does not throw error on valid arguments', () => {
       const sandbox = () => new GambioApi(credentials);
-      assert.throws(sandbox, Error);
+      assert.doesNotThrow(sandbox, Error);
     });
   });
 
