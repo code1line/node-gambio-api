@@ -85,18 +85,18 @@ class RequestDispatcher {
           data = response.body;
         }
 
-        // Check for error status code and reject promise.
-        if (_.inRange(response.statusCode, 399, 600)) {
-          const serverError = new Error('Request error');
-          serverError.data = data;
-
-          reject(serverError);
-          return;
-        }
-
         // Check for successful status code and resolve promise.
         if (_.inRange(response.statusCode, 199, 300)) {
           resolve(data);
+          return;
+        }
+
+        // Check for error/redirection status code and reject promise.
+        if (_.inRange(response.statusCode, 300, 600)) {
+          const serverError = new Error('Server responded with error or redirection');
+          serverError.data = data;
+
+          reject(serverError);
           return;
         }
       });

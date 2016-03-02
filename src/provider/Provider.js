@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import RequestDispatcher from './../RequestDispatcher';
 import checkUrl from './../helper/checkUrl';
 
 /**
@@ -17,9 +18,9 @@ import checkUrl from './../helper/checkUrl';
  * 		pass: 'password',
  * 	});
  */
-class Api {
+class Provider {
   /**
-   * Creates a base provider instance.
+   * Creates a base provider instance and initializes a request dispatcher.
    * @param {String} url        URL to REST-API.
    * @param {Object} auth       Authentication credentials.
    * @param {String} auth.user  Login user.
@@ -30,6 +31,8 @@ class Api {
 
     this.url = url;
     this.auth = auth;
+
+    this.dispatcher = new RequestDispatcher(auth);
   }
 
   /**
@@ -40,6 +43,7 @@ class Api {
    *   }
    * @return {String}
    * @throws {Error} If method has not been overridden.
+   * @override
    * @private
    */
   _getSuffix() {
@@ -92,4 +96,4 @@ class Api {
   }
 }
 
-export default Api;
+export default Provider;
