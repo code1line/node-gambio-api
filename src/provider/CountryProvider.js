@@ -6,7 +6,7 @@ import Provider from './Provider';
  * @description Provides an API for countries.
  * @extends Provider
  */
-class CountryApi extends Provider {
+class CountryProvider extends Provider {
   /**
    * Returns the API endpoint URL suffix.
    * @return {String}
@@ -47,4 +47,4 @@ class CountryApi extends Provider {
   }
 }
 
-export default CountryApi;
+export default CountryProvider;
