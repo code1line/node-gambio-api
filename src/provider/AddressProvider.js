@@ -4,10 +4,9 @@ import Provider from './Provider';
 /**
  * Class representing a address provider.
  * @description Provides an API for adresses.
- * @extends Api
+ * @extends Provider
  */
 class AddressProvider extends Provider {
-
   /**
    * Returns the API endpoint URL suffix.
    * @return {String}
