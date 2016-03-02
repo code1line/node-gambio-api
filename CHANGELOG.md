@@ -2,7 +2,12 @@
 
 ## 2.0.0
 - Usage of [Gulp-ES6-Module-Generator](https://github.com/ronaldloyko/generator-gulp-es6-module)
-- Refactored code to use complete ES6 syntax.
+- Refactored code to use complete ES6 syntax (usage of `import`, `export`, ...).
+- Removed custom error classes, used native `Error` instead.
+- Renamed sub APIs to providers.
+- Completely refactored unit tests.
+- Refactored providers.
+- Removed request sorting and limiting feature.
 
 ## 1.2.0
 - Added `getVersion` static method.
