@@ -8,6 +8,10 @@
 - Completely refactored unit tests.
 - Refactored providers.
 - Removed request sorting and limiting feature.
+- Added CategoryProvider
+<!-- - Added `EmailProvider#uploadAttachment` -->
+<!-- - Added OrderProvider -->
+<!-- - Added ProductProvider -->
 
 ## 1.2.0
 - Added `getVersion` static method.

@@ -185,4 +185,78 @@ describe('GambioApi', () => {
       });
     });
   });
+
+  describe('#categories', () => {
+    describe('#create', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.categories.create);
+      });
+    });
+
+    describe('#deleteIcon', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.categories.deleteIcon);
+      });
+    });
+
+    describe('#deleteImage', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.categories.deleteImage);
+      });
+    });
+
+    describe('#deleteById', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.categories.deleteById);
+      });
+    });
+
+    describe('#get', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.categories.get);
+      });
+    });
+
+    describe('#getById', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.categories.getById);
+      });
+    });
+
+    describe('#search', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.categories.search);
+      });
+    });
+
+    describe('#renameIcon', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.categories.renameIcon);
+      });
+    });
+
+    describe('#renameImage', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.categories.renameImage);
+      });
+    });
+
+    describe('#updateById', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.categories.updateById);
+      });
+    });
+
+    describe('#uploadIcon', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.categories.uploadIcon);
+      });
+    });
+
+    describe('#uploadImage', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.categories.uploadImage);
+      });
+    });
+  });
 });
