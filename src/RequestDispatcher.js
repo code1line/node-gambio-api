@@ -177,21 +177,22 @@ class RequestDispatcher {
 
   /**
    * Performs a PUT request.
-   * @param {String} url    Request URL.
-   * @param {Object} [data] PUT request data.
+   * @param {String}  url       Request URL.
+   * @param {Object}  [data]    Request data.
+   * @param {Boolean} [isPatch] Perform a PATCH request instead of PUT?
    * @throws {Error} On missing or invalid argument.
    * @return {Promise}
    */
-  put(url, data) {
+  put(url, data, isPatch) {
     checkUrl(url);
 
-    // Validate PUT data type.
+    // Validate data.
     if (data && !_.isObject(data)) {
-      throw new Error('Invalid PUT data object');
+      throw new Error('Invalid data');
     }
 
     const parameters = {
-      method: 'PUT',
+      method: isPatch ? 'PATCH' : 'PUT',
       json: true,
       body: data ? data : {},
       url,

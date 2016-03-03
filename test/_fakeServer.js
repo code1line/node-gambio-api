@@ -27,6 +27,11 @@ server
   .put('/')
   .times(RESPONSE_TIMES)
   .delay(RESPONSE_DELAY)
+  .reply(200, {})
+
+  .patch('/')
+  .times(RESPONSE_TIMES)
+  .delay(RESPONSE_DELAY)
   .reply(200, {});
 
 // Route: Not found URL.

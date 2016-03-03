@@ -249,6 +249,18 @@ describe('RequestDispatcher', () => {
         });
     });
 
+    it('resolves the promise (PATCH)', (done) => {
+      instance.put(fakeServer.URL, {}, true)
+        .then(() => {
+          assert.ok('Response');
+          done();
+        })
+        .catch(() => {
+          assert.notOk('Response');
+          done();
+        });
+    });
+
     it('rejects the promise on "404 Not Found"', (done) => {
       instance.put(fakeServer.URL + '/notfound', {})
         .then(() => {
