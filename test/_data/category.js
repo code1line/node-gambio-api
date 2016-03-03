@@ -41,4 +41,5 @@ export default {
     ],
   },
   addonValues: { test_key: 'test_value' },
+  icon: 'my_name.jpg',
 };

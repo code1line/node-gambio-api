@@ -294,14 +294,17 @@ describe('CategoryProvider', () => {
       instance
         .uploadIcon(path, name)
         .then((result) => {
-          assert.instanceOf(instance.renameIcon(result.filename, `${random(1, 100)}.txt`), Promise);
+          assert.instanceOf(
+            instance.renameIcon(result.filename, `${random(1, 1000)}.txt`),
+            Promise
+          );
         });
     });
 
     it('resolves the promise', (done) => {
       instance
         .uploadIcon(path, name)
-        .then((result) => instance.renameIcon(result.filename, `${random(1, 100)}.txt`))
+        .then((result) => instance.renameIcon(result.filename, `${random(1, 1000)}.txt`))
         .then(() => {
           assert.ok('Renaming');
           done();
@@ -329,7 +332,7 @@ describe('CategoryProvider', () => {
         .uploadImage(path, name)
         .then((result) => {
           assert.instanceOf(
-            instance.renameImage(result.filename, `${random(1, 100)}.txt`),
+            instance.renameImage(result.filename, `${random(1, 1000)}.txt`),
             Promise
           );
         });
@@ -338,7 +341,7 @@ describe('CategoryProvider', () => {
     it('resolves the promise', (done) => {
       instance
         .uploadImage(path, name)
-        .then((result) => instance.renameImage(result.filename, `${random(1, 100)}.txt`))
+        .then((result) => instance.renameImage(result.filename, `${random(1, 1000)}.txt`))
         .then(() => {
           assert.ok('Renaming');
           done();

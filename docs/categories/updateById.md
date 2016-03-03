@@ -1,22 +1,29 @@
-# Get a specific category
+# Update a category
 
 ### Description
 
-Returns a category, selected by the category ID.
+Updates a category.
 
 ### Method
 
 ```js
-API.category.getById(id)
+API.categories.updateById(id, data)
 ```
 
 ### Parameters
+
 `id` - *Integer* - Category ID
+
+`data` - *Object* - Category data
 
 ### Example
 
 ```js
-API.category.getById(600);
+const data = {
+  icon: 'new_file.jpg'
+};
+
+API.categories.updateById(500, data);
 ```
 
 ### Return value in resolved promise
@@ -24,12 +31,12 @@ API.category.getById(600);
 ```js
 // Object.
 {
-  id: 600,
+  id: 500,
   parentId: 0,
   isActive: true,
   sortOrder: 0,
-  dateAdded: '2016-03-03 11:38:42',
-  lastModified: '2016-03-03 11:38:42',
+  dateAdded: '2016-03-03 01:51:25',
+  lastModified: '2016-03-03 11:55:40',
   name: { en: 'test category', de: 'Testkategorie' },
   headingTitle: { en: 'test category', de: 'Testkategorie' },
   description:
@@ -39,7 +46,7 @@ API.category.getById(600);
   metaDescription: { en: '', de: '' },
   metaKeywords: { en: '', de: '' },
   urlKeywords: { en: '', de: '' },
-  icon: 'new_icon.jpg',
+  icon: 'new_file.jpg',
   image: '',
   imageAltText: { en: '', de: '' },
   settings:

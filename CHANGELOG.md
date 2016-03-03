@@ -9,7 +9,6 @@
 - Refactored providers.
 - Removed request sorting and limiting feature.
 - Added CategoryProvider
-<!-- - Added `EmailProvider#uploadAttachment` -->
 <!-- - Added OrderProvider -->
 <!-- - Added ProductProvider -->
 

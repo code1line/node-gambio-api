@@ -154,6 +154,10 @@ This is a quick overview of all methods available.
 - [Get a specific category](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/categories/getById.md) - *API.categories.getById(id)*
 - [Search in categories](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/categories/search.md) - *API.categories.search(term)*
 - [Rename category icon](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/categories/renameIcon.md) - *API.categories.renameIcon(oldName, newName)*
+- [Rename category image](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/categories/renameImage.md) - *API.categories.renameImage(oldName, newName)*
+- [Update a category](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/categories/updateById.md) - *API.categories.updateById(id, data)*
+- [Upload a category icon](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/categories/uploadIcon.md) - *API.categories.uploadIcon(path, name)*
+- [Upload a category image](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/categories/uploadImage.md) - *API.categories.uploadImage(path, name)*
 
 #### API
 - [Get module version](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/api/getVersion.md) - *API.getVersion()*
