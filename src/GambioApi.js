@@ -5,6 +5,7 @@ import AddressProvider from './provider/AddressProvider';
 import CustomerProvider from './provider/CustomerProvider';
 import EmailProvider from './provider/EmailProvider';
 import CategoryProvider from './provider/CategoryProvider';
+import OrderProvider from './provider/OrderProvider';
 import checkUrl from './helper/checkUrl';
 
 /**
@@ -68,6 +69,7 @@ class GambioApi {
     this.customers = new CustomerProvider(url, auth);
     this.emails = new EmailProvider(url, auth);
     this.categories = new CategoryProvider(url, auth);
+    this.orders = new OrderProvider(url, auth);
   }
 
   /**

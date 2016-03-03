@@ -265,4 +265,174 @@ describe('GambioApi', () => {
       });
     });
   });
+
+  describe('#orders', () => {
+    describe('#createItemAttribute', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.createItemAttribute);
+      });
+    });
+
+    describe('#createItem', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.createItem);
+      });
+    });
+
+    describe('#createTotal', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.createTotal);
+      });
+    });
+
+    describe('#create', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.create);
+      });
+    });
+
+    describe('#deleteItemAttributeById', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.deleteItemAttributeById);
+      });
+    });
+
+    describe('#deleteItemById', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.deleteItemById);
+      });
+    });
+
+    describe('#deleteTotalById', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.deleteTotalById);
+      });
+    });
+
+    describe('#deleteById', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.deleteById);
+      });
+    });
+
+    describe('#getHistory', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.getHistory);
+      });
+    });
+
+    describe('#getHistoryById', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.getHistoryById);
+      });
+    });
+
+    describe('#searchHistory', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.searchHistory);
+      });
+    });
+
+    describe('#getItemAttributes', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.getItemAttributes);
+      });
+    });
+
+    describe('#getItemAttributeById', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.getItemAttributeById);
+      });
+    });
+
+    describe('#searchItemAttributes', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.searchItemAttributes);
+      });
+    });
+
+    describe('#getItems', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.getItems);
+      });
+    });
+
+    describe('#getItemById', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.getItemById);
+      });
+    });
+
+    describe('#searchItems', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.searchItems);
+      });
+    });
+
+    describe('#getTotals', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.getTotals);
+      });
+    });
+
+    describe('#getTotalById', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.getTotalById);
+      });
+    });
+
+    describe('#searchTotals', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.searchTotals);
+      });
+    });
+
+    describe('#get', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.get);
+      });
+    });
+
+    describe('#getById', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.getById);
+      });
+    });
+
+    describe('#search', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.search);
+      });
+    });
+
+    describe('#updateItemAttributeById', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.updateItemAttributeById);
+      });
+    });
+
+    describe('#updateItemById', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.updateItemById);
+      });
+    });
+
+    describe('#updateStatus', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.updateStatus);
+      });
+    });
+
+    describe('#updateTotalById', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.updateTotalById);
+      });
+    });
+
+    describe('#updateById', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.updateById);
+      });
+    });
+  });
 });
