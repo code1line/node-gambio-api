@@ -273,4 +273,50 @@ describe('EmailProvider', () => {
         });
     });
   });
+
+  describe('#uploadAttachment', () => {
+    // Valid file path.
+    const path = `${__dirname}/../_data/email.js`;
+
+    it('throws error on missing arguments', () => {
+      const sandbox = () => instance.uploadAttachment();
+      assert.throws(sandbox, Error);
+    });
+
+    it('throws error on invalid path', () => {
+      const sandbox = () => instance.uploadAttachment(2);
+      assert.throws(sandbox, Error);
+    });
+
+    it('returns a promise', () => {
+      assert.instanceOf(instance.uploadAttachment(path), Promise);
+    });
+
+    it('resolves the promise', (done) => {
+      instance
+        .uploadAttachment(path)
+        .then(() => {
+          assert.ok('Uploading');
+          done();
+        })
+        .catch((e) => {
+          console.log(e);
+          assert.notOk('Uploading');
+          done();
+        });
+    });
+
+    it('rejects the promise', (done) => {
+      instance
+        .uploadAttachment('asdsadsadasd')
+        .then(() => {
+          assert.notOk('Uploading');
+          done();
+        })
+        .catch(() => {
+          assert.ok('Uploading');
+          done();
+        });
+    });
+  });
 });

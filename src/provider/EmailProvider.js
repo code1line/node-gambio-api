@@ -157,6 +157,23 @@ class EmailProvider extends Provider {
 
     return this.dispatcher.post(url, dataObject);
   }
+
+  /**
+   * Uploads an attachment for emails.
+   * @param {String} file File path.
+   * @return {Promise}
+   */
+  uploadAttachment(path) {
+    // Check path.
+    if (_.isNil(path) || !_.isString(path)) {
+      throw new Error('File path is missing or invalid');
+    }
+
+    // Replace endpoint URL.
+    const url = this._getEndpointUrl().replace(this._getSuffix(), '/attachments');
+
+    return this.dispatcher.uploadFile(url, path, _.uniqueId(), ['filedata', 'name']);
+  }
 }
 
 export default EmailProvider;

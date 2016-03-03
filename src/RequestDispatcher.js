@@ -202,13 +202,16 @@ class RequestDispatcher {
 
   /**
    * Uploads a file in a POST request.
-   * @param {String} url  Request URL.
-   * @param {String} path Path to file.
-   * @param {String} name File name.
+   * @param {String}    url           Request URL.
+   * @param {String}    path          Path to file.
+   * @param {String}    name          File name.
+   * @param {String[]}  [fieldNames]  Field names.
+   * @param {String}    fieldNames[]  File field name.
+   * @param {String}    fieldNames[]  Filename field name.
    * @throws {Error} On missing or invalid argument and if file could not be found.
    * @return {Promise}
    */
-  uploadFile(url, path, name) {
+  uploadFile(url, path, name, fieldNames) {
     checkUrl(url);
 
     // Validate file path.
@@ -221,11 +224,22 @@ class RequestDispatcher {
       throw new Error('Missing or invalid file name');
     }
 
+    // Validate field names.
+    if (fieldNames && !_.isArray(fieldNames)) {
+      throw new Error('Invalid fieldnames array');
+    }
+
     // Read file.
     const file = fs.createReadStream(path);
+    // Field names
+    const fileFieldname = fieldNames ? fieldNames[0] : 'file';
+    const nameFieldname = fieldNames ? fieldNames[1] : 'filename';
 
     // Form data.
-    const data = { filename: name, file };
+    const data = {};
+
+    data[fileFieldname] = file;
+    data[nameFieldname] = name;
 
     const parameters = {
       method: 'POST',

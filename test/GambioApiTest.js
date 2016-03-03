@@ -184,6 +184,12 @@ describe('GambioApi', () => {
         assert.isFunction(instance.emails.send);
       });
     });
+
+    describe('#uploadAttachment', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.emails.uploadAttachment);
+      });
+    });
   });
 
   describe('#categories', () => {

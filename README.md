@@ -145,6 +145,16 @@ This is a quick overview of all methods available.
 - [Queue an E-Mail](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/emails/queue.md) - *API.emails.queue(data)*
 - [Send an E-Mail](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/emails/send.md) - *API.emails.send([id], [data])*
 
+#### Categories
+- [Create a new category](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/categories/create.md) - *API.categories.create(data)*
+- [Delete category icon](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/categories/deleteIcon.md) - *API.categories.deleteIcon(file)*
+- [Delete category image](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/categories/deleteImage.md) - *API.categories.deleteImage(file)*
+- [Delete a category](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/categories/deleteById.md) - *API.categories.deleteById(id)*
+- [Get all categories](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/categories/get.md) - *API.categories.get()*
+- [Get a specific category](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/categories/getById.md) - *API.categories.getById(id)*
+- [Search in categories](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/categories/search.md) - *API.categories.search(term)*
+- [Rename category icon](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/categories/renameIcon.md) - *API.categories.renameIcon(oldName, newName)*
+
 #### API
 - [Get module version](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/api/getVersion.md) - *API.getVersion()*
 
