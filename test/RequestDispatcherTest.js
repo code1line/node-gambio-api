@@ -55,6 +55,11 @@ describe('RequestDispatcher', () => {
       assert.throws(sandbox, Error);
     });
 
+    it('throws error on invalid query string object', () => {
+      const sandbox = () => instance.get(fakeServer.URL, 7);
+      assert.throws(sandbox, Error);
+    });
+
     it('returns a promise', () => {
       assert.instanceOf(instance.get(fakeServer.URL), Promise);
     });
@@ -178,6 +183,11 @@ describe('RequestDispatcher', () => {
       assert.throws(sandbox, Error);
     });
 
+    it('throws error on invalid query string object', () => {
+      const sandbox = () => instance.delete(fakeServer.URL, 7);
+      assert.throws(sandbox, Error);
+    });
+
     it('returns a promise', () => {
       assert.instanceOf(instance.delete(fakeServer.URL), Promise);
     });
@@ -247,6 +257,56 @@ describe('RequestDispatcher', () => {
         })
         .catch(() => {
           assert.ok('Response');
+          done();
+        });
+    });
+  });
+
+  describe('#uploadFile', () => {
+    // Valid file path.
+    const path = `${__dirname}/_data/email.js`;
+
+    // Valid filename.
+    const name = 'my_file.txt';
+
+    it('throws error on missing URL', () => {
+      const sandbox = () => instance.uploadFile();
+      assert.throws(sandbox, Error);
+    });
+
+    it('throws error on invalid URL', () => {
+      const sandbox = () => instance.uploadFile(1);
+      assert.throws(sandbox, Error);
+    });
+
+    it('throws error on missing file path', () => {
+      const sandbox = () => instance.uploadFile(fakeServer.URL);
+      assert.throws(sandbox, Error);
+    });
+
+    it('throws error on invalid file path', () => {
+      const sandbox = () => instance.uploadFile(fakeServer.URL, 1);
+      assert.throws(sandbox, Error);
+    });
+
+    it('throws error on missing filename', () => {
+      const sandbox = () => instance.uploadFile(fakeServer.URL, path);
+      assert.throws(sandbox, Error);
+    });
+
+    it('throws error on invalid filename', () => {
+      const sandbox = () => instance.uploadFile(fakeServer.URL, path, 1);
+      assert.throws(sandbox, Error);
+    });
+
+    it('uploads a file', (done) => {
+      instance.uploadFile(fakeServer.URL, path, name)
+        .then(() => {
+          assert.ok('Uploading');
+          done();
+        })
+        .catch(() => {
+          assert.notOk('Uploading');
           done();
         });
     });

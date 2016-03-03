@@ -1,3 +1,4 @@
+import fs from 'fs';
 import request from 'request';
 import extend from 'extend';
 import Promise from 'bluebird';
@@ -105,13 +106,24 @@ class RequestDispatcher {
 
   /**
    * Performs a GET request.
-   * @param {String} url Request URL.
+   * @param {String} url           Request URL.
+   * @param {Object} [queryString] Query string parameters.
+   * @throws {Error} On missing or invalid argument.
    * @return {Promise}
    */
-  get(url) {
+  get(url, queryString) {
     checkUrl(url);
 
+    if (queryString && !_.isObject(queryString)) {
+      throw new Error('Invalid GET query string parameters.');
+    }
+
     const parameters = { method: 'GET', url };
+
+    if (queryString) {
+      extend(parameters, { qs: queryString });
+    }
+
     return this._send(parameters);
   }
 
@@ -119,6 +131,7 @@ class RequestDispatcher {
    * Performs a POST request.
    * @param {String} url    Request URL.
    * @param {Object} [data] POST request data.
+   * @throws {Error} On missing or invalid argument.
    * @return {Promise}
    */
   post(url, data) {
@@ -141,13 +154,24 @@ class RequestDispatcher {
 
   /**
    * Performs a DELETE request.
-   * @param {String} url Request URL.
+   * @param {String} url    Request URL.
+   * @param {Object} [data] Data parameters.
+   * @throws {Error} On missing or invalid argument.
    * @return {Promise}
    */
-  delete(url) {
+  delete(url, data) {
     checkUrl(url);
 
+    if (data && !_.isObject(data)) {
+      throw new Error('Invalid DELETE data parameter.');
+    }
+
     const parameters = { method: 'DELETE', url };
+
+    if (data) {
+      extend(parameters, { json: true, body: data });
+    }
+
     return this._send(parameters);
   }
 
@@ -155,6 +179,7 @@ class RequestDispatcher {
    * Performs a PUT request.
    * @param {String} url    Request URL.
    * @param {Object} [data] PUT request data.
+   * @throws {Error} On missing or invalid argument.
    * @return {Promise}
    */
   put(url, data) {
@@ -169,6 +194,42 @@ class RequestDispatcher {
       method: 'PUT',
       json: true,
       body: data ? data : {},
+      url,
+    };
+
+    return this._send(parameters);
+  }
+
+  /**
+   * Uploads a file in a POST request.
+   * @param {String} url  Request URL.
+   * @param {String} path Path to file.
+   * @param {String} name File name.
+   * @throws {Error} On missing or invalid argument and if file could not be found.
+   * @return {Promise}
+   */
+  uploadFile(url, path, name) {
+    checkUrl(url);
+
+    // Validate file path.
+    if (_.isNil(path) || !_.isString(path)) {
+      throw new Error('Missing or invalid file path');
+    }
+
+    // Validate file name.
+    if (_.isNil(name) || !_.isString(name)) {
+      throw new Error('Missing or invalid file name');
+    }
+
+    // Read file.
+    const file = fs.createReadStream(path);
+
+    // Form data.
+    const data = { filename: name, file };
+
+    const parameters = {
+      method: 'POST',
+      formData: data,
       url,
     };
 
