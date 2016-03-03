@@ -231,6 +231,7 @@ class RequestDispatcher {
 
     // Read file.
     const file = fs.createReadStream(path);
+
     // Field names
     const fileFieldname = fieldNames ? fieldNames[0] : 'file';
     const nameFieldname = fieldNames ? fieldNames[1] : 'filename';
