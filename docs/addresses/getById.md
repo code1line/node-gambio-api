@@ -12,7 +12,7 @@ API.addresses.getById(id)
 
 ### Parameters
 
-`id` - *integer* - Address ID
+`id` - *Number* - Address ID
 
 ### Example
 

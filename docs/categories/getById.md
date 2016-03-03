@@ -11,7 +11,7 @@ API.category.getById(id)
 ```
 
 ### Parameters
-`id` - *Integer* - Category ID
+`id` - *Number* - Category ID
 
 ### Example
 

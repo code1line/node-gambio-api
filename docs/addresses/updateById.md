@@ -12,9 +12,9 @@ API.addresses.updateById(id, data)
 
 ### Parameters
 
-`id` - *integer* - Address ID
+`id` - *Number* - Address ID
 
-`data` - *object* - Address data
+`data` - *Object* - Address data
 
 ### Example
 

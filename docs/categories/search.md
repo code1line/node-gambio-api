@@ -12,7 +12,7 @@ API.categories.search(term)
 
 ### Parameters
 
-`term` - *string* - Search term
+`term` - *String* - Search term
 
 ### Example
 

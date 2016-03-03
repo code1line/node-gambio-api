@@ -12,9 +12,9 @@ API.orders.createItemAttribute(orderId, itemId, data)
 
 ### Parameters
 
-`orderId` - *Integer* - Order ID.
+`orderId` - *Number* - Order ID.
 
-`itemId` - *Integer* - Order item ID.
+`itemId` - *Number* - Order item ID.
 
 `data` - *Object* - Order item attribute data.
 

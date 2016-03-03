@@ -12,7 +12,7 @@ API.emails.queue(data)
 
 ### Parameters
 
-`data` - *object* - E-Mail data
+`data` - *Object* - E-Mail data
 
 ### Example
 

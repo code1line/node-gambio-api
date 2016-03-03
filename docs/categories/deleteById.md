@@ -11,7 +11,7 @@ API.categories.deleteById(id)
 ```
 
 ### Parameters
-`id` - *Integer* - Category ID
+`id` - *Number* - Category ID
 
 ### Example
 

@@ -12,7 +12,7 @@ API.customers.create(data)
 
 ### Parameters
 
-`data` - *object* - Customer data
+`data` - *Object* - Customer data
 
 ### Example
 

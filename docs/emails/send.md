@@ -17,9 +17,9 @@ API.emails.send(id, data)
 
 ### Parameters
 
-`id` - *integer* - E-Mail ID **(optional)**
+`id` - *Number* - E-Mail ID **(optional)**
 
-`data` - *object* - E-Mail data **(optional)**
+`data` - *Object* - E-Mail data **(optional)**
 
 ### Example
 

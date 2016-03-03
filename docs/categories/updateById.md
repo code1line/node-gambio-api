@@ -12,7 +12,7 @@ API.categories.updateById(id, data)
 
 ### Parameters
 
-`id` - *Integer* - Category ID
+`id` - *Number* - Category ID
 
 `data` - *Object* - Category data
 
