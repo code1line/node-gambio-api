@@ -159,6 +159,9 @@ This is a quick overview of all methods available.
 - [Upload a category icon](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/categories/uploadIcon.md) - *API.categories.uploadIcon(path, name)*
 - [Upload a category image](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/categories/uploadImage.md) - *API.categories.uploadImage(path, name)*
 
+#### Orders
+- [Create order item attribute](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/createItemAttribute.md) - *API.orders.createItemAttribute(orderId, itemId, data)*
+
 #### API
 - [Get module version](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/api/getVersion.md) - *API.getVersion()*
 
