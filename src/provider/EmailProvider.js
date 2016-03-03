@@ -162,6 +162,7 @@ class EmailProvider extends Provider {
    * Uploads an attachment for emails.
    * @param {String} file File path.
    * @return {Promise}
+   * @TODO Wait until it works in internal REST controller.
    */
   uploadAttachment(path) {
     // Check path.

@@ -274,7 +274,8 @@ describe('EmailProvider', () => {
     });
   });
 
-  describe('#uploadAttachment', () => {
+  // TODO
+  describe.skip('#uploadAttachment', () => {
     // Valid file path.
     const path = `${__dirname}/../_data/email.js`;
 
