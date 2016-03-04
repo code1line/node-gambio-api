@@ -11,7 +11,7 @@
 - Removed request sorting and limiting feature.
 - Added CategoryProvider
 - Added OrderProvider
-- Added ProductProvider
+- Added ProductProvider 
 
 ## 1.2.0
 - Added `getVersion` static method.
