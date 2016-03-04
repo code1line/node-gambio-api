@@ -1,12 +1,12 @@
 import { assert } from 'chai';
 import { random } from 'lodash';
 import Promise from 'bluebird';
-import CategoryProvider from './../../lib/provider/CategoryProvider';
+import ProductProvider from './../../lib/provider/ProductProvider';
 import credentials from './../_credentials';
 import apiUrl from './../_apiUrl';
-import data from './../_fixtures/category';
+import data from './../_fixtures/product';
 
-describe('CategoryProvider', () => {
+describe('ProductProvider', () => {
   // Valid URL.
   const url = credentials.url + apiUrl;
 
@@ -14,13 +14,78 @@ describe('CategoryProvider', () => {
   const auth = { user: credentials.user, pass: credentials.pass };
 
   // Valid instance.
-  const instance = new CategoryProvider(url, auth);
+  const instance = new ProductProvider(url, auth);
 
   // Valid file path.
   const path = `${__dirname}/../../logo.png`;
 
   // Valid filename.
   const name = 'my_file.txt';
+
+  describe('#changeCategoryLink', () => {
+    it('throws error on missing arguments', () => {
+      const sandbox = () => instance.changeCategoryLink();
+      assert.throws(sandbox, Error);
+    });
+
+    it('throws error on invalid ID', () => {
+      const sandbox = () => instance.changeCategoryLink(1.232, 1, 1);
+      assert.throws(sandbox, Error);
+    });
+
+    it('throws error on missing old category ID', () => {
+      const sandbox = () => instance.changeCategoryLink(1, null, 1);
+      assert.throws(sandbox, Error);
+    });
+
+    it('throws error on invalid old category ID', () => {
+      const sandbox = () => instance.changeCategoryLink(1, 1.2, 1);
+      assert.throws(sandbox, Error);
+    });
+
+    it('throws error on missing new category ID', () => {
+      const sandbox = () => instance.changeCategoryLink(1, 1);
+      assert.throws(sandbox, Error);
+    });
+
+    it('throws error on invalid new category ID', () => {
+      const sandbox = () => instance.changeCategoryLink(1, 1, 1.2);
+      assert.throws(sandbox, Error);
+    });
+
+    it('returns a promise', () => {
+      instance
+        .create(data)
+        .then((result) => assert.instanceOf(instance.changeCategoryLink(result.id, 1, 2), Promise));
+    });
+
+    it('resolves the promise', (done) => {
+      instance
+        .create(data)
+        .then((result) => instance.changeCategoryLink(result.id, 1, 2))
+        .then(() => {
+          assert.ok('Change');
+          done();
+        })
+        .catch(() => {
+          assert.notOk('Change');
+          done();
+        });
+    });
+
+    it('rejects the promise', (done) => {
+      instance
+        .changeCategoryLink(99999999999, 1, 2)
+        .then(() => {
+          assert.notOk('Change');
+          done();
+        })
+        .catch(() => {
+          assert.ok('Change');
+          done();
+        });
+    });
+  });
 
   describe('#create', () => {
     it('throws error on missing arguments', () => {
@@ -41,56 +106,24 @@ describe('CategoryProvider', () => {
       instance
         .create(data)
         .then(() => {
-          assert.ok('Creating');
+          assert.ok('Creation');
           done();
         })
         .catch(() => {
-          assert.notOk('Creating');
+          assert.notOk('Creation');
           done();
         });
-    });
-
-    it('rejects the promise', (done) => {
-      instance
-        .create({})
-        .then(() => {
-          assert.notOk('Creating');
-          done();
-        })
-        .catch(() => {
-          assert.ok('Creating');
-          done();
-        });
-    });
-  });
-
-  describe('#deleteIcon', () => {
-    // Non-existent file.
-    const filename = 'this_file_does_not_exist.jpg';
-
-    it('throws error on missing arguments', () => {
-      const sandbox = () => instance.deleteIcon();
-      assert.throws(sandbox, Error);
-    });
-
-    it('throws error on invalid argument', () => {
-      const sandbox = () => instance.deleteIcon(1.232);
-      assert.throws(sandbox, Error);
-    });
-
-    it('returns a promise', () => {
-      assert.instanceOf(instance.deleteIcon(filename), Promise);
     });
 
     it('resolves the promise', (done) => {
       instance
-        .deleteIcon(filename)
+        .create({})
         .then(() => {
-          assert.ok('Deletion');
+          assert.notOk('Creation');
           done();
         })
         .catch(() => {
-          assert.notOk('Deletion');
+          assert.ok('Creation');
           done();
         });
     });
@@ -118,11 +151,11 @@ describe('CategoryProvider', () => {
       instance
         .deleteImage(filename)
         .then(() => {
-          assert.ok('Deletion');
+          assert.ok('Removal');
           done();
         })
         .catch(() => {
-          assert.notOk('Deletion');
+          assert.notOk('Removal');
           done();
         });
     });
@@ -150,24 +183,69 @@ describe('CategoryProvider', () => {
         .create(data)
         .then((result) => instance.deleteById(result.id))
         .then(() => {
-          assert.ok('Deletion');
+          assert.ok('Removal');
           done();
         })
         .catch(() => {
-          assert.notOk('Deletion');
+          assert.notOk('Removal');
           done();
         });
     });
 
     it('rejects the promise', (done) => {
       instance
-        .deleteById(99999999999999999999999999999)
+        .deleteById(99999999999999999999999999)
         .then(() => {
-          assert.notOk('Deletion');
+          assert.notOk('Removal');
           done();
         })
         .catch(() => {
-          assert.ok('Deletion');
+          assert.ok('Removal');
+          done();
+        });
+    });
+  });
+
+  describe('#getCategoryLinks', () => {
+    it('throws error on missing arguments', () => {
+      const sandbox = () => instance.getCategoryLinks();
+      assert.throws(sandbox, Error);
+    });
+
+    it('throws error on invalid argument', () => {
+      const sandbox = () => instance.getCategoryLinks(1.232);
+      assert.throws(sandbox, Error);
+    });
+
+    it('returns a promise', () => {
+      instance
+        .create(data)
+        .then((result) => assert.instanceOf(instance.getCategoryLinks(result.id), Promise));
+    });
+
+    it('resolves the promise', (done) => {
+      instance
+        .create(data)
+        .then((result) => instance.getCategoryLinks(result.id))
+        .then(() => {
+          assert.ok('Fetching');
+          done();
+        })
+        .catch(() => {
+          assert.notOk('Fetching');
+          done();
+        });
+    });
+
+    it('rejects the promise', (done) => {
+      instance
+        .getCategoryLinks(99999999999999999999)
+        .then(() => {
+          assert.notOk('Fetching');
+          done();
+        })
+        .catch(() => {
+          assert.ok('Fetching');
           done();
         });
     });
@@ -279,43 +357,6 @@ describe('CategoryProvider', () => {
     });
   });
 
-  describe('#renameIcon', () => {
-    it('throws error on missing arguments', () => {
-      const sandbox = () => instance.renameIcon();
-      assert.throws(sandbox, Error);
-    });
-
-    it('throws error on invalid argument', () => {
-      const sandbox = () => instance.renameIcon(1.232);
-      assert.throws(sandbox, Error);
-    });
-
-    it('returns a promise', () => {
-      instance
-        .uploadIcon(path, name)
-        .then((result) => {
-          assert.instanceOf(
-            instance.renameIcon(result.filename, `${random(1, 1000)}.txt`),
-            Promise
-          );
-        });
-    });
-
-    it('resolves the promise', (done) => {
-      instance
-        .uploadIcon(path, name)
-        .then((result) => instance.renameIcon(result.filename, `${random(1, 1000)}.txt`))
-        .then(() => {
-          assert.ok('Renaming');
-          done();
-        })
-        .catch(() => {
-          assert.notOk('Renaming');
-          done();
-        });
-    });
-  });
-
   describe('#renameImage', () => {
     it('throws error on missing arguments', () => {
       const sandbox = () => instance.renameImage();
@@ -355,7 +396,7 @@ describe('CategoryProvider', () => {
 
   describe('#updateById', () => {
     // Valid update data.
-    const updateData = { icon: 'new_icon.jpg' };
+    const updateData = { productModel: 'newModel' };
 
     it('throws error on missing arguments', () => {
       const sandbox = () => instance.updateById();
@@ -411,58 +452,6 @@ describe('CategoryProvider', () => {
         })
         .catch(() => {
           assert.ok('Updating');
-          done();
-        });
-    });
-  });
-
-  describe('#uploadIcon', () => {
-    it('throws error on missing arguments', () => {
-      const sandbox = () => instance.uploadIcon();
-      assert.throws(sandbox, Error);
-    });
-
-    it('throws error on invalid path', () => {
-      const sandbox = () => instance.uploadIcon(1.232);
-      assert.throws(sandbox, Error);
-    });
-
-    it('throws error on missing name', () => {
-      const sandbox = () => instance.uploadIcon(path);
-      assert.throws(sandbox, Error);
-    });
-
-    it('throws error on invalid name', () => {
-      const sandbox = () => instance.uploadIcon(path, 1);
-      assert.throws(sandbox, Error);
-    });
-
-    it('returns a promise', () => {
-      assert.instanceOf(instance.uploadIcon(path, name), Promise);
-    });
-
-    it('resolves the promise', (done) => {
-      instance
-        .uploadIcon(path, name)
-        .then(() => {
-          assert.ok('Uploading');
-          done();
-        })
-        .catch(() => {
-          assert.notOk('Uploading');
-          done();
-        });
-    });
-
-    it('rejects the promise', (done) => {
-      instance
-        .uploadIcon('asdasdas', name)
-        .then(() => {
-          assert.notOk('Uploading');
-          done();
-        })
-        .catch(() => {
-          assert.ok('Uploading');
           done();
         });
     });

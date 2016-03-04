@@ -184,6 +184,20 @@ All reject error objects have a `data` property which contains the raw request a
 - [Update an order total](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/updateTotalById.md) - *API.orders.updateTotalById(orderId, totalId, data)*
 - [Update an order](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/updateById.md) - *API.orders.updateById(id, data)*
 
+#### Products
+- [Change product to category link](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/products/changeCategoryLink.md) - *API.products.changeCategoryLink(id, oldCategoryId, newCategoryId)*
+- [Create a new product](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/products/create.md) - *API.products.create(data)*
+- [Delete a product image](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/products/deleteImage.md) - *API.products.deleteImage(file)*
+- [Delete a product](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/products/deleteById.md) - *API.products.deleteById(id)*
+- [Get product to category links](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/products/getCategoryLinks.md) - *API.products.getCategoryLinks(id)*
+- [Get products](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/products/get.md) - *API.products.get()*
+- [Get a product](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/products/getById.md) - *API.products.getById(id)*
+- [Search in products](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/products/search.md) - *API.products.search(term)*
+- [Rename a product image](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/products/renameImage.md) - *API.products.renameImage(oldName, newName)*
+- [Update a product](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/products/updateById.md) - *API.products.updateById(id, data)*
+- [Upload a new product image](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/products/uploadImage.md) - *API.products.uploadImage(path, name)*
+
+
 #### API
 - [Get module version](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/api/getVersion.md) - *API.getVersion()*
 

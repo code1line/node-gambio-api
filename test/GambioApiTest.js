@@ -435,4 +435,72 @@ describe('GambioApi', () => {
       });
     });
   });
+
+  describe('#products', () => {
+    describe('#changeCategoryLink', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.products.changeCategoryLink);
+      });
+    });
+
+    describe('#create', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.products.create);
+      });
+    });
+
+    describe('#deleteImage', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.products.deleteImage);
+      });
+    });
+
+    describe('#deleteById', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.products.deleteById);
+      });
+    });
+
+    describe('#getCategoryLinks', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.products.getCategoryLinks);
+      });
+    });
+
+    describe('#get', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.products.get);
+      });
+    });
+
+    describe('#getById', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.products.getById);
+      });
+    });
+
+    describe('#search', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.products.search);
+      });
+    });
+
+    describe('#renameImage', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.products.renameImage);
+      });
+    });
+
+    describe('#updateById', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.products.updateById);
+      });
+    });
+
+    describe('#uploadImage', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.products.uploadImage);
+      });
+    });
+  });
 });
