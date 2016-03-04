@@ -4,7 +4,7 @@ import Promise from 'bluebird';
 import CategoryProvider from './../../lib/provider/CategoryProvider';
 import credentials from './../_credentials';
 import apiUrl from './../_apiUrl';
-import data from './../_data/category';
+import data from './../_fixtures/category';
 
 describe('CategoryProvider', () => {
   // Valid URL.
@@ -17,7 +17,7 @@ describe('CategoryProvider', () => {
   const instance = new CategoryProvider(url, auth);
 
   // Valid file path.
-  const path = `${__dirname}/../_data/email.js`;
+  const path = `${__dirname}/../_fixtures/email.js`;
 
   // Valid filename.
   const name = 'my_file.txt';

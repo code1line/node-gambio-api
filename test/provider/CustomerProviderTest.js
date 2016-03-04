@@ -3,7 +3,7 @@ import Promise from 'bluebird';
 import CustomerProvider from './../../lib/provider/CustomerProvider';
 import credentials from './../_credentials';
 import apiUrl from './../_apiUrl';
-import getData from './../_data/customer';
+import getData from './../_fixtures/customer';
 
 describe('CustomerProvider', () => {
   // Valid URL.

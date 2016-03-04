@@ -3,7 +3,7 @@ import Promise from 'bluebird';
 import EmailProvider from './../../lib/provider/EmailProvider';
 import credentials from './../_credentials';
 import apiUrl from './../_apiUrl';
-import data from './../_data/email';
+import data from './../_fixtures/email';
 
 
 describe('EmailProvider', () => {
@@ -277,7 +277,7 @@ describe('EmailProvider', () => {
   // TODO
   describe.skip('#uploadAttachment', () => {
     // Valid file path.
-    const path = `${__dirname}/../_data/email.js`;
+    const path = `${__dirname}/../_fixtures/email.js`;
 
     it('throws error on missing arguments', () => {
       const sandbox = () => instance.uploadAttachment();

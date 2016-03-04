@@ -276,7 +276,7 @@ describe('RequestDispatcher', () => {
 
   describe('#uploadFile', () => {
     // Valid file path.
-    const path = `${__dirname}/_data/email.js`;
+    const path = `${__dirname}/_fixtures/email.js`;
 
     // Valid filename.
     const name = 'my_file.txt';

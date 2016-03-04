@@ -3,11 +3,11 @@ import Promise from 'bluebird';
 import OrderProvider from './../../lib/provider/OrderProvider';
 import credentials from './../_credentials';
 import apiUrl from './../_apiUrl';
-import data from './../_data/order';
-import itemAttributeData from './../_data/orderItemAttribute';
-import itemData from './../_data/orderItem';
-import totalData from './../_data/orderTotal';
-import statusData from './../_data/orderStatus';
+import data from './../_fixtures/order';
+import itemAttributeData from './../_fixtures/orderItemAttribute';
+import itemData from './../_fixtures/orderItem';
+import totalData from './../_fixtures/orderTotal';
+import statusData from './../_fixtures/orderStatus';
 
 describe('OrderProvider', () => {
   // Valid URL.

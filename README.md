@@ -10,7 +10,6 @@ Simple API client for Node, that performs requests to the integrated REST-API of
 
 - [Installation](#installation)
 - [Usage](#usage)
-- [Sending requests](#sending-requests)
 - [API reference](#api-reference)
 - [Contributing](#contributing)
 - [License](#license)
@@ -24,10 +23,10 @@ npm install gambio-api
 ## Usage
 
 ```js
-const GambioApi = require('gambio-api');
+import GambioApi from 'gambio-api';
 
 const API = new GambioApi({
-  url: 'http://myshop.com',
+  url: 'https://myshop.com',
   user: 'admin@myshop.com',
   pass: '12345',
 });
@@ -38,8 +37,6 @@ API.customers.getById(6)
 ```
 
 You may also [read an article](https://ronaldloyko.wordpress.com/2016/01/21/how-to-use-the-gambio-rest-api-in-node-js/) on how to use this module.
-
-## Sending requests
 
 #### Creating a new instance
 
@@ -54,7 +51,7 @@ const API = new GambioApi({
 });
 ```
 
-#### Perform a request
+#### Performing a request
 
 The methods always return a promise.
 
@@ -69,7 +66,7 @@ API.customers.get()
 
 #### Response
 
-Every successful response is parsed from JSON to a JavaScript object/array.
+Every successful response is parsed from JSON to a plain JavaScript object/array.
 
 ```js
 // Example request.
@@ -99,13 +96,11 @@ Example console output could be:
 
 #### Error
 
-If an error code between 300 and 600 is returned the promise will be rejected with an error.
+If an HTTP status code between 300 and 600 is returned from server, the promise will be rejected with an error.
 
-All error objects have a `data` property that contains the raw request and response data.
+All reject error objects have a `data` property which contains the raw request and response data.
 
 ## API reference
-
-This is a quick overview of all methods available.
 
 #### Countries
 
@@ -160,7 +155,10 @@ This is a quick overview of all methods available.
 - [Upload a category image](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/categories/uploadImage.md) - *API.categories.uploadImage(path, name)*
 
 #### Orders
-- [Create order item attribute](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/createItemAttribute.md) - *API.orders.createItemAttribute(orderId, itemId, data)*
+- [Create a new order item attribute](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/createItemAttribute.md) - *API.orders.createItemAttribute(orderId, itemId, data)*
+- [Create a new order item](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/createItem.md) - *API.orders.createItem(orderId, data)*
+- [Create a new order total](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/createTotal.md) - *API.orders.createTotal(orderId, data)*
+- [Create a new order](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/create.md) - *API.orders.create(data)*
 
 #### API
 - [Get module version](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/api/getVersion.md) - *API.getVersion()*

@@ -3,7 +3,7 @@ import Promise from 'bluebird';
 import AddressProvider from './../../lib/provider/AddressProvider';
 import credentials from './../_credentials';
 import apiUrl from './../_apiUrl';
-import data from './../_data/address';
+import data from './../_fixtures/address';
 
 describe('AddressProvider', () => {
   // Valid URL.
