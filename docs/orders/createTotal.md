@@ -27,12 +27,19 @@ const data = {
   sortOrder: 10,
 };
 
-API.orders.createTotal(400212, data);
+API.orders.createTotal(402119, data);
 ```
 
 ### Return value in resolved promise
 
 ```js
 // Object.
-{}
+{
+	id: 2679,
+	title: 'Zwischensumme:',
+	value: 50,
+	valueText: '50,00 EUR',
+	class: 'ot_subtotal',
+	sortOrder: 10
+}
 ```

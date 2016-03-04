@@ -39,14 +39,14 @@ API.orders.createItemAttribute(400212, 3319, data);
 ```js
 // Object.
 {
-  id: 719,
-  name: 'Color',
-  value: 'blue',
-  price: 0,
-  priceType: '+',
-  optionId: 1,
-  optionValueId: 1,
-  combisId: null
+	id: 768,
+	name: 'Color',
+	value: 'blue',
+	price: 0,
+	priceType: '+',
+	optionId: 1,
+	optionValueId: 1,
+	combisId: null
 }
 
 ```

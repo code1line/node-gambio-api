@@ -52,12 +52,33 @@ const data = {
   },
 };
 
-API.orders.createItem(400212, data);
+API.orders.createItem(402119, data);
 ```
 
 ### Return value in resolved promise
 
 ```js
 // Object.
-{}
+{
+	id: 3765,
+	model: '12345-s-black',
+	name: 'Ein Artikel',
+	quantity: 1,
+	price: 11,
+	finalPrice: 11,
+	tax: 19,
+	isTaxAllowed: true,
+	discount: 0,
+	shippingTimeInformation: '',
+	checkoutInformation: 'Checkout information goes here ...',
+	attributes: [],
+	downloadInformation: {
+		filename: 'Dokument.pdf',
+		maxDaysAllowed: 5,
+		countAvailable: 14
+	},
+	addonValues: {
+		productId: '2'
+	}
+}
 ```

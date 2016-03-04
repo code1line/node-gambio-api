@@ -159,6 +159,30 @@ All reject error objects have a `data` property which contains the raw request a
 - [Create a new order item](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/createItem.md) - *API.orders.createItem(orderId, data)*
 - [Create a new order total](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/createTotal.md) - *API.orders.createTotal(orderId, data)*
 - [Create a new order](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/create.md) - *API.orders.create(data)*
+- [Delete order item attribute](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/deleteItemAttributeById.md) - *API.orders.deleteItemAttributeById(data)*
+- [Delete order item](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/deleteItemById.md) - *API.orders.deleteItemById(orderId, itemId)*
+- [Delete order total](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/deleteTotalById.md) - *API.orders.deleteTotalById(orderId, totalId)*
+- [Delete order](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/deleteById.md) - *API.orders.deleteById(id)*
+- [Get order status history records](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/getHistory.md) - *API.orders.getHistory(orderId)*
+- [Get an order status history record](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/getHistoryById.md) - *API.orders.getHistoryById(orderId, historyId)*
+- [Search in order status history](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/searchHistory.md) - *API.orders.searchHistory(orderId, term)*
+- [Get order item attributes](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/getItemAttributes.md) - *API.orders.getItemAttributes(orderId, itemId)*
+- [Get an order item attribute](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/getItemAttributeById.md) - *API.orders.getItemAttributeById(orderId, itemId, attributeId)*
+- [Search in order item attributes](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/searchItemAttributes.md) - *API.orders.searchItemAttributes(orderId, itemId, term)*
+- [Get order items](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/getItems.md) - *API.orders.getItems(orderId)*
+- [Get an order item](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/getItemById.md) - *API.orders.getItemById(orderId, itemId)*
+- [Search in order items](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/searchItems.md) - *API.orders.searchItems(orderId, term)*
+- [Get order totals](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/getTotals.md) - *API.orders.getTotals(orderId)*
+- [Get an order total](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/getTotalById.md) - *API.orders.getTotalById(orderId, totalId)*
+- [Search in order totals](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/searchTotals.md) - *API.orders.searchTotals(orderId, term)*
+- [Get all orders](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/get.md) - *API.orders.get()*
+- [Get an order](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/getById.md) - *API.orders.getById(id)*
+- [Search in orders](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/search.md) - *API.orders.search(term)*
+- [Update an order item attribute](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/updateItemAttributeById.md) - *API.orders.updateItemAttributeById(orderId, itemId, attributeId, data)*
+- [Update an order item](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/updateItemById.md) - *API.orders.updateItemById(orderId, itemId, data)*
+- [Update an order status](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/updateStatus.md) - *API.orders.updateStatus(orderId, data)*
+- [Update an order total](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/updateTotalById.md) - *API.orders.updateTotalById(orderId, totalId, data)*
+- [Update an order](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/updateById.md) - *API.orders.updateById(id, data)*
 
 #### API
 - [Get module version](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/api/getVersion.md) - *API.getVersion()*
