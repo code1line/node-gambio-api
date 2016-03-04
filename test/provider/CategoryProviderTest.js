@@ -346,7 +346,8 @@ describe('CategoryProvider', () => {
           assert.ok('Renaming');
           done();
         })
-        .catch(() => {
+        .catch((e) => {
+          console.log(e);
           assert.notOk('Renaming');
           done();
         });
