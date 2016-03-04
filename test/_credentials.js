@@ -1,11 +1,9 @@
 /**
- * Credentials for Gambio's official demo shop 1.
- * @see https://www.gambio-shop.de/shop1
- * @type {Object}
+ * Credentials for a testable Gambio shop.
+ * @see http://www.gambio-shop.de/shop4
  */
-module.exports = {
-  url: 'http://www.gambio-shop.de/shop1',
+export default {
+  url: 'https://www.gambio-shop.de/shop4',
   user: 'admin@shop.de',
-  pass: '12345',
-  apiSuffix: 'api.php/v2',
+  pass: 'gambioTest',
 };

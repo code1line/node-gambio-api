@@ -12,9 +12,9 @@ API.customers.updateById(id, data)
 
 ### Parameters
 
-`id` - *integer* - Customer ID
+`id` - *Number* - Customer ID
 
-`data` - *object* - Customer data
+`data` - *Object* - Customer data
 
 ### Example
 

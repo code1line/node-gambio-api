@@ -11,7 +11,7 @@ API.zones.getById(id)
 ```
 
 ### Parameters
-`id` - *integer* - Zone ID
+`id` - *Number* - Zone ID
 
 ### Example
 

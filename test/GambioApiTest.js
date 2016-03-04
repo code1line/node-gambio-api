@@ -1,509 +1,505 @@
-const expect = require('chai').expect;
-
-const extend = require('extend');
-const errors = require('common-errors');
-
-const GambioApi = require('./../lib/GambioApi');
-const credentials = require('./_credentials');
-
-const testCredentials = {
-  url: credentials.url,
-  user: credentials.user,
-  pass: credentials.pass,
-};
-const testInstance = new GambioApi(testCredentials);
+import { assert } from 'chai';
+import semver from 'semver';
+import GambioApi from './..';
+import credentials from './_credentials';
 
 describe('GambioApi', () => {
+  // Valid instance.
+  const instance = new GambioApi(credentials);
+
   describe('#constructor', () => {
-    it('should throw ArgumentNullError on missing arguments', () => {
+    it('throws error on missing arguments', () => {
       const sandbox = () => new GambioApi();
-      expect(sandbox).to.throw(errors.ArgumentNullError);
+      assert.throws(sandbox, Error);
     });
 
-    it('should throw ArgumentError on instantiating with invalid argument', () => {
-      const sandbox = () => new GambioApi('s');
-      expect(sandbox).to.throw(errors.ArgumentError);
+    it('throws error on invalid argument', () => {
+      const sandbox = () => new GambioApi(1);
+      assert.throws(sandbox, Error);
     });
 
-    it('should work', () => {
-      const sandbox = () => new GambioApi(testCredentials);
-      expect(sandbox).not.to.throw(Error);
-    });
-
-    it('should throw ArgumentError on invalid version type', () => {
-      const sandbox = () => new GambioApi(extend(true, {}, testCredentials, { version: 234 }));
-      expect(sandbox).to.throw(errors.ArgumentError);
-    });
-
-    it('should throw ArgumentError on missing URL', () => {
-      const myCredentials = extend(true, {}, testCredentials);
-      delete myCredentials.url;
+    it('throws error on missing URL', () => {
+      const myCredentials = {
+        user: credentials.user,
+        pass: credentials.pass,
+      };
       const sandbox = () => new GambioApi(myCredentials);
-      expect(sandbox).to.throw(errors.ArgumentError);
+      assert.throws(sandbox, Error);
     });
 
-    it('should throw ArgumentError on wrong URL type', () => {
-      const myCredentials = extend(true, {}, testCredentials, { url: 1 });
-      const sandbox = () => new GambioApi(myCredentials);
-      expect(sandbox).to.throw(errors.ArgumentError);
+    it('does not throw error on valid arguments', () => {
+      const sandbox = () => new GambioApi(credentials);
+      assert.doesNotThrow(sandbox, Error);
+    });
+  });
+
+  describe('#getVersion', () => {
+    it('is a function', () => {
+      assert.isFunction(GambioApi.getVersion);
     });
 
-    it('should throw ArgumentError on missing user', () => {
-      const myCredentials = extend(true, {}, testCredentials);
-      delete myCredentials.user;
-      const sandbox = () => new GambioApi(myCredentials);
-      expect(sandbox).to.throw(errors.ArgumentError);
-    });
-
-    it('should throw ArgumentError on wrong user type', () => {
-      const myCredentials = extend(true, {}, testCredentials, { user: 1 });
-      const sandbox = () => new GambioApi(myCredentials);
-      expect(sandbox).to.throw(errors.ArgumentError);
-    });
-
-    it('should throw ArgumentError on missing password', () => {
-      const myCredentials = extend(true, {}, testCredentials);
-      delete myCredentials.pass;
-      const sandbox = () => new GambioApi(myCredentials);
-      expect(sandbox).to.throw(errors.ArgumentError);
-    });
-
-    it('should throw ArgumentError on wrong password type', () => {
-      const myCredentials = extend(true, {}, testCredentials, { pass: 123 });
-      const sandbox = () => new GambioApi(myCredentials);
-      expect(sandbox).to.throw(errors.ArgumentError);
+    it('is a valid version number', () => {
+      const validationResult = semver.valid(GambioApi.getVersion());
+      assert.isNotNull(validationResult);
     });
   });
 
   describe('#countries', () => {
     describe('#getById', () => {
-      it('should be a function', () => {
-        expect(testInstance.countries.getById).to.be.a('function');
-      });
-
-      it('should return a result', (done) => {
-        testInstance.countries.getById(80)
-          .then((result) => {
-            expect(result).to.be.a('object');
-            done();
-          });
-      });
-    });
-
-    describe('#getZonesByCountryId', () => {
-      it('should be a function', () => {
-        expect(testInstance.countries.getZonesByCountryId).to.be.a('function');
-      });
-
-      it('should return a result', (done) => {
-        testInstance.countries.getZonesByCountryId(80)
-          .then((result) => {
-            expect(result).to.be.a('array');
-            done();
-          });
+      it('is a function', () => {
+        assert.isFunction(instance.countries.getById);
       });
     });
   });
 
   describe('#zones', () => {
     describe('#getById', () => {
-      it('should be a function', () => {
-        expect(testInstance.zones.getById).to.be.a('function');
-      });
-
-      it('should return a result', (done) => {
-        testInstance.zones.getById(80)
-          .then((result) => {
-            expect(result).to.be.a('object');
-            done();
-          });
+      it('is a function', () => {
+        assert.isFunction(instance.zones.getById);
       });
     });
   });
 
   describe('#addresses', () => {
     describe('#getById', () => {
-      it('should be a function', () => {
-        expect(testInstance.addresses.getById).to.be.a('function');
-      });
-
-      it('should return a result', (done) => {
-        testInstance.addresses.getById(10)
-          .then((result) => {
-            expect(result).to.be.a('object');
-            done();
-          });
+      it('is a function', () => {
+        assert.isFunction(instance.addresses.getById);
       });
     });
 
     describe('#create', () => {
-      it('should be a function', () => {
-        expect(testInstance.addresses.create).to.be.a('function');
-      });
-
-      it('should return a result', (done) => {
-        testInstance.addresses.create({})
-          .then((result) => {
-            expect(result).to.be.a('object');
-            done();
-          });
+      it('is a function', () => {
+        assert.isFunction(instance.addresses.create);
       });
     });
 
     describe('#deleteById', () => {
-      it('should be a function', () => {
-        expect(testInstance.addresses.deleteById).to.be.a('function');
-      });
-
-      it('should return a result', (done) => {
-        testInstance.addresses.deleteById(9999)
-          .then((result) => {
-            expect(result).to.be.a('object');
-            done();
-          });
+      it('is a function', () => {
+        assert.isFunction(instance.addresses.deleteById);
       });
     });
 
     describe('#updateById', () => {
-      it('should be a function', () => {
-        expect(testInstance.addresses.updateById).to.be.a('function');
-      });
-
-      it('should return a result', (done) => {
-        testInstance.addresses.updateById(9998, { company: 'test' })
-          .then((result) => {
-            expect(result).to.be.a('object');
-            done();
-          });
+      it('is a function', () => {
+        assert.isFunction(instance.addresses.updateById);
       });
     });
   });
 
   describe('#customers', () => {
-    // Customer test data.
-    const data = {
-      gender: 'm',
-      firstname: 'John',
-      lastname: 'Doe',
-      dateOfBirth: '1985-02-13',
-      vatNumber: '0923429837942',
-      telephone: '2343948798345',
-      fax: '2093049283',
-      email: `customer@test.com`,
-      password: '0123456789',
-      type: 'registree',
-      address: {
-        company: 'Test Company',
-        street: 'Test Street',
-        suburb: 'Test Suburb',
-        postcode: '23983',
-        city: 'Test City',
-        countryId: 81,
-        zoneId: 84,
-        b2bStatus: true,
-      },
-    };
-
-    beforeEach(() => {
-      const email = `gambio.js.api.${Math.random() * (100000 - 100) + 100}@test.com`;
-      extend(true, data, { email });
-    });
-
     describe('#get', () => {
-      it('should be a function', () => {
-        expect(testInstance.customers.get).to.be.a('function');
-      });
-
-      it('should return a result', (done) => {
-        testInstance.customers.get()
-          .then((result) => {
-            expect(result).to.be.a('array');
-            done();
-          });
-      });
-
-      it('should return a result with sorting', (done) => {
-        testInstance.customers.get({ id: 'desc' })
-          .then((result) => {
-            expect(result).to.be.a('array');
-            expect(result[0].id).to.be.above(result[1].id);
-            done();
-          });
+      it('is a function', () => {
+        assert.isFunction(instance.customers.get);
       });
     });
 
     describe('#search', () => {
-      it('should be a function', () => {
-        expect(testInstance.customers.search).to.be.a('function');
-      });
-
-      it('should return a result', (done) => {
-        testInstance.customers.search('test')
-          .then((result) => {
-            expect(result).to.be.a('array');
-            done();
-          });
+      it('is a function', () => {
+        assert.isFunction(instance.customers.search);
       });
     });
 
     describe('#getGuests', () => {
-      it('should be a function', () => {
-        expect(testInstance.customers.getGuests).to.be.a('function');
-      });
-
-      it('should return a result', (done) => {
-        testInstance.customers.getGuests()
-          .then((result) => {
-            expect(result).to.be.a('array');
-            done();
-          });
+      it('is a function', () => {
+        assert.isFunction(instance.customers.getGuests);
       });
     });
 
     describe('#getAddressesByCustomerId', () => {
-      it('should be a function', () => {
-        expect(testInstance.customers.getAddressesByCustomerId).to.be.a('function');
-      });
-
-      it('should return a result', (done) => {
-        testInstance.customers.getAddressesByCustomerId(28)
-          .then((result) => {
-            expect(result).to.be.a('array');
-            done();
-          });
+      it('is a function', () => {
+        assert.isFunction(instance.customers.getAddressesByCustomerId);
       });
     });
 
     describe('#getById', () => {
-      it('should be a function', () => {
-        expect(testInstance.customers.getById).to.be.a('function');
-      });
-
-      it('should return a result', (done) => {
-        testInstance.customers.getById(28)
-          .then((result) => {
-            expect(result).to.be.a('object');
-            done();
-          });
+      it('is a function', () => {
+        assert.isFunction(instance.customers.getById);
       });
     });
 
     describe('#create', () => {
-      it('should be a function', () => {
-        expect(testInstance.customers.create).to.be.a('function');
-      });
-
-      it('should return a result', (done) => {
-        testInstance.customers.create(data)
-          .then((result) => {
-            expect(result).to.be.a('object');
-            done();
-          });
+      it('is a function', () => {
+        assert.isFunction(instance.customers.create);
       });
     });
 
     describe('#deleteById', () => {
-      it('should be a function', () => {
-        expect(testInstance.customers.deleteById).to.be.a('function');
-      });
-
-      it('should return a result', (done) => {
-        testInstance.customers
-          .create(data)
-          .then((result) => {
-            return testInstance.customers.deleteById(result.id);
-          })
-          .then((result) => {
-            expect(result).to.be.a('object');
-            done();
-          });
+      it('is a function', () => {
+        assert.isFunction(instance.customers.deleteById);
       });
     });
 
     describe('#updateById', () => {
-      it('should be a function', () => {
-        expect(testInstance.customers.updateById).to.be.a('function');
-      });
-
-      it('should return a result', (done) => {
-        testInstance.customers.updateById(28, { firstname: 'test' })
-          .then((result) => {
-            expect(result).to.be.a('object');
-            done();
-          });
+      it('is a function', () => {
+        assert.isFunction(instance.customers.updateById);
       });
     });
   });
 
   describe('#emails', () => {
-    // E-Mail test data.
-    const data = {
-      subject: 'Test Subject',
-      sender: {
-        emailAddress: 'sender@email.de',
-        contactName: 'John Doe',
-      },
-      recipient: {
-        emailAddress: 'recipient@email.de',
-        contactName: 'Jane Doe',
-      },
-      replyTo: {
-        emailAddress: 'reply_to@email.de',
-        contactName: 'John Doe (Reply To)',
-      },
-      contentHtml: '<strong>HTML Content</content>',
-      contentPlain: 'Plain Content',
-      bcc: [
-        {
-          emailAddress: 'bcc@email.de',
-          contactName: 'Chris Doe',
-        },
-      ],
-      cc: [
-        {
-          emailAddress: 'cc@email.de',
-          contactName: 'Chloe Doe',
-        },
-      ],
-    };
-
     describe('#get', () => {
-      it('should be a function', () => {
-        expect(testInstance.emails.get).to.be.a('function');
-      });
-
-      it('should return a result', (done) => {
-        testInstance.emails.get()
-          .then((result) => {
-            expect(result).to.be.a('array');
-            done();
-          });
-      });
-
-      it('should return a result with sorting', (done) => {
-        testInstance.emails.get({ id: 'desc' })
-          .then((result) => {
-            expect(result).to.be.a('array');
-            expect(result[0].id).to.be.above(result[1].id);
-            done();
-          });
+      it('is a function', () => {
+        assert.isFunction(instance.emails.get);
       });
     });
 
     describe('#getPending', () => {
-      it('should be a function', () => {
-        expect(testInstance.emails.getPending).to.be.a('function');
-      });
-
-      it('should return a result', (done) => {
-        testInstance.emails.getPending()
-          .then((result) => {
-            expect(result).to.be.a('array');
-            done();
-          });
+      it('is a function', () => {
+        assert.isFunction(instance.emails.getPending);
       });
     });
 
     describe('#getSent', () => {
-      it('should be a function', () => {
-        expect(testInstance.emails.getSent).to.be.a('function');
-      });
-
-      it('should return a result', (done) => {
-        testInstance.emails.getSent()
-          .then((result) => {
-            expect(result).to.be.a('array');
-            done();
-          });
+      it('is a function', () => {
+        assert.isFunction(instance.emails.getSent);
       });
     });
 
     describe('#search', () => {
-      it('should be a function', () => {
-        expect(testInstance.emails.search).to.be.a('function');
-      });
-
-      it('should return a result', (done) => {
-        testInstance.emails.search('test')
-          .then((result) => {
-            expect(result).to.be.a('array');
-            done();
-          });
+      it('is a function', () => {
+        assert.isFunction(instance.emails.search);
       });
     });
 
     describe('#getById', () => {
-      it('should be a function', () => {
-        expect(testInstance.emails.getById).to.be.a('function');
-      });
-
-      it('should return a result', (done) => {
-        testInstance.emails.queue(data)
-          .then((result) => {
-            return testInstance.emails.getById(result.id);
-          })
-          .then((result) => {
-            expect(result).to.be.a('object');
-            done();
-          });
+      it('is a function', () => {
+        assert.isFunction(instance.emails.getById);
       });
     });
 
     describe('#deleteById', () => {
-      it('should be a function', () => {
-        expect(testInstance.emails.deleteById).to.be.a('function');
-      });
-
-      it('should return a result', (done) => {
-        testInstance.emails.queue(data)
-          .then((result) => {
-            return testInstance.emails.deleteById(result.id);
-          })
-          .then((result) => {
-            expect(result).to.be.a('object');
-            done();
-          });
+      it('is a function', () => {
+        assert.isFunction(instance.emails.deleteById);
       });
     });
 
     describe('#queue', () => {
-      it('should be a function', () => {
-        expect(testInstance.emails.queue).to.be.a('function');
-      });
-
-      it('should return a result', (done) => {
-        testInstance.emails.queue(data)
-          .then((result) => {
-            expect(result).to.be.a('object');
-            expect(data.subject).to.equal(data.subject);
-            done();
-          });
+      it('is a function', () => {
+        assert.isFunction(instance.emails.queue);
       });
     });
 
     describe('#send', () => {
-      it('should be a function', () => {
-        expect(testInstance.emails.send).to.be.a('function');
+      it('is a function', () => {
+        assert.isFunction(instance.emails.send);
       });
+    });
 
-      it('should return a result on sending with data', (done) => {
-        testInstance.emails.send(null, data)
-          .then((result) => {
-            expect(result).to.be.a('object');
-            expect(data.subject).to.equal(data.subject);
-            done();
-          });
+    describe('#uploadAttachment', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.emails.uploadAttachment);
       });
+    });
+  });
 
-      it('should return a result on sending with ID', (done) => {
-        testInstance.emails.queue(data)
-          .then((result) => {
-            return testInstance.emails.send(result.id);
-          })
-          .then((result) => {
-            expect(result).to.be.a('object');
-            done();
-          });
+  describe('#categories', () => {
+    describe('#create', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.categories.create);
+      });
+    });
+
+    describe('#deleteIcon', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.categories.deleteIcon);
+      });
+    });
+
+    describe('#deleteImage', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.categories.deleteImage);
+      });
+    });
+
+    describe('#deleteById', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.categories.deleteById);
+      });
+    });
+
+    describe('#get', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.categories.get);
+      });
+    });
+
+    describe('#getById', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.categories.getById);
+      });
+    });
+
+    describe('#search', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.categories.search);
+      });
+    });
+
+    describe('#renameIcon', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.categories.renameIcon);
+      });
+    });
+
+    describe('#renameImage', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.categories.renameImage);
+      });
+    });
+
+    describe('#updateById', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.categories.updateById);
+      });
+    });
+
+    describe('#uploadIcon', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.categories.uploadIcon);
+      });
+    });
+
+    describe('#uploadImage', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.categories.uploadImage);
+      });
+    });
+  });
+
+  describe('#orders', () => {
+    describe('#createItemAttribute', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.createItemAttribute);
+      });
+    });
+
+    describe('#createItem', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.createItem);
+      });
+    });
+
+    describe('#createTotal', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.createTotal);
+      });
+    });
+
+    describe('#create', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.create);
+      });
+    });
+
+    describe('#deleteItemAttributeById', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.deleteItemAttributeById);
+      });
+    });
+
+    describe('#deleteItemById', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.deleteItemById);
+      });
+    });
+
+    describe('#deleteTotalById', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.deleteTotalById);
+      });
+    });
+
+    describe('#deleteById', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.deleteById);
+      });
+    });
+
+    describe('#getHistory', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.getHistory);
+      });
+    });
+
+    describe('#getHistoryById', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.getHistoryById);
+      });
+    });
+
+    describe('#searchHistory', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.searchHistory);
+      });
+    });
+
+    describe('#getItemAttributes', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.getItemAttributes);
+      });
+    });
+
+    describe('#getItemAttributeById', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.getItemAttributeById);
+      });
+    });
+
+    describe('#searchItemAttributes', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.searchItemAttributes);
+      });
+    });
+
+    describe('#getItems', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.getItems);
+      });
+    });
+
+    describe('#getItemById', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.getItemById);
+      });
+    });
+
+    describe('#searchItems', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.searchItems);
+      });
+    });
+
+    describe('#getTotals', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.getTotals);
+      });
+    });
+
+    describe('#getTotalById', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.getTotalById);
+      });
+    });
+
+    describe('#searchTotals', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.searchTotals);
+      });
+    });
+
+    describe('#get', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.get);
+      });
+    });
+
+    describe('#getById', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.getById);
+      });
+    });
+
+    describe('#search', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.search);
+      });
+    });
+
+    describe('#updateItemAttributeById', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.updateItemAttributeById);
+      });
+    });
+
+    describe('#updateItemById', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.updateItemById);
+      });
+    });
+
+    describe('#updateStatus', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.updateStatus);
+      });
+    });
+
+    describe('#updateTotalById', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.updateTotalById);
+      });
+    });
+
+    describe('#updateById', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.orders.updateById);
+      });
+    });
+  });
+
+  describe('#products', () => {
+    describe('#changeCategoryLink', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.products.changeCategoryLink);
+      });
+    });
+
+    describe('#create', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.products.create);
+      });
+    });
+
+    describe('#deleteImage', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.products.deleteImage);
+      });
+    });
+
+    describe('#deleteById', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.products.deleteById);
+      });
+    });
+
+    describe('#getCategoryLinks', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.products.getCategoryLinks);
+      });
+    });
+
+    describe('#get', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.products.get);
+      });
+    });
+
+    describe('#getById', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.products.getById);
+      });
+    });
+
+    describe('#search', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.products.search);
+      });
+    });
+
+    describe('#renameImage', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.products.renameImage);
+      });
+    });
+
+    describe('#updateById', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.products.updateById);
+      });
+    });
+
+    describe('#uploadImage', () => {
+      it('is a function', () => {
+        assert.isFunction(instance.products.uploadImage);
       });
     });
   });

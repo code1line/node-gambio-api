@@ -12,7 +12,7 @@ API.emails.getById(id)
 
 ### Parameters
 
-`id` - *integer* - E-Mail ID
+`id` - *Number* - E-Mail ID
 
 ### Example
 

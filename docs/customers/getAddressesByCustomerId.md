@@ -12,7 +12,7 @@ API.customers.getAddressesByCustomerId(id)
 
 ### Parameters
 
-`id` - *integer* - Customer ID
+`id` - *Number* - Customer ID
 
 ### Example
 

@@ -12,7 +12,7 @@ API.countries.getZonesByCountryId(id)
 
 ### Parameters
 
-`id` - *integer* - Country ID
+`id` - *Number* - Country ID
 
 ### Example
 

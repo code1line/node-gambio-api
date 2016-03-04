@@ -10,17 +10,14 @@
  * @author Ronald Loyko
  */
 
-// Gambio demo shop credentials.
-const credentials = require('./../test/_credentials');
-
 // Gambio API class.
-const GambioApi = require('./../lib/GambioApi');
+const GambioApi = require('./..');
 
 // Create a new Gambio API instance with demo credentials.
 const API = new GambioApi({
-  url: credentials.url,
-  user: credentials.user,
-  pass: credentials.pass,
+  url: 'http://www.gambio-shop.de/shop1',
+  user: 'admin@shop.de',
+  pass: '12345',
 });
 
 // Whitespace for console output.

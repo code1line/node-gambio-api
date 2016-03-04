@@ -1,5 +1,24 @@
 # Changelog
 
+## 2.0.0
+- Usage of [Gulp-ES6-Module-Generator](https://github.com/ronaldloyko/generator-gulp-es6-module)
+- Module is compatible with older node versions now, as the source code gets transpiled.
+- Refactored code to use complete ES6 syntax (usage of `import`, `export`, ...).
+- Removed custom error classes, used native `Error` instead.
+- Renamed sub APIs to providers.
+- Completely refactored unit tests.
+- Refactored providers.
+- Removed request sorting and limiting feature.
+- Added CategoryProvider
+- Added OrderProvider
+- Added ProductProvider
+
+## 1.2.0
+- Added `getVersion` static method.
+- Fixed `index.js` by prepending `module.exports`.
+- Changed require path in example script.
+- Installed development dependency package `semver`.
+
 ## 1.0.0
 - Refactored Validator.
   - Methods are static now.

@@ -1,12 +1,15 @@
-# Gambio JavaScript API [![Build Status](https://travis-ci.org/ronaldloyko/node-gambio-api.svg?branch=master)](https://travis-ci.org/ronaldloyko/node-gambio-api) [![NPM](https://nodei.co/npm/gambio-api.png?mini=true)](https://nodei.co/npm/gambio-api/)
+![Logo](https://github.com/ronaldloyko/node-gambio-api/raw/master/logo.png)
 
-Simple API for Node, that performs requests to the integrated REST-API of Gambio.
+# Gambio API Client for Node.js
+
+[![Build Status](https://travis-ci.org/ronaldloyko/node-gambio-api.svg?branch=master)](https://travis-ci.org/ronaldloyko/node-gambio-api) [![NPM](https://nodei.co/npm/gambio-api.png?mini=true)](https://nodei.co/npm/gambio-api/)
+
+Simple API client for Node, that performs requests to the integrated REST-API of Gambio.
 
 ## Table of contents
 
 - [Installation](#installation)
 - [Usage](#usage)
-- [Sending requests](#sending-requests)
 - [API reference](#api-reference)
 - [Contributing](#contributing)
 - [License](#license)
@@ -17,76 +20,60 @@ Simple API for Node, that performs requests to the integrated REST-API of Gambio
 npm install gambio-api
 ```
 
-**Node version 4.0 or higher is required to run this module.**
-
 ## Usage
 
 ```js
-// Require module.
-const GambioApi = require('gambio-api');
+import GambioApi from 'gambio-api';
 
-// Instantiation.
 const API = new GambioApi({
-  url: 'http://myshop.com',
+  url: 'https://myshop.com',
   user: 'admin@myshop.com',
   pass: '12345',
 });
 
-// Get customer with ID 6.
 API.customers.getById(6)
-
-  // Log customers.
-  .then((result) => {
-    console.log(result);
-  })
-
-  // Log error.
-  .catch((error) => {
-    console.error(error);
-  });
+  .then((result) => console.log(result))
+  .catch((error) => console.error(error));
 ```
 
-You may also [read an article](https://ronaldloyko.wordpress.com/2016/01/21/how-to-use-the-gambio-rest-api-in-node-js/) on how to use the Gambio JavaScript in Node.js.
-
-## Sending requests
+You may also [read an article](https://ronaldloyko.wordpress.com/2016/01/21/how-to-use-the-gambio-rest-api-in-node-js/) on how to use this module.
 
 #### Creating a new instance
 
 ```js
 const API = new GambioApi({
-  url: 'http://myshop.com', // Path to Gambio shop (without trailing slash).
-  user: 'admin@myshop.com', // Login user.
-  pass: '12345', // Login password.
-  version: 'v2', // API version (optional, default: 'v2').
+  // Path to Gambio shop (without trailing slash).
+  url: 'http://myshop.com',
+  // Login user.
+  user: 'admin@myshop.com',
+  // Login password.
+  pass: '12345',
 });
 ```
 
-#### Perform a request
+#### Performing a request
 
 The methods always return a promise.
 
 ```js
-// Send a request.
 API.customers.get()
-
   // 'then' is called, if a response is returned from server.
   .then()
 
-  // 'catch' is called if any error has been thrown.
+  // 'catch' is called if an error has been thrown.
   .catch();
-
 ```
 
 #### Response
 
-Every successful response gets parsed from JSON to a JavaScript object/array.
+Every successful response is parsed from JSON to a plain JavaScript object/array.
 
 ```js
-// Send example request.
+// Example request.
 API.customers.getById(1).then(console.log);
 ```
 
-Example console output would be:
+Example console output could be:
 
 ```js
 {
@@ -109,37 +96,11 @@ Example console output would be:
 
 #### Error
 
-This module uses custom error classes which means, that the thrown error in a rejected promise could be an instance of:
-- `InvalidOperationError` on **400 Bad Request** response.
-- `AuthenticationRequiredError` on **401 Unauthorized** response.
-- `NotPermittedError` on **403 Forbidden** response.
-- `NotFoundError` on **404 Not Found** response.
-- `NotSupportedError` on **415 Unsupported Media Type** response.
-- `Error` on **500 Internal Server Error** response.
-- `NotImplementedError` on **501 Not Implemented** response.
-- `HttpStatusError` on all other responses.
+If an HTTP status code between 300 and 600 is returned from server, the promise will be rejected with an error.
 
-```js
-// Sending request (assuming that customer 9999999 does not exist).
-API.customers.getById(9999999).catch(console.log);
-```
-
-Example console output would be:
-
-```js
-{ [NotFoundError: Customer record could not be found.]
-  name: 'NotFoundError',
-  data: {
-    statusCode: 404,
-    // ...
-  }
-}
-```
-All error object have a `data` property that contains the request and response data.
+All reject error objects have a `data` property which contains the raw request and response data.
 
 ## API reference
-
-This is a quick overview of all methods available.
 
 #### Countries
 
@@ -159,8 +120,8 @@ This is a quick overview of all methods available.
 
 #### Customers
 
-- [Get all customers](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/customers/get.md) - *API.customers.get([sorting], [limitedFields])*
-- [Get all customers, that are guests](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/customers/getGuests.md) - *API.customers.getGuests([sorting], [limitedFields])*
+- [Get all customers](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/customers/get.md) - *API.customers.get()*
+- [Get all customers, that are guests](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/customers/getGuests.md) - *API.customers.getGuests()*
 - [Get a specific customer](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/customers/getById.md) - *API.customers.getById(id)*
 - [Get addresses from a specific customer](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/customers/getAddressesByCustomerId.md) - *API.customers.getAddressesByCustomerId(id)*
 - [Search in customers](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/customers/search.md) - *API.customers.search(term)*
@@ -170,14 +131,75 @@ This is a quick overview of all methods available.
 
 #### E-Mails
 
-- [Get all E-Mails](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/emails/get.md) - *API.emails.get([sorting], [limitedFields])*
-- [Get all pending E-Mails](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/emails/getPending.md) - *API.emails.getPending([sorting], [limitedFields])*
-- [Get all sent E-Mails](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/emails/getSent.md) - - *API.emails.getSent([sorting], [limitedFields])*
+- [Get all E-Mails](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/emails/get.md) - *API.emails.get()*
+- [Get all pending E-Mails](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/emails/getPending.md) - *API.emails.getPending()*
+- [Get all sent E-Mails](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/emails/getSent.md) - - *API.emails.getSent()*
 - [Get a specific E-Mail](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/emails/getById.md) - *API.emails.getById(id)*
 - [Search in E-Mails](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/emails/search.md) - *API.emails.search(term)*
 - [Delete an E-Mail](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/emails/deleteById.md) - *API.emails.deleteById(id)*
 - [Queue an E-Mail](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/emails/queue.md) - *API.emails.queue(data)*
 - [Send an E-Mail](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/emails/send.md) - *API.emails.send([id], [data])*
+
+#### Categories
+- [Create a new category](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/categories/create.md) - *API.categories.create(data)*
+- [Delete category icon](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/categories/deleteIcon.md) - *API.categories.deleteIcon(file)*
+- [Delete category image](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/categories/deleteImage.md) - *API.categories.deleteImage(file)*
+- [Delete a category](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/categories/deleteById.md) - *API.categories.deleteById(id)*
+- [Get all categories](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/categories/get.md) - *API.categories.get()*
+- [Get a specific category](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/categories/getById.md) - *API.categories.getById(id)*
+- [Search in categories](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/categories/search.md) - *API.categories.search(term)*
+- [Rename category icon](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/categories/renameIcon.md) - *API.categories.renameIcon(oldName, newName)*
+- [Rename category image](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/categories/renameImage.md) - *API.categories.renameImage(oldName, newName)*
+- [Update a category](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/categories/updateById.md) - *API.categories.updateById(id, data)*
+- [Upload a category icon](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/categories/uploadIcon.md) - *API.categories.uploadIcon(path, name)*
+- [Upload a category image](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/categories/uploadImage.md) - *API.categories.uploadImage(path, name)*
+
+#### Orders
+- [Create a new order item attribute](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/createItemAttribute.md) - *API.orders.createItemAttribute(orderId, itemId, data)*
+- [Create a new order item](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/createItem.md) - *API.orders.createItem(orderId, data)*
+- [Create a new order total](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/createTotal.md) - *API.orders.createTotal(orderId, data)*
+- [Create a new order](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/create.md) - *API.orders.create(data)*
+- [Delete order item attribute](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/deleteItemAttributeById.md) - *API.orders.deleteItemAttributeById(data)*
+- [Delete order item](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/deleteItemById.md) - *API.orders.deleteItemById(orderId, itemId)*
+- [Delete order total](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/deleteTotalById.md) - *API.orders.deleteTotalById(orderId, totalId)*
+- [Delete order](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/deleteById.md) - *API.orders.deleteById(id)*
+- [Get order status history records](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/getHistory.md) - *API.orders.getHistory(orderId)*
+- [Get an order status history record](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/getHistoryById.md) - *API.orders.getHistoryById(orderId, historyId)*
+- [Search in order status history](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/searchHistory.md) - *API.orders.searchHistory(orderId, term)*
+- [Get order item attributes](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/getItemAttributes.md) - *API.orders.getItemAttributes(orderId, itemId)*
+- [Get an order item attribute](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/getItemAttributeById.md) - *API.orders.getItemAttributeById(orderId, itemId, attributeId)*
+- [Search in order item attributes](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/searchItemAttributes.md) - *API.orders.searchItemAttributes(orderId, itemId, term)*
+- [Get order items](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/getItems.md) - *API.orders.getItems(orderId)*
+- [Get an order item](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/getItemById.md) - *API.orders.getItemById(orderId, itemId)*
+- [Search in order items](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/searchItems.md) - *API.orders.searchItems(orderId, term)*
+- [Get order totals](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/getTotals.md) - *API.orders.getTotals(orderId)*
+- [Get an order total](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/getTotalById.md) - *API.orders.getTotalById(orderId, totalId)*
+- [Search in order totals](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/searchTotals.md) - *API.orders.searchTotals(orderId, term)*
+- [Get all orders](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/get.md) - *API.orders.get()*
+- [Get an order](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/getById.md) - *API.orders.getById(id)*
+- [Search in orders](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/search.md) - *API.orders.search(term)*
+- [Update an order item attribute](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/updateItemAttributeById.md) - *API.orders.updateItemAttributeById(orderId, itemId, attributeId, data)*
+- [Update an order item](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/updateItemById.md) - *API.orders.updateItemById(orderId, itemId, data)*
+- [Update an order status](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/updateStatus.md) - *API.orders.updateStatus(orderId, data)*
+- [Update an order total](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/updateTotalById.md) - *API.orders.updateTotalById(orderId, totalId, data)*
+- [Update an order](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/orders/updateById.md) - *API.orders.updateById(id, data)*
+
+#### Products
+- [Change product to category link](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/products/changeCategoryLink.md) - *API.products.changeCategoryLink(id, oldCategoryId, newCategoryId)*
+- [Create a new product](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/products/create.md) - *API.products.create(data)*
+- [Delete a product image](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/products/deleteImage.md) - *API.products.deleteImage(file)*
+- [Delete a product](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/products/deleteById.md) - *API.products.deleteById(id)*
+- [Get product to category links](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/products/getCategoryLinks.md) - *API.products.getCategoryLinks(id)*
+- [Get products](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/products/get.md) - *API.products.get()*
+- [Get a product](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/products/getById.md) - *API.products.getById(id)*
+- [Search in products](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/products/search.md) - *API.products.search(term)*
+- [Rename a product image](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/products/renameImage.md) - *API.products.renameImage(oldName, newName)*
+- [Update a product](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/products/updateById.md) - *API.products.updateById(id, data)*
+- [Upload a new product image](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/products/uploadImage.md) - *API.products.uploadImage(path, name)*
+
+
+#### API
+- [Get module version](https://github.com/ronaldloyko/node-gambio-api/blob/master/docs/api/getVersion.md) - *API.getVersion()*
 
 ## Contributing
 

@@ -12,7 +12,7 @@ API.emails.deleteById(id)
 
 ### Parameters
 
-`id` - *integer* - E-Mail ID
+`id` - *Number* - E-Mail ID
 
 ### Example
 

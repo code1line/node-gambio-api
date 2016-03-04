@@ -12,7 +12,7 @@ API.addresses.create(data)
 
 ### Parameters
 
-`data` - *object* - Address data
+`data` - *Object* - Address data
 
 ### Example
 

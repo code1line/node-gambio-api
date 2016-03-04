@@ -11,7 +11,7 @@ API.customers.deleteById(id)
 ```
 
 ### Parameters
-`id` - *integer* - Customer ID
+`id` - *Number* - Customer ID
 
 ### Example
 
